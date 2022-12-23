@@ -1,4 +1,4 @@
-import { defaultTerminalCommands } from '../terminal/defaultTerminalCommands';
+import { getCommandsConfig } from '../config/config';
 import type { TerminalProvider } from '../terminal/TerminalProvider';
 import { TerminalAction } from './TerminalAction';
 
@@ -11,7 +11,7 @@ export class RemoveMigrationAction extends TerminalAction {
   ) {
     super(
       terminalProvider,
-      defaultTerminalCommands.removeMigration,
+      getCommandsConfig().removeMigration,
       {
         dbcontext,
         project,

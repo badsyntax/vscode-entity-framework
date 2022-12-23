@@ -164,6 +164,60 @@
             "ASPNETCORE_ENVIRONMENT": "Development"
           },
           "description": "Environment vars when interacting with entitity framework."
+        },
+        "entityframework.commands": {
+          "type": "object",
+          "default": {
+            "addMigration": [
+              "dotnet",
+              "ef",
+              "migrations",
+              "add",
+              "\"$migrationName\"",
+              "--project",
+              "\"$project\"",
+              "--startup-project",
+              "\"$project\"",
+              "--context",
+              "\"$dbcontext\""
+            ],
+            "removeMigration": [
+              "dotnet",
+              "ef",
+              "migrations",
+              "remove",
+              "--project",
+              "\"$project\"",
+              "--startup-project",
+              "\"$project\"",
+              "--context",
+              "\"$dbcontext\""
+            ],
+            "runMigration": [
+              "dotnet",
+              "ef",
+              "database",
+              "update",
+              "--project",
+              "\"$project\"",
+              "--startup-project",
+              "\"$project\"",
+              "--context",
+              "\"$dbcontext\"",
+              "\"$migrationId\""
+            ],
+            "generateScript": [
+              "dotnet",
+              "ef",
+              "dbcontext",
+              "script",
+              "--project",
+              "\"$project\"",
+              "--context",
+              "\"$dbcontext\""
+            ]
+          },
+          "description": "Environment vars when interacting with entitity framework."
         }
       }
     }

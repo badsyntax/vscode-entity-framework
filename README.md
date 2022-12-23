@@ -18,10 +18,61 @@ The EF tools have to execute application code at design time to get information 
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
 This extension contributes the following settings:
 
 - `entityframework.env`: Custom environment vars
+- `entityframework.commands`: Custom commands, for example:
+  ```json
+  {
+    "entityframework.commands": {
+      "addMigration": [
+        "dotnet",
+        "ef",
+        "migrations",
+        "add",
+        "\"$migrationName\"",
+        "--project",
+        "\"$project\"",
+        "--startup-project",
+        "\"$project\"",
+        "--context",
+        "\"$dbcontext\""
+      ],
+      "removeMigration": [
+        "dotnet",
+        "ef",
+        "migrations",
+        "remove",
+        "--project",
+        "\"$project\"",
+        "--startup-project",
+        "\"$project\"",
+        "--context",
+        "\"$dbcontext\""
+      ],
+      "runMigration": [
+        "dotnet",
+        "ef",
+        "database",
+        "update",
+        "--project",
+        "\"$project\"",
+        "--startup-project",
+        "\"$project\"",
+        "--context",
+        "\"$dbcontext\"",
+        "\"$migrationId\""
+      ],
+      "generateScript": [
+        "dotnet",
+        "ef",
+        "dbcontext",
+        "script",
+        "--project",
+        "\"$project\"",
+        "--context",
+        "\"$dbcontext\""
+      ]
+    }
+  }
+  ```

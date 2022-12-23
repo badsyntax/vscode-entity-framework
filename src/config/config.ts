@@ -5,8 +5,26 @@ type EnvConfig = {
   [key: string]: string;
 };
 
+type CommandsConfig = {
+  addMigration: string[];
+  removeMigration: string[];
+  runMigration: string[];
+  generateScript: string[];
+};
+
 export function getEnvConfig() {
   return vscode.workspace
     .getConfiguration(EXTENSION_NAMESPACE)
     .get<EnvConfig>('env', {});
+}
+
+export function getCommandsConfig() {
+  return vscode.workspace
+    .getConfiguration(EXTENSION_NAMESPACE)
+    .get<CommandsConfig>('commands', {
+      addMigration: [],
+      removeMigration: [],
+      runMigration: [],
+      generateScript: [],
+    });
 }

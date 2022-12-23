@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
+import { getCommandsConfig } from '../config/config';
 
-import { defaultTerminalCommands } from '../terminal/defaultTerminalCommands';
 import type { TerminalProvider } from '../terminal/TerminalProvider';
 import { TerminalAction } from './TerminalAction';
 
@@ -13,7 +13,7 @@ export class AddMigrationAction extends TerminalAction {
   ) {
     super(
       terminalProvider,
-      defaultTerminalCommands.addMigration,
+      getCommandsConfig().addMigration,
       {
         dbcontext,
         project,

@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { CommandProvider } from '../commands/CommandProvider';
 import { RefreshTreeCommand } from '../commands/RefreshTreeCommand';
-import { defaultTerminalCommands } from '../terminal/defaultTerminalCommands';
+import { getCommandsConfig } from '../config/config';
 import type { TerminalProvider } from '../terminal/TerminalProvider';
 import {
   dbContextsCache,
@@ -19,7 +19,7 @@ export class RunMigrationAction extends TerminalAction {
   ) {
     super(
       terminalProvider,
-      defaultTerminalCommands.runMigration,
+      getCommandsConfig().runMigration,
       {
         dbcontext,
         project,
