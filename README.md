@@ -1,4 +1,4 @@
-# vscode-entity-framework
+# Entity Framework Migrations
 
 [![Build & Publish](https://github.com/badsyntax/vscode-entity-framework/actions/workflows/main.yml/badge.svg)](https://github.com/badsyntax/vscode-entity-framework/actions/workflows/main.yml)
 
