@@ -10,6 +10,7 @@
   },
   "private": true,
   "publisher": "richardwillis",
+  "icon": "icon.png",
   "categories": [
     "Other"
   ],
