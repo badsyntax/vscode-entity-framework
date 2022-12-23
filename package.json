@@ -140,17 +140,17 @@
         },
         {
           "command": "entityframework.generateScript",
-          "when": "viewItem == dbcontext",
+          "when": "viewItem == dbContext",
           "group": "inline@1"
         },
         {
           "command": "entityframework.addMigration",
-          "when": "viewItem == dbcontext",
+          "when": "viewItem == dbContext",
           "group": "inline@2"
         },
         {
           "command": "entityframework.generateScript",
-          "when": "viewItem == dbcontext"
+          "when": "viewItem == dbContext"
         }
       ]
     },
@@ -179,7 +179,7 @@
               "--startup-project",
               "\"$project\"",
               "--context",
-              "\"$dbcontext\""
+              "\"$dbContext\""
             ],
             "removeMigration": [
               "dotnet",
@@ -191,7 +191,7 @@
               "--startup-project",
               "\"$project\"",
               "--context",
-              "\"$dbcontext\""
+              "\"$dbContext\""
             ],
             "runMigration": [
               "dotnet",
@@ -203,7 +203,7 @@
               "--startup-project",
               "\"$project\"",
               "--context",
-              "\"$dbcontext\"",
+              "\"$dbContext\"",
               "\"$migrationId\""
             ],
             "generateScript": [
@@ -214,10 +214,10 @@
               "--project",
               "\"$project\"",
               "--context",
-              "\"$dbcontext\""
+              "\"$dbContext\""
             ]
           },
-          "description": "Environment vars when interacting with entitity framework."
+          "description": "Environment vars when interacting with Entity Framework."
         }
       }
     }
@@ -230,7 +230,12 @@
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
-    "lint": "tsc --noEmit && eslint src --ext ts",
+    "lint": "npm run lint:prettier && npm run lint:ts && npm run lint:eslint",
+    "lint:ts": "tsc --noEmit",
+    "lint:fix": "npm run lint:fix:prettier && npm run lint:eslint -- --fix",
+    "lint:prettier": "prettier --check \"**/*.{js,json,svg,md,yml}\"",
+    "lint:fix:prettier": "prettier --write '**/*.{js,json,svg,md,yml}'",
+    "lint:eslint": "eslint src --ext .ts",
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {

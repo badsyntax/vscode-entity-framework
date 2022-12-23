@@ -24,7 +24,7 @@ export class UndoMigrationCommand extends Command {
     const cacheId = DbContextTreeItem.getCacheId(
       this.item.solutionFile.workspaceRoot,
       this.item.project,
-      this.item.dbcontext,
+      this.item.dbContext,
     );
     const migrations = dbContextsCache.get(cacheId);
     if (migrations) {
@@ -34,7 +34,7 @@ export class UndoMigrationCommand extends Command {
       return new RunMigrationAction(
         this.terminalProvider,
         this.item.solutionFile.workspaceRoot,
-        this.item.dbcontext,
+        this.item.dbContext,
         this.item.project,
         migrationId,
       ).run();

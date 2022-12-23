@@ -22,7 +22,7 @@ export class DbContextTreeItem extends TreeItem {
   ) {
     super(label, solutionFile, collapsibleState);
     this.iconPath = getIconPath('database_light.svg', 'database_dark.svg');
-    this.contextValue = ContextValues.dbcontext;
+    this.contextValue = ContextValues.dbContext;
     this.cacheId = DbContextTreeItem.getCacheId(
       solutionFile.workspaceRoot,
       this.project,
