@@ -6,10 +6,11 @@ A VS Code extension to manage Entity Framework migrations.
 
 ## Features
 
-![treeview](images/treeview-screenshot.png)
+![Entity Framework Migrations](images/treeview-screenshot.png)
 
-- List dbContexts for all projects within a solution
+- List migrations by [DbContext](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.dbcontext)
 - Add/remove/run/undo migrations
+- Export [DbContext](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.dbcontext) as SQL script
 
 ## Requirements
 
@@ -22,7 +23,7 @@ A VS Code extension to manage Entity Framework migrations.
 
 This extension contributes the following settings:
 
-- `entityframework.env`: Custom environment vars, for example:
+- `entityframework.env`: Custom environment variables, for example:
   ```json
   {
     "entityframework.env": {
