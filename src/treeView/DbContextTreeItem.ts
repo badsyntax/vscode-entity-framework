@@ -60,10 +60,10 @@ export class DbContextTreeItem extends TreeItem {
             this.solutionFile,
             this.label,
             this.project,
-            migration.applied,
-            (!migration.applied && migrations.length === 1) ||
-              index !== migrations.length - 1,
+            migration,
             index === migrations.length - 1,
+            index === 0,
+            index > 0 ? migrations[index - 1] : undefined,
           ),
       );
       dbContextsCache.set(this.cacheId, children);

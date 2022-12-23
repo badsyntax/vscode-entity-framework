@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import type { Migration } from '../types/Migration';
 import type { SolutionFile } from '../types/SolutionFile';
 
 import { getIconPath } from './iconProvider';
@@ -11,15 +12,17 @@ export class MigrationTreeItem extends TreeItem {
     solutionFile: SolutionFile,
     public readonly dbcontext: string,
     public readonly project: string,
-    applied: boolean,
-    canApply: boolean,
-    canRemove: boolean,
+    public readonly migration: Migration,
+    isLast: boolean,
+    isFirst: boolean,
+    previousMigration?: Migration,
   ) {
     super(label, solutionFile, vscode.TreeItemCollapsibleState.None);
     this.iconPath = getIconPath('file-code_light.svg', 'file-code_dark.svg');
     this.contextValue =
-      'migration-' + getMigrationContextValue(canApply, canRemove, applied);
-    this.resourceUri = applied
+      'migration-' +
+      getMigrationContextValue(migration, isLast, isFirst, previousMigration);
+    this.resourceUri = migration.applied
       ? vscode.Uri.parse(`${MigrationTreeItemScheme.Applied}:${label}`, true)
       : vscode.Uri.parse(
           `${MigrationTreeItemScheme.NotApplied}:${label}`,
@@ -29,19 +32,37 @@ export class MigrationTreeItem extends TreeItem {
 }
 
 function getMigrationContextValue(
-  canApply: boolean,
-  canRemove: boolean,
-  applied: boolean,
+  migration: Migration,
+  isLast: boolean,
+  isFirst: boolean,
+  previousMigration?: Migration,
 ): string {
-  const states: Array<'can-apply' | 'can-remove' | 'applied' | 'not-applied'> =
-    [];
-  if (applied) {
+  const states: Array<
+    | 'can-apply-single'
+    | 'can-apply-to-here'
+    | 'can-remove'
+    | 'applied'
+    | 'not-applied'
+  > = [];
+  if (migration.applied) {
     states.push('applied');
-  } else if (canApply) {
-    states.push('can-apply');
+  } else {
+    // if (!isLast) {
+    //   states.push('can-apply');
+    // } else {
+    //   states.push('can-remove');
+    // }
+
+    if (isLast) {
+      states.push('can-remove');
+    }
+
+    if (!previousMigration?.applied) {
+      states.push('can-apply-to-here');
+    } else {
+      states.push('can-apply-single');
+    }
   }
-  if (canRemove) {
-    states.push('can-remove');
-  }
+  console.log('migration', states.join('|'));
   return states.join('|');
 }

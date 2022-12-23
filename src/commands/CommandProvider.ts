@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { EXTENSION_NAMESPACE } from '../constants/constants';
+import type { TerminalProvider } from '../terminal/TerminalProvider';
 import type { DbContextTreeItem } from '../treeView/DbContextTreeItem';
 import type { MigrationTreeItem } from '../treeView/MigrationTreeItem';
 import type { TreeDataProvider } from '../treeView/TreeDataProvider';
@@ -9,26 +10,40 @@ import type { Command } from './Command';
 import { GenerateScriptCommand } from './GenerateScriptCommand';
 import { RefreshTreeCommand } from './RefreshTreeCommand';
 import { RemoveMigrationCommand } from './RemoveMigrationCommand';
-import { UpdateMigrationsCommand } from './UpdateMigrationsCommand';
+import { RunMigrationCommand } from './RunMigrationCommand';
+import { RunMigrationsCommand } from './RunMigrationsCommand';
 
 export class CommandProvider extends Disposable {
-  constructor(private readonly treeDataProvider: TreeDataProvider) {
+  constructor(
+    private readonly treeDataProvider: TreeDataProvider,
+    private readonly terminalProvider: TerminalProvider,
+  ) {
     super();
     this.registerCommand(
       AddMigrationCommand.commandName,
-      (item: DbContextTreeItem) => new AddMigrationCommand(item),
+      (item?: DbContextTreeItem) =>
+        new AddMigrationCommand(terminalProvider, item),
     );
     this.registerCommand(
       RemoveMigrationCommand.commandName,
-      (item: MigrationTreeItem) => new RemoveMigrationCommand(item),
+      (item?: MigrationTreeItem) => {
+        return new RemoveMigrationCommand(terminalProvider, item);
+      },
     );
     this.registerCommand(
-      UpdateMigrationsCommand.commandName,
-      (item: DbContextTreeItem) => new UpdateMigrationsCommand(item),
+      RunMigrationCommand.commandName,
+      (item?: MigrationTreeItem) =>
+        new RunMigrationCommand(terminalProvider, item),
+    );
+    this.registerCommand(
+      RunMigrationsCommand.commandName,
+      (item?: MigrationTreeItem) =>
+        new RunMigrationsCommand(terminalProvider, item),
     );
     this.registerCommand(
       GenerateScriptCommand.commandName,
-      (item: DbContextTreeItem) => new GenerateScriptCommand(item),
+      (item?: DbContextTreeItem) =>
+        new GenerateScriptCommand(terminalProvider, item),
     );
     this.registerCommand(
       RefreshTreeCommand.commandName,

@@ -1,14 +1,14 @@
-import { GenerateScriptAction } from '../actions/GenerateScriptAction';
+import { RunMigrationAction } from '../actions/RunMigrationAction';
 import type { TerminalProvider } from '../terminal/TerminalProvider';
-import { type DbContextTreeItem } from '../treeView/DbContextTreeItem';
+import type { MigrationTreeItem } from '../treeView/MigrationTreeItem';
 import { Command } from './Command';
 
-export class GenerateScriptCommand extends Command {
-  public static commandName = 'generateScript';
+export class RunMigrationCommand extends Command {
+  public static commandName = 'runMigration';
 
   constructor(
     private readonly terminalProvider: TerminalProvider,
-    private readonly item?: DbContextTreeItem,
+    private readonly item?: MigrationTreeItem,
   ) {
     super();
   }
@@ -17,11 +17,12 @@ export class GenerateScriptCommand extends Command {
     if (!this.item) {
       return;
     }
-    return new GenerateScriptAction(
+    return new RunMigrationAction(
       this.terminalProvider,
       this.item.solutionFile.workspaceRoot,
-      this.item.label,
+      this.item.dbcontext,
       this.item.project,
+      this.item.migration.id,
     ).run();
   }
 }
