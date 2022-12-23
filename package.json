@@ -12,6 +12,7 @@
   "activationEvents": [
     "onLanguage:csharp"
   ],
+  "license": "SEE LICENSE IN LICENSE.md",
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
