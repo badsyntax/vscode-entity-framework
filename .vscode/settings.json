@@ -45,5 +45,5 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "cSpell.language": "en-GB",
-  "cSpell.words": ["dbcontext", "entityframework", "richardwillis"]
+  "cSpell.words": ["dbcontext", "efcore", "entityframework", "richardwillis"]
 }
