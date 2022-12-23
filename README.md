@@ -1,5 +1,7 @@
 # vscode-entity-framework
 
+[![Build & Publish](https://github.com/badsyntax/vscode-entity-framework/actions/workflows/main.yml/badge.svg)](https://github.com/badsyntax/vscode-entity-framework/actions/workflows/main.yml)
+
 A VS Code extension to manage Entity Framework migrations.
 
 ## Features
