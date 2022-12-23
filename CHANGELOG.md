@@ -1,9 +1,3 @@
 # Change Log
 
-All notable changes to the "vscode-entity-framework" extension will be documented in this file.
-
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
-## [Unreleased]
-
-- Initial release
+Release notes can be found here: https://github.com/badsyntax/vscode-entity-framework/releases
