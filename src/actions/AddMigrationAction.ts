@@ -35,9 +35,9 @@ export class AddMigrationAction extends TerminalAction {
       prompt: 'For example: MigrationName',
     });
     if (!migrationName) {
-      return;
+      return '';
     }
-    await super.run({
+    const output = await super.run({
       ...this.params,
       migrationName,
     });
@@ -51,5 +51,6 @@ export class AddMigrationAction extends TerminalAction {
       CommandProvider.getCommandName(RefreshTreeCommand.commandName),
       false,
     );
+    return output;
   }
 }

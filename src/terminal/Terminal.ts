@@ -3,6 +3,7 @@ import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
 
 import { EventWaiter } from '../util/EventWaiter';
 import { getEnvConfig } from '../config/config';
+import { removePrefixFromStdOut } from '../cli/ef';
 
 const NL = '\n';
 const CR = '\r';
@@ -54,13 +55,13 @@ export class Terminal implements vscode.Pseudoterminal {
       this.cmd?.stdout.on('data', data => {
         const dataString = data.toString();
         stdout += dataString;
-        this.write(dataString);
+        this.write(removePrefixFromStdOut(dataString));
       });
 
       this.cmd?.stderr.on('data', data => {
         const dataString = data.toString();
         stderr += dataString;
-        this.write(dataString);
+        this.write(removePrefixFromStdOut(dataString));
       });
 
       this.cmd?.on('exit', code => {
@@ -79,8 +80,7 @@ export class Terminal implements vscode.Pseudoterminal {
   }
 
   public write(message: string): void {
-    // Note writing `\n` will just move the cursor down 1 row.
-    // We need to write `\r` as well to move the cursor to the left-most cell.
+    // We need NLCR to move down and left
     const sanitisedMessage = message.replace(nlRegExp, `${NL + CR}$1`);
     this.writeEmitter.fire(sanitisedMessage);
   }
