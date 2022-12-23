@@ -10,16 +10,163 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:vscode-entity-framework.helloWorld"
+    "onLanguage:csharp"
   ],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "vscode-entity-framework.helloWorld",
-        "title": "Hello World"
+        "command": "entityframework.removeMigration",
+        "title": "Remove Migration",
+        "icon": {
+          "light": "icons/trash_light.svg",
+          "dark": "icons/trash_dark.svg"
+        }
+      },
+      {
+        "command": "entityframework.refreshTree",
+        "title": "Refresh Migrations",
+        "icon": {
+          "light": "icons/refresh_light.svg",
+          "dark": "icons/refresh_dark.svg"
+        }
+      },
+      {
+        "command": "entityframework.addMigration",
+        "title": "Add Migration",
+        "icon": {
+          "light": "icons/add_light.svg",
+          "dark": "icons/add_dark.svg"
+        }
+      },
+      {
+        "command": "entityframework.runMigration",
+        "title": "Run Migration",
+        "icon": {
+          "light": "icons/run_light.svg",
+          "dark": "icons/run_dark.svg"
+        }
+      },
+      {
+        "command": "entityframework.generateScript",
+        "title": "Generate Script",
+        "icon": {
+          "light": "icons/file-code_light.svg",
+          "dark": "icons/file-code_dark.svg"
+        }
+      },
+      {
+        "command": "entityframework.updateMigrations",
+        "title": "Update migrations to here",
+        "icon": {
+          "light": "icons/reply_light.svg",
+          "dark": "icons/reply_dark.svg"
+        }
+      },
+      {
+        "command": "entityframework.runMigrations",
+        "title": "Run migrations to here",
+        "icon": {
+          "light": "icons/run-all_light.svg",
+          "dark": "icons/run-all_dark.svg"
+        }
       }
-    ]
+    ],
+    "views": {
+      "explorer": [
+        {
+          "id": "entityframeworkTree",
+          "name": "EF Migrations"
+        }
+      ]
+    },
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "entityframework.refreshTree",
+          "when": "false"
+        },
+        {
+          "command": "entityframework.removeMigration",
+          "when": "false"
+        },
+        {
+          "command": "entityframework.addMigration",
+          "when": "false"
+        },
+        {
+          "command": "entityframework.runMigration",
+          "when": "false"
+        },
+        {
+          "command": "entityframework.generateScript",
+          "when": "false"
+        },
+        {
+          "command": "entityframework.updateMigrations",
+          "when": "false"
+        },
+        {
+          "command": "entityframework.runMigration",
+          "when": "false"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "entityframework.refreshTree",
+          "when": "view == entityframeworkTree",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "entityframework.removeMigration",
+          "when": "viewItem =~ /^migration-.*\\|?can-remove\\|?.*$/",
+          "group": "inline@1"
+        },
+        {
+          "command": "entityframework.runMigration",
+          "when": "viewItem =~ /^migration-.*\\|?can-apply\\|?.*$/",
+          "group": "inline@2"
+        },
+        {
+          "command": "entityframework.generateScript",
+          "when": "viewItem == dbcontext",
+          "group": "inline@1"
+        },
+        {
+          "command": "entityframework.addMigration",
+          "when": "viewItem == dbcontext",
+          "group": "inline@2"
+        },
+        {
+          "command": "entityframework.generateScript",
+          "when": "viewItem == dbcontext"
+        },
+        {
+          "command": "entityframework.updateMigrations",
+          "when": "viewItem =~ /^migration-.*$/"
+        },
+        {
+          "command": "entityframework.updateMigrations",
+          "when": "viewItem == migration-applied",
+          "group": "inline@2"
+        }
+      ]
+    },
+    "configuration": {
+      "type": "object",
+      "title": "vscode-entity-framework",
+      "properties": {
+        "entityframework.env": {
+          "type": "object",
+          "default": {
+            "ASPNETCORE_ENVIRONMENT": "Development"
+          },
+          "description": "Environment vars when interacting with entitity framework."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
@@ -33,19 +180,25 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.74.0",
     "@types/glob": "^8.0.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
-    "@typescript-eslint/eslint-plugin": "^5.45.0",
-    "@typescript-eslint/parser": "^5.45.0",
-    "eslint": "^8.28.0",
+    "@types/vscode": "^1.74.0",
+    "@typescript-eslint/eslint-plugin": "^5.47.0",
+    "@typescript-eslint/parser": "^5.47.0",
+    "@vscode/test-electron": "^2.2.1",
+    "eslint": "^8.30.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "glob": "^8.0.3",
-    "mocha": "^10.1.0",
-    "typescript": "^4.9.3",
-    "ts-loader": "^9.4.1",
+    "mocha": "^10.2.0",
+    "prettier": "2.8.1",
+    "ts-loader": "^9.4.2",
+    "typescript": "^4.9.4",
     "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.0",
-    "@vscode/test-electron": "^2.2.0"
+    "webpack-cli": "^5.0.1"
+  },
+  "dependencies": {
+    "vs-parse": "^3.1.2"
   }
 }
