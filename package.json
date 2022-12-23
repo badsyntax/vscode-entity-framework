@@ -4,15 +4,26 @@
   "description": "Entity Framework extension for VS Code",
   "version": "0.0.1",
   "engines": {
-    "vscode": "^1.74.0"
+    "vscode": "^1.74.0",
+    "node": "^16",
+    "npm": "^8"
   },
+  "private": true,
+  "publisher": "richardwillis",
   "categories": [
     "Other"
   ],
   "activationEvents": [
-    "onLanguage:csharp"
+    "workspaceContains:**/*.sln"
   ],
   "license": "SEE LICENSE IN LICENSE.md",
+  "bugs": {
+    "url": "https://github.com/badsyntax/vscode-entity-framework/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/badsyntax/vscode-entity-framework/"
+  },
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
@@ -223,10 +234,12 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run package",
+    "vscode:prepublish": "npm run compile:prod",
     "compile": "webpack",
     "watch": "webpack --watch",
-    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile:prod": "webpack --mode production --devtool hidden-source-map",
+    "package": "vsce package",
+    "publish": "vsce publish",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
@@ -246,6 +259,7 @@
     "@typescript-eslint/eslint-plugin": "^5.47.0",
     "@typescript-eslint/parser": "^5.47.0",
     "@vscode/test-electron": "^2.2.1",
+    "@vscode/vsce": "^2.16.0",
     "eslint": "^8.30.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
