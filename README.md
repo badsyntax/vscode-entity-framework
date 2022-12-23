@@ -6,8 +6,10 @@ A VS Code extension to manage Entity Framework migrations.
 
 ## Features
 
+![treeview](images/treeview-screenshot.png)
+
 - List dbcontexts for all projects within a solution
-- Add/remove migrations
+- Add/remove/run/undo migrations
 
 ## Requirements
 
