@@ -7,9 +7,16 @@ const execAsync = promisify(exec);
 export function extractDataFromStdOut(output: string): string {
   return output
     .split(/\r\n|\r|\n/)
-    .filter(line => line.startsWith('data:'))
-    .map(line => line.replace('data:', '').trim())
-    .join('');
+    .filter(line => line.startsWith('data:    '))
+    .map(line => line.replace('data:    ', ''))
+    .join('\n');
+}
+
+export function removePrefixFromStdOut(output: string): string {
+  return output
+    .split(/\r\n|\r|\n/)
+    .map(line => line.replace(/^[a-z]+:    /, ''))
+    .join('\n');
 }
 
 export async function execEF(

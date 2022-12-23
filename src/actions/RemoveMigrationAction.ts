@@ -28,7 +28,7 @@ export class RemoveMigrationAction extends TerminalAction {
   }
 
   public async run() {
-    await super.run();
+    const output = await super.run();
     const cacheId = DbContextTreeItem.getCacheId(
       this.workspaceRoot,
       this.project,
@@ -39,5 +39,6 @@ export class RemoveMigrationAction extends TerminalAction {
       CommandProvider.getCommandName(RefreshTreeCommand.commandName),
       false,
     );
+    return output;
   }
 }

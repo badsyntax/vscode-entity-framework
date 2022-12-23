@@ -9,10 +9,12 @@ export abstract class TerminalAction implements IAction {
     private readonly workingFolder: string,
   ) {}
 
-  public async run(params = this.params): Promise<void> {
+  public async run(params = this.params): Promise<string> {
     const terminal = this.terminalProvider.provideTerminal();
-    terminal.setCmdARgs(this.getInterpolatedArgs(params));
-    await terminal.exec(this.workingFolder);
+    terminal.setCmdARgs(
+      this.getInterpolatedArgs(params).concat(['--prefix-output']),
+    );
+    return await terminal.exec(this.workingFolder);
   }
 
   private getInterpolatedArgs(params = this.params) {
