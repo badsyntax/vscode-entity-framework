@@ -3,7 +3,6 @@ import type * as vscode from 'vscode';
 import { TreeDataProvider } from './treeView/TreeDataProvider';
 import { CommandProvider } from './commands/CommandProvider';
 import { MigrationTreeItemDecorationProvider } from './treeView/MigrationTreeItemDecorationProvider';
-import { DbContextModelSnapshotWatcher } from './util/DbContextModelSnapshotWatcher';
 import { SolutionFinder } from './solution/SolutionProvider';
 import { Terminal } from './terminal/Terminal';
 import { TerminalProvider } from './terminal/TerminalProvider';
@@ -12,9 +11,6 @@ const subscriptions: vscode.Disposable[] = [];
 
 export async function activate(_context: vscode.ExtensionContext) {
   const solutionFiles = await SolutionFinder.getSolutionFiles();
-  const dbContextModelContextWatcher = new DbContextModelSnapshotWatcher(
-    solutionFiles,
-  );
   const migrationTreeItemDecorationProvider =
     new MigrationTreeItemDecorationProvider();
   const treeDataProvider = new TreeDataProvider(solutionFiles);
@@ -23,9 +19,7 @@ export async function activate(_context: vscode.ExtensionContext) {
     treeDataProvider,
     terminalProvider,
   );
-
   subscriptions.push(
-    dbContextModelContextWatcher,
     migrationTreeItemDecorationProvider,
     treeDataProvider,
     commandProvider,
