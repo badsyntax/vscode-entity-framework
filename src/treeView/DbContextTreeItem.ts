@@ -62,8 +62,6 @@ export class DbContextTreeItem extends TreeItem {
             this.project,
             migration,
             index === migrations.length - 1,
-            index === 0,
-            index > 0 ? migrations[index - 1] : undefined,
           ),
       );
       dbContextsCache.set(this.cacheId, children);

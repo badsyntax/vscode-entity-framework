@@ -11,12 +11,12 @@ import { GenerateScriptCommand } from './GenerateScriptCommand';
 import { RefreshTreeCommand } from './RefreshTreeCommand';
 import { RemoveMigrationCommand } from './RemoveMigrationCommand';
 import { RunMigrationCommand } from './RunMigrationCommand';
-import { RunMigrationsCommand } from './RunMigrationsCommand';
+import { UndoMigrationCommand } from './UndoMigrationCommand';
 
 export class CommandProvider extends Disposable {
   constructor(
-    private readonly treeDataProvider: TreeDataProvider,
-    private readonly terminalProvider: TerminalProvider,
+    treeDataProvider: TreeDataProvider,
+    terminalProvider: TerminalProvider,
   ) {
     super();
     this.registerCommand(
@@ -36,9 +36,9 @@ export class CommandProvider extends Disposable {
         new RunMigrationCommand(terminalProvider, item),
     );
     this.registerCommand(
-      RunMigrationsCommand.commandName,
+      UndoMigrationCommand.commandName,
       (item?: MigrationTreeItem) =>
-        new RunMigrationsCommand(terminalProvider, item),
+        new UndoMigrationCommand(terminalProvider, item),
     );
     this.registerCommand(
       GenerateScriptCommand.commandName,
@@ -48,7 +48,7 @@ export class CommandProvider extends Disposable {
     this.registerCommand(
       RefreshTreeCommand.commandName,
       (clearCache: boolean) =>
-        new RefreshTreeCommand(this.treeDataProvider, clearCache),
+        new RefreshTreeCommand(treeDataProvider, clearCache),
     );
   }
 

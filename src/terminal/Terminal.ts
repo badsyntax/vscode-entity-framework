@@ -1,8 +1,7 @@
 import * as vscode from 'vscode';
-import type { ChildProcessWithoutNullStreams } from 'node:child_process';
-import { spawn } from 'node:child_process';
+import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
 
-import { EventWaiter } from './EventWaiter';
+import { EventWaiter } from '../util/EventWaiter';
 import { getEnvConfig } from '../config/config';
 
 const NL = '\n';

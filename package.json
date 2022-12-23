@@ -48,19 +48,19 @@
         }
       },
       {
+        "command": "entityframework.undoMigration",
+        "title": "Undo Migration",
+        "icon": {
+          "light": "icons/reply_light.svg",
+          "dark": "icons/reply_dark.svg"
+        }
+      },
+      {
         "command": "entityframework.generateScript",
         "title": "Generate Script",
         "icon": {
           "light": "icons/file-code_light.svg",
           "dark": "icons/file-code_dark.svg"
-        }
-      },
-      {
-        "command": "entityframework.runMigrations",
-        "title": "Run migrations to here",
-        "icon": {
-          "light": "icons/run-all_light.svg",
-          "dark": "icons/run-all_dark.svg"
         }
       }
     ],
@@ -91,7 +91,7 @@
           "when": "false"
         },
         {
-          "command": "entityframework.runMigrations",
+          "command": "entityframework.undoMigration",
           "when": "false"
         },
         {
@@ -119,22 +119,22 @@
         },
         {
           "command": "entityframework.runMigration",
-          "when": "viewItem =~ /^migration-.*\\|?can-apply-single\\|?.*$/",
+          "when": "viewItem =~ /^migration-.*\\|?can-apply\\|?.*$/",
           "group": "inline@2"
         },
         {
           "command": "entityframework.runMigration",
-          "when": "viewItem =~ /^migration-.*\\|?can-apply-single\\|?.*$/",
+          "when": "viewItem =~ /^migration-.*\\|?can-apply\\|?.*$/",
           "group": "context@1"
         },
         {
-          "command": "entityframework.runMigrations",
-          "when": "viewItem =~ /^migration-.*\\|?can-apply-to-here\\|?.*$/",
+          "command": "entityframework.undoMigration",
+          "when": "viewItem =~ /^migration-.*\\|?can-undo\\|?.*$/",
           "group": "inline@2"
         },
         {
-          "command": "entityframework.runMigrations",
-          "when": "viewItem =~ /^migration-.*\\|?can-apply-to-here\\|?.*$/",
+          "command": "entityframework.undoMigration",
+          "when": "viewItem =~ /^migration-.*\\|?can-undo\\|?.*$/",
           "group": "context@1"
         },
         {

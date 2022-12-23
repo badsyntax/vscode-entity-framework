@@ -14,14 +14,11 @@ export class MigrationTreeItem extends TreeItem {
     public readonly project: string,
     public readonly migration: Migration,
     isLast: boolean,
-    isFirst: boolean,
-    previousMigration?: Migration,
   ) {
     super(label, solutionFile, vscode.TreeItemCollapsibleState.None);
     this.iconPath = getIconPath('file-code_light.svg', 'file-code_dark.svg');
     this.contextValue =
-      'migration-' +
-      getMigrationContextValue(migration, isLast, isFirst, previousMigration);
+      'migration-' + getMigrationContextValue(migration, isLast);
     this.resourceUri = migration.applied
       ? vscode.Uri.parse(`${MigrationTreeItemScheme.Applied}:${label}`, true)
       : vscode.Uri.parse(
@@ -34,35 +31,18 @@ export class MigrationTreeItem extends TreeItem {
 function getMigrationContextValue(
   migration: Migration,
   isLast: boolean,
-  isFirst: boolean,
-  previousMigration?: Migration,
 ): string {
   const states: Array<
-    | 'can-apply-single'
-    | 'can-apply-to-here'
-    | 'can-remove'
-    | 'applied'
-    | 'not-applied'
+    'can-apply' | 'can-undo' | 'can-remove' | 'applied' | 'not-applied'
   > = [];
   if (migration.applied) {
     states.push('applied');
+    states.push('can-undo');
   } else {
-    // if (!isLast) {
-    //   states.push('can-apply');
-    // } else {
-    //   states.push('can-remove');
-    // }
-
     if (isLast) {
       states.push('can-remove');
     }
-
-    if (!previousMigration?.applied) {
-      states.push('can-apply-to-here');
-    } else {
-      states.push('can-apply-single');
-    }
+    states.push('can-apply');
   }
-  console.log('migration', states.join('|'));
   return states.join('|');
 }
