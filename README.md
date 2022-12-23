@@ -12,17 +12,26 @@ A VS Code extension to manage Entity Framework migrations.
 ## Requirements
 
 - [dotnet sdk](https://dotnet.microsoft.com/download)
-- A solution (`.sln`) file with projects is required
+- [efcore tools](https://learn.microsoft.com/en-us/ef/core/cli/dotnet)
+- A solution (`.sln`) file with projects
 
 ## Performance
 
-The EF tools have to execute application code at design time to get information about the project, thus performance can be slow on large projects.
+The EF tools execute application code at design time to get information about the project, thus performance can be slow on large projects.
 
 ## Extension Settings
 
 This extension contributes the following settings:
 
-- `entityframework.env`: Custom environment vars
+- `entityframework.env`: Custom environment vars, for example:
+  ```json
+  {
+    "entityframework.env": {
+      "ASPNETCORE_ENVIRONMENT": "LocalDev",
+      "TenantId": "12345"
+    }
+  }
+  ```
 - `entityframework.commands`: Custom commands, for example:
   ```json
   {
@@ -78,3 +87,7 @@ This extension contributes the following settings:
     }
   }
   ```
+
+## License
+
+See [LICENSE.md](./LICENSE.md).
