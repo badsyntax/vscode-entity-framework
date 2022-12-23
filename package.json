@@ -4,7 +4,7 @@
   "description": "Manage Entity Framework migrations in VS Code",
   "version": "0.0.0",
   "engines": {
-    "vscode": "^1.45.0",
+    "vscode": "^1.56.0",
     "node": "^16",
     "npm": "^8"
   },
@@ -269,7 +269,7 @@
     "@types/glob": "^8.0.0",
     "@types/mocha": "^10.0.1",
     "@types/node": "16.x",
-    "@types/vscode": "1.45.0",
+    "@types/vscode": "1.56.0",
     "@typescript-eslint/eslint-plugin": "^5.47.0",
     "@typescript-eslint/parser": "^5.47.0",
     "@vscode/test-electron": "^2.2.1",
