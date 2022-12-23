@@ -19,6 +19,14 @@ export function removePrefixFromStdOut(output: string): string {
     .join('\n');
 }
 
+export function getErrorsFromStdOut(output: string): string {
+  return output
+    .split(/\r\n|\r|\n/)
+    .filter(line => line.startsWith('error:'))
+    .map(line => line.replace(/^[a-z]+:    /, ''))
+    .join('\n');
+}
+
 export async function execEF(
   cmd: string,
   workspaceRoot: string,
