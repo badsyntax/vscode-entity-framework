@@ -2,7 +2,7 @@
   "name": "vscode-entity-framework",
   "displayName": "vscode-entity-framework",
   "description": "Entity Framework extension for VS Code",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "engines": {
     "vscode": "^1.74.0",
     "node": "^16",
