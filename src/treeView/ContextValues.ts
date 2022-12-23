@@ -1,3 +1,3 @@
 export class ContextValues {
-  public static dbcontext = 'dbcontext';
+  public static dbContext = 'dbContext';
 }

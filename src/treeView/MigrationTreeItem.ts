@@ -10,7 +10,7 @@ export class MigrationTreeItem extends TreeItem {
   constructor(
     public readonly label: string,
     solutionFile: SolutionFile,
-    public readonly dbcontext: string,
+    public readonly dbContext: string,
     public readonly project: string,
     public readonly migration: Migration,
     isLast: boolean,

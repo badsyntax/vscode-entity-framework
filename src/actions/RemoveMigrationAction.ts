@@ -6,14 +6,14 @@ export class RemoveMigrationAction extends TerminalAction {
   constructor(
     terminalProvider: TerminalProvider,
     workspaceRoot: string,
-    dbcontext: string,
+    dbContext: string,
     project: string,
   ) {
     super(
       terminalProvider,
       getCommandsConfig().removeMigration,
       {
-        dbcontext,
+        dbContext,
         project,
       },
       workspaceRoot,

@@ -59,7 +59,7 @@ export class ProjectTreeItem extends TreeItem {
       return children;
     } catch (e) {
       await vscode.window.showErrorMessage(
-        `Unable to get dbcontexts: ${(e as Error).message}`,
+        `Unable to get dbContexts: ${(e as Error).message}`,
       );
       return [];
     }

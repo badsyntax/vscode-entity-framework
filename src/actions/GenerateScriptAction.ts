@@ -6,14 +6,14 @@ export class GenerateScriptAction extends TerminalAction {
   constructor(
     terminalProvider: TerminalProvider,
     workspaceRoot: string,
-    dbcontext: string,
+    dbContext: string,
     project: string,
   ) {
     super(
       terminalProvider,
       getCommandsConfig().generateScript,
       {
-        dbcontext,
+        dbContext,
         project,
       },
       workspaceRoot,

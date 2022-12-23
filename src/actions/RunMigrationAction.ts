@@ -13,7 +13,7 @@ export class RunMigrationAction extends TerminalAction {
   constructor(
     terminalProvider: TerminalProvider,
     private readonly workspaceRoot: string,
-    private readonly dbcontext: string,
+    private readonly dbContext: string,
     private readonly project: string,
     migrationId: string,
   ) {
@@ -21,7 +21,7 @@ export class RunMigrationAction extends TerminalAction {
       terminalProvider,
       getCommandsConfig().runMigration,
       {
-        dbcontext,
+        dbContext,
         project,
         migrationId,
       },
@@ -35,7 +35,7 @@ export class RunMigrationAction extends TerminalAction {
     const cacheId = DbContextTreeItem.getCacheId(
       this.workspaceRoot,
       this.project,
-      this.dbcontext,
+      this.dbContext,
     );
     dbContextsCache.clear(cacheId);
 

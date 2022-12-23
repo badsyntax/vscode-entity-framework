@@ -8,7 +8,7 @@ A VS Code extension to manage Entity Framework migrations.
 
 ![treeview](images/treeview-screenshot.png)
 
-- List dbcontexts for all projects within a solution
+- List dbContexts for all projects within a solution
 - Add/remove/run/undo migrations
 
 ## Requirements
@@ -16,10 +16,7 @@ A VS Code extension to manage Entity Framework migrations.
 - [dotnet sdk](https://dotnet.microsoft.com/download)
 - [efcore tools](https://learn.microsoft.com/en-us/ef/core/cli/dotnet)
 - A solution (`.sln`) file with projects
-
-## Performance
-
-The EF tools execute application code at design time to get information about the project, thus performance can be slow on large projects.
+- [Microsoft.EntityFrameworkCore.Design](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Design) must be installed in one of the projects
 
 ## Extension Settings
 
@@ -35,6 +32,7 @@ This extension contributes the following settings:
   }
   ```
 - `entityframework.commands`: Custom commands, for example:
+
   ```json
   {
     "entityframework.commands": {
@@ -49,7 +47,7 @@ This extension contributes the following settings:
         "--startup-project",
         "\"$project\"",
         "--context",
-        "\"$dbcontext\""
+        "\"$dbContext\""
       ],
       "removeMigration": [
         "dotnet",
@@ -61,7 +59,7 @@ This extension contributes the following settings:
         "--startup-project",
         "\"$project\"",
         "--context",
-        "\"$dbcontext\""
+        "\"$dbContext\""
       ],
       "runMigration": [
         "dotnet",
@@ -73,7 +71,7 @@ This extension contributes the following settings:
         "--startup-project",
         "\"$project\"",
         "--context",
-        "\"$dbcontext\"",
+        "\"$dbContext\"",
         "\"$migrationId\""
       ],
       "generateScript": [
@@ -84,11 +82,15 @@ This extension contributes the following settings:
         "--project",
         "\"$project\"",
         "--context",
-        "\"$dbcontext\""
+        "\"$dbContext\""
       ]
     }
   }
   ```
+
+## Performance
+
+The EF tools execute application code at design time to get information about the project, thus performance can be slow on large projects.
 
 ## License
 

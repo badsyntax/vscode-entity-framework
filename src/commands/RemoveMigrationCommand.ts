@@ -20,7 +20,7 @@ export class RemoveMigrationCommand extends Command {
     return new RemoveMigrationAction(
       this.terminalProvider,
       this.item.solutionFile.workspaceRoot,
-      this.item.dbcontext,
+      this.item.dbContext,
       this.item.project,
     ).run();
   }
