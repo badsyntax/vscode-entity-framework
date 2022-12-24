@@ -1,9 +1,8 @@
 import * as vscode from 'vscode';
-import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
+import { type ChildProcessWithoutNullStreams } from 'node:child_process';
 
 import { EventWaiter } from '../util/EventWaiter';
-import { getEnvConfig } from '../config/config';
-import { getErrorsFromStdOut, removePrefixFromStdOut } from '../cli/ef';
+import { CLI } from '../cli/CLI';
 
 const NL = '\n';
 const CR = '\r';
@@ -11,6 +10,7 @@ const nlRegExp = new RegExp(`${NL}([^${CR}]|$)`, 'g');
 
 export class Terminal implements vscode.Pseudoterminal {
   private cmdArgs: string[] = [];
+  private cmdParams: { [key: string]: string } = {};
   private cmd: ChildProcessWithoutNullStreams | undefined;
 
   private readonly writeEmitter = new vscode.EventEmitter<string>();
@@ -23,7 +23,7 @@ export class Terminal implements vscode.Pseudoterminal {
 
   private readonly waitForOpen = new EventWaiter<undefined>(this.onDidOpen);
 
-  constructor() {}
+  constructor(private readonly cli: CLI) {}
 
   public async open(): Promise<void> {
     this.openEmitter.fire(undefined);
@@ -31,50 +31,25 @@ export class Terminal implements vscode.Pseudoterminal {
 
   public async close(): Promise<void> {}
 
-  public setCmdARgs(cmdArgs: string[]) {
+  public setCmdArgs(cmdArgs: string[]) {
     this.cmdArgs = cmdArgs;
   }
 
   public async exec(cwd: string): Promise<string> {
     await this.waitForOpen.wait();
 
-    let stdout = '';
-    let stderr = '';
+    this.write(this.cmdArgs.join(' ') + '\n');
 
-    this.cmd = spawn(this.cmdArgs[0], this.cmdArgs.slice(1), {
-      cwd,
-      env: {
-        ...process.env,
-        ...getEnvConfig(),
+    const { cmd, output } = this.cli.exec(this.cmdArgs, cwd, {
+      onStdOut: (buffer: string) => {
+        this.write(CLI.removePrefixFromStdOut(buffer));
+      },
+      onStdErr: (buffer: string) => {
+        this.write(CLI.removePrefixFromStdOut(buffer));
       },
     });
-
-    return new Promise(res => {
-      // --prefix-output is an internal flag that is added to all commands
-      const argsWithoutPrefixOutput = this.cmdArgs.slice(0, -1);
-      this.write(argsWithoutPrefixOutput.join(' ') + '\n');
-
-      this.cmd?.stdout.on('data', data => {
-        const dataString = data.toString();
-        stdout += dataString;
-        this.write(removePrefixFromStdOut(dataString));
-      });
-
-      this.cmd?.stderr.on('data', data => {
-        const dataString = data.toString();
-        stderr += dataString;
-        this.write(removePrefixFromStdOut(dataString));
-      });
-
-      this.cmd?.on('exit', async _code => {
-        this.cmd = undefined;
-        const error = stderr || getErrorsFromStdOut(stdout);
-        if (error) {
-          await vscode.window.showErrorMessage(error);
-        }
-        res(stdout);
-      });
-    });
+    this.cmd = cmd;
+    return await output;
   }
 
   public async handleInput(data: string): Promise<void> {

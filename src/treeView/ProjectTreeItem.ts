@@ -5,9 +5,10 @@ import { DbContextTreeItem } from './DbContextTreeItem';
 import { getIconPath } from './iconProvider';
 
 import { TreeItem } from './TreeItem';
-import { execEF, getDataFromStdOut } from '../cli/ef';
+import { CLI } from '../cli/CLI';
 import { TreeItemCache } from './TreeItemCache';
 import type { ProjectFile } from '../types/ProjectFile';
+import { getCommandsConfig } from '../config/config';
 
 export const projectsCache = new TreeItemCache<DbContextTreeItem[]>();
 
@@ -16,6 +17,7 @@ export class ProjectTreeItem extends TreeItem {
   constructor(
     public readonly label: string,
     private readonly projectFile: ProjectFile,
+    private readonly cli: CLI,
     collapsibleState: vscode.TreeItemCollapsibleState = vscode
       .TreeItemCollapsibleState.Collapsed,
   ) {
@@ -44,17 +46,23 @@ export class ProjectTreeItem extends TreeItem {
     const project = isRootProject ? '.' : this.label;
 
     try {
-      const output = await execEF(
-        `dbcontext list --project ${project} --no-color --json --prefix-output`,
+      const { output } = this.cli.exec(
+        CLI.getInterpolatedArgs(getCommandsConfig().listDbContexts, {
+          project,
+        }),
         this.projectFile.workspaceRoot,
       );
-      const dbContexts = JSON.parse(getDataFromStdOut(output)) as DbContext[];
+
+      const dbContexts = JSON.parse(
+        CLI.getDataFromStdOut(await output),
+      ) as DbContext[];
       const children = dbContexts.map(
         dbContext =>
           new DbContextTreeItem(
             dbContext.name,
             this.projectFile,
             project,
+            this.cli,
             vscode.TreeItemCollapsibleState.Collapsed,
           ),
       );

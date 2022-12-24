@@ -4,6 +4,7 @@ import { Disposable } from '../util/Disposable';
 import { EXTENSION_NAMESPACE } from '../constants/constants';
 import type { ProjectFile } from '../types/ProjectFile';
 import { ProjectTreeItem } from './ProjectTreeItem';
+import type { CLI } from '../cli/CLI';
 
 export class TreeDataProvider
   extends Disposable
@@ -17,7 +18,10 @@ export class TreeDataProvider
     TreeItem | undefined | null | void
   > = this._onDidChangeTreeData.event;
 
-  constructor(private readonly projectFiles: ProjectFile[]) {
+  constructor(
+    private readonly projectFiles: ProjectFile[],
+    private readonly cli: CLI,
+  ) {
     super();
     this.subscriptions.push(
       vscode.window.registerTreeDataProvider(
@@ -40,7 +44,8 @@ export class TreeDataProvider
       return element.getChildren();
     } else {
       return this.projectFiles.map(
-        projectFile => new ProjectTreeItem(projectFile.name, projectFile),
+        projectFile =>
+          new ProjectTreeItem(projectFile.name, projectFile, this.cli),
       );
     }
   }
