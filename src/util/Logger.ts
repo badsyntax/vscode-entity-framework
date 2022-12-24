@@ -1,9 +1,14 @@
-import type * as vscode from 'vscode';
+import * as vscode from 'vscode';
+import { OUTPUT_CHANNEL_ID } from '../constants/constants';
 
 type LogType = 'info' | 'warning' | 'error' | 'debug';
 
 export class Logger {
-  private channel?: vscode.OutputChannel;
+  private channel: vscode.OutputChannel;
+
+  constructor() {
+    this.channel = vscode.window.createOutputChannel(OUTPUT_CHANNEL_ID);
+  }
 
   private log(message: string, type: LogType): void {
     if (!this.channel) {
@@ -35,12 +40,5 @@ export class Logger {
 
   public getChannel(): vscode.OutputChannel | undefined {
     return this.channel;
-  }
-
-  public setLoggingChannel(channel: vscode.OutputChannel): void {
-    if (this.channel) {
-      throw new Error('Output channel already defined.');
-    }
-    this.channel = channel;
   }
 }
