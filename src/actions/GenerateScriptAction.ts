@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
+import { CLI } from '../cli/CLI';
 
-import { getDataFromStdOut } from '../cli/ef';
 import { getCommandsConfig } from '../config/config';
 import type { TerminalProvider } from '../terminal/TerminalProvider';
 import { TerminalAction } from './TerminalAction';
@@ -24,7 +24,7 @@ export class GenerateScriptAction extends TerminalAction {
   }
 
   public async run() {
-    const output = getDataFromStdOut(await super.run());
+    const output = CLI.getDataFromStdOut(await super.run());
     const uri = vscode.Uri.parse('ef-script:' + output);
     const doc = await vscode.workspace.openTextDocument(uri);
     await vscode.languages.setTextDocumentLanguage(doc, 'sql');

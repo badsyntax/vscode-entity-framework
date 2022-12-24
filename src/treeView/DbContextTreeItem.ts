@@ -3,10 +3,11 @@ import type { Migration } from '../types/Migration';
 import { getIconPath } from './iconProvider';
 import { MigrationTreeItem } from './MigrationTreeItem';
 import { TreeItem } from './TreeItem';
-import { execEF, getDataFromStdOut } from '../cli/ef';
+import { CLI } from '../cli/CLI';
 import { TreeItemCache } from './TreeItemCache';
 import { ContextValues } from './ContextValues';
 import type { ProjectFile } from '../types/ProjectFile';
+import { getCommandsConfig } from '../config/config';
 
 export const dbContextsCache = new TreeItemCache<MigrationTreeItem[]>();
 
@@ -17,6 +18,7 @@ export class DbContextTreeItem extends TreeItem {
     public readonly label: string,
     private readonly projectFile: ProjectFile,
     public readonly project: string,
+    private readonly cli: CLI,
     collapsibleState: vscode.TreeItemCollapsibleState = vscode
       .TreeItemCollapsibleState.Collapsed,
   ) {
@@ -46,11 +48,16 @@ export class DbContextTreeItem extends TreeItem {
     }
 
     try {
-      const output = await execEF(
-        `migrations list --context ${this.label} --project ${this.project} --no-color --json --prefix-output`,
+      const { output } = this.cli.exec(
+        CLI.getInterpolatedArgs(getCommandsConfig().listMigrations, {
+          context: this.label,
+          project: this.project,
+        }),
         this.projectFile.workspaceRoot,
       );
-      const migrations = JSON.parse(getDataFromStdOut(output)) as Migration[];
+      const migrations = JSON.parse(
+        CLI.getDataFromStdOut(await output),
+      ) as Migration[];
       const children = migrations.map(
         (migration, index) =>
           new MigrationTreeItem(

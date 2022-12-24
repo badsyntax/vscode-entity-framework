@@ -241,9 +241,31 @@
               "\"$project\"",
               "--context",
               "\"$dbContext\""
+            ],
+            "listDbContexts": [
+              "dotnet",
+              "ef",
+              "dbcontext",
+              "list",
+              "--project",
+              "\"$project\"",
+              "--no-color",
+              "--json"
+            ],
+            "listMigrations": [
+              "dotnet",
+              "ef",
+              "migrations",
+              "list",
+              "--context",
+              "\"$context\"",
+              "--project",
+              "\"$project\"",
+              "--no-color",
+              "--json"
             ]
           },
-          "description": "Environment vars when interacting with Entity Framework."
+          "description": "Environment variables when interacting with Entity Framework."
         }
       }
     }

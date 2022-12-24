@@ -10,6 +10,8 @@ type CommandsConfig = {
   removeMigration: string[];
   runMigration: string[];
   generateScript: string[];
+  listDbContexts: string[];
+  listMigrations: string[];
 };
 
 export function getEnvConfig() {
@@ -26,5 +28,7 @@ export function getCommandsConfig() {
       removeMigration: [],
       runMigration: [],
       generateScript: [],
+      listDbContexts: [],
+      listMigrations: [],
     });
 }
