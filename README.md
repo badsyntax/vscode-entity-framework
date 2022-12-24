@@ -8,10 +8,11 @@ A VS Code extension to manage Entity Framework migrations.
 
 ## Features
 
-- List migrations by [DbContext](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.dbcontext)
+- List migrations by [`DbContext`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.dbcontext)
 - Add/remove/run/undo migrations
 - Show migration applied status
-- Export [DbContext](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.dbcontext) as SQL script
+- Export `DbContext` as SQL script
+- View `DbContext` information
 
 ## Requirements
 
@@ -23,7 +24,9 @@ A VS Code extension to manage Entity Framework migrations.
 
 This extension contributes the following settings:
 
-- `entityframework.commands`: Custom commands, for example:
+- `entityframework.commands`: Custom commands
+  <details><summary>Example</summary>
+
   ```json
   {
     "entityframework.commands": {
@@ -96,11 +99,28 @@ This extension contributes the following settings:
         "\"$project\"",
         "--no-color",
         "--json"
+      ],
+      "dbContextInfo": [
+        "dotnet",
+        "ef",
+        "dbcontext",
+        "info",
+        "--context",
+        "\"$dbContext\"",
+        "--project",
+        "\"$project\"",
+        "--no-color",
+        "--json"
       ]
     }
   }
   ```
-- `entityframework.env`: Custom environment variables, for example:
+
+  </details>
+
+- `entityframework.env`: Custom environment variables
+  <details><summary>Example</summary>
+
   ```json
   {
     "entityframework.env": {
@@ -110,9 +130,11 @@ This extension contributes the following settings:
   }
   ```
 
+  </details>
+
 ## Performance
 
-The EF tools execute application code at design time to get information about the project, thus performance on large projects can be slow.
+The EF tools execute application code at design time to get information about the project, thus _performance on large projects can be slow_.
 
 ## Support
 

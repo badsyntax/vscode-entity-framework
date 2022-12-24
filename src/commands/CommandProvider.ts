@@ -7,6 +7,7 @@ import type { TreeDataProvider } from '../treeView/TreeDataProvider';
 import { Disposable } from '../util/Disposable';
 import { AddMigrationCommand } from './AddMigrationCommand';
 import type { Command } from './Command';
+import { DBContextInfoCommand } from './DBContextInfoCommand';
 import { GenerateScriptCommand } from './GenerateScriptCommand';
 import { OpenMigrationFileCommand } from './OpenMigrationFileCommand';
 import { RefreshTreeCommand } from './RefreshTreeCommand';
@@ -54,6 +55,11 @@ export class CommandProvider extends Disposable {
     this.registerCommand(
       OpenMigrationFileCommand.commandName,
       (item?: MigrationTreeItem) => new OpenMigrationFileCommand(item),
+    );
+    this.registerCommand(
+      DBContextInfoCommand.commandName,
+      (item?: DbContextTreeItem) =>
+        new DBContextInfoCommand(terminalProvider, item),
     );
   }
 

@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { Disposable } from './Disposable';
 
-export class ScriptFileProvider
+export class TextDocumentProvider
   extends Disposable
   implements vscode.TextDocumentContentProvider
 {
@@ -10,9 +10,14 @@ export class ScriptFileProvider
   constructor() {
     super();
     this.subscriptions.push(
-      vscode.workspace.registerTextDocumentContentProvider('ef-script', this),
+      vscode.workspace.registerTextDocumentContentProvider(
+        TextDocumentProvider.scheme,
+        this,
+      ),
     );
   }
+
+  public static readonly scheme = 'ef-text';
 
   provideTextDocumentContent(uri: vscode.Uri): string {
     // Text content is stored in uri.path

@@ -51,6 +51,14 @@
         }
       },
       {
+        "command": "entityframework.dbContextInfo",
+        "title": "Information",
+        "icon": {
+          "light": "icons/help_light.svg",
+          "dark": "icons/help_dark.svg"
+        }
+      },
+      {
         "command": "entityframework.refreshTree",
         "title": "Refresh Migrations",
         "icon": {
@@ -110,6 +118,10 @@
           "when": "false"
         },
         {
+          "command": "entityframework.dbContextInfo",
+          "when": "false"
+        },
+        {
           "command": "entityframework.addMigration",
           "when": "false"
         },
@@ -165,18 +177,34 @@
           "group": "context@1"
         },
         {
-          "command": "entityframework.generateScript",
+          "command": "entityframework.addMigration",
           "when": "viewItem == dbContext",
-          "group": "inline@1"
+          "group": "context@3"
         },
         {
           "command": "entityframework.addMigration",
           "when": "viewItem == dbContext",
-          "group": "inline@2"
+          "group": "inline@3"
         },
         {
           "command": "entityframework.generateScript",
-          "when": "viewItem == dbContext"
+          "when": "viewItem == dbContext",
+          "group": "context@2"
+        },
+        {
+          "command": "entityframework.generateScript",
+          "when": "viewItem == dbContext",
+          "group": "inline@2"
+        },
+        {
+          "command": "entityframework.dbContextInfo",
+          "when": "viewItem == dbContext",
+          "group": "inline@1"
+        },
+        {
+          "command": "entityframework.dbContextInfo",
+          "when": "viewItem == dbContext",
+          "group": "context@1"
         }
       ]
     },
@@ -259,6 +287,18 @@
               "list",
               "--context",
               "\"$context\"",
+              "--project",
+              "\"$project\"",
+              "--no-color",
+              "--json"
+            ],
+            "dbContextInfo": [
+              "dotnet",
+              "ef",
+              "dbcontext",
+              "info",
+              "--context",
+              "\"$dbContext\"",
               "--project",
               "\"$project\"",
               "--no-color",
