@@ -14,7 +14,6 @@ class TerminalColors {
 }
 
 export class Terminal implements vscode.Pseudoterminal {
-  private cmdArgs: string[] = [];
   private cmd: ChildProcessWithoutNullStreams | undefined;
 
   private readonly writeEmitter = new vscode.EventEmitter<string>();
@@ -35,20 +34,14 @@ export class Terminal implements vscode.Pseudoterminal {
 
   public async close(): Promise<void> {}
 
-  public setCmdArgs(cmdArgs: string[]) {
-    this.cmdArgs = cmdArgs;
-  }
-
-  public async exec(cwd: string): Promise<string> {
+  public async exec(cmdArgs: string[], cwd: string): Promise<string> {
     await this.waitForOpen.wait();
 
     this.write(
-      `${TerminalColors.blue}${this.cmdArgs.join(' ')}${
-        TerminalColors.reset
-      }\n`,
+      `${TerminalColors.blue}${cmdArgs.join(' ')}${TerminalColors.reset}\n`,
     );
 
-    const { cmd, output } = this.cli.exec(this.cmdArgs, cwd, {
+    const { cmd, output } = this.cli.exec(cmdArgs, cwd, {
       onStdOut: (buffer: string) => {
         this.write(CLI.removePrefixFromStdOut(buffer));
       },
