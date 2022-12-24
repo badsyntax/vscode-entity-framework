@@ -1,3 +1,3 @@
 export interface IAction {
-  run(): Promise<string>;
+  run(): Promise<string | void>;
 }

@@ -8,6 +8,7 @@ import { Disposable } from '../util/Disposable';
 import { AddMigrationCommand } from './AddMigrationCommand';
 import type { Command } from './Command';
 import { GenerateScriptCommand } from './GenerateScriptCommand';
+import { OpenMigrationFileCommand } from './OpenMigrationFileCommand';
 import { RefreshTreeCommand } from './RefreshTreeCommand';
 import { RemoveMigrationCommand } from './RemoveMigrationCommand';
 import { RunMigrationCommand } from './RunMigrationCommand';
@@ -49,6 +50,10 @@ export class CommandProvider extends Disposable {
       RefreshTreeCommand.commandName,
       (clearCache: boolean) =>
         new RefreshTreeCommand(treeDataProvider, clearCache),
+    );
+    this.registerCommand(
+      OpenMigrationFileCommand.commandName,
+      (item?: MigrationTreeItem) => new OpenMigrationFileCommand(item),
     );
   }
 
