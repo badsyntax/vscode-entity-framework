@@ -2,7 +2,7 @@ import type { ChildProcessWithoutNullStreams } from 'node:child_process';
 import { spawn } from 'node:child_process';
 
 import { getEnvConfig } from '../config/config';
-import type { Logger } from '../util/logger';
+import type { Logger } from '../util/Logger';
 
 const NEWLINE_SEPARATOR = /\r\n|\r|\n/;
 const STDOUT_PREFIX = /^[a-z]+:    /;

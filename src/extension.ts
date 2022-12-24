@@ -7,7 +7,7 @@ import { Terminal } from './terminal/Terminal';
 import { TerminalProvider } from './terminal/TerminalProvider';
 import { ScriptFileProvider } from './util/ScriptFileProvider';
 import { ProjectFilesProvider } from './solution/ProjectFilesProvider';
-import { Logger } from './util/logger';
+import { Logger } from './util/Logger';
 import { OUTPUT_CHANNEL_ID } from './constants/constants';
 import { CLI } from './cli/CLI';
 
