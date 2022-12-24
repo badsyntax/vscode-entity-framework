@@ -4,16 +4,13 @@ import { OUTPUT_CHANNEL_ID } from '../constants/constants';
 type LogType = 'info' | 'warning' | 'error' | 'debug';
 
 export class Logger {
-  private channel: vscode.OutputChannel;
+  private readonly channel: vscode.OutputChannel;
 
   constructor() {
     this.channel = vscode.window.createOutputChannel(OUTPUT_CHANNEL_ID);
   }
 
   private log(message: string, type: LogType): void {
-    if (!this.channel) {
-      throw new Error('No extension output channel defined.');
-    }
     const logMessage = this.format(message, type);
     this.channel.appendLine(logMessage);
   }
@@ -36,9 +33,5 @@ export class Logger {
 
   public debug(...messages: string[]): void {
     this.log(messages.join(' '), 'debug');
-  }
-
-  public getChannel(): vscode.OutputChannel | undefined {
-    return this.channel;
   }
 }
