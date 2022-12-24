@@ -42,9 +42,6 @@ export class TreeDataProvider
       return this.projectFiles.map(
         projectFile => new ProjectTreeItem(projectFile.name, projectFile),
       );
-      // return this.solutionFiles.map(
-      //   solutionFile => new SolutionTreeItem(solutionFile),
-      // );
     }
   }
 }

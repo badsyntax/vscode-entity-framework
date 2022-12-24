@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-// import type { SolutionFile } from '../types/SolutionFile';
 
 export abstract class TreeItem extends vscode.TreeItem {
   constructor(

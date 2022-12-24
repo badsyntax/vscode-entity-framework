@@ -29,14 +29,6 @@ export class ProjectFilesProvider {
           });
         }
       }
-      // const solution = await parseSolution(solutionFile.path, {
-      //   deepParse: true,
-      // });
-      // solutionFiles.push({
-      //   name: path.parse(solutionFile.path).name,
-      //   solution,
-      //   workspaceRoot,
-      // });
     }
 
     return projects;
