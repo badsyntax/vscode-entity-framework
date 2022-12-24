@@ -8,9 +8,13 @@ const NL = '\n';
 const CR = '\r';
 const nlRegExp = new RegExp(`${NL}([^${CR}]|$)`, 'g');
 
+class TerminalColors {
+  public static blue = '\u001b[34m';
+  public static reset = `\u001b[0m`;
+}
+
 export class Terminal implements vscode.Pseudoterminal {
   private cmdArgs: string[] = [];
-  private cmdParams: { [key: string]: string } = {};
   private cmd: ChildProcessWithoutNullStreams | undefined;
 
   private readonly writeEmitter = new vscode.EventEmitter<string>();
@@ -38,7 +42,11 @@ export class Terminal implements vscode.Pseudoterminal {
   public async exec(cwd: string): Promise<string> {
     await this.waitForOpen.wait();
 
-    this.write(this.cmdArgs.join(' ') + '\n');
+    this.write(
+      `${TerminalColors.blue}${this.cmdArgs.join(' ')}${
+        TerminalColors.reset
+      }\n`,
+    );
 
     const { cmd, output } = this.cli.exec(this.cmdArgs, cwd, {
       onStdOut: (buffer: string) => {
