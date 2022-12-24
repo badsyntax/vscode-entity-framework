@@ -16,3 +16,4 @@ webpack.config.js
 .editorconfig
 .github/**
 images/**
+sample_dotnet/**
