@@ -5,7 +5,7 @@ import { CommandProvider } from './commands/CommandProvider';
 import { MigrationTreeItemDecorationProvider } from './treeView/MigrationTreeItemDecorationProvider';
 import { Terminal } from './terminal/Terminal';
 import { TerminalProvider } from './terminal/TerminalProvider';
-import { ScriptFileProvider } from './util/ScriptFileProvider';
+import { TextDocumentProvider } from './util/TextDocumentProvider';
 import { ProjectFilesProvider } from './solution/ProjectFilesProvider';
 import { Logger } from './util/Logger';
 import { OUTPUT_CHANNEL_ID } from './constants/constants';
@@ -21,7 +21,7 @@ export async function activate(_context: vscode.ExtensionContext) {
 
   const cli = new CLI(logger);
   const projectFiles = await ProjectFilesProvider.getProjectFiles();
-  const scriptFileProvider = new ScriptFileProvider();
+  const textDocumentProvider = new TextDocumentProvider();
   const migrationTreeItemDecorationProvider =
     new MigrationTreeItemDecorationProvider();
   const treeDataProvider = new TreeDataProvider(projectFiles, cli);
@@ -35,7 +35,7 @@ export async function activate(_context: vscode.ExtensionContext) {
     treeDataProvider,
     commandProvider,
     terminalProvider,
-    scriptFileProvider,
+    textDocumentProvider,
   );
 }
 

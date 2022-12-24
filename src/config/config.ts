@@ -12,6 +12,7 @@ type CommandsConfig = {
   generateScript: string[];
   listDbContexts: string[];
   listMigrations: string[];
+  dbContextInfo: string[];
 };
 
 export function getEnvConfig() {
@@ -30,5 +31,6 @@ export function getCommandsConfig() {
       generateScript: [],
       listDbContexts: [],
       listMigrations: [],
+      dbContextInfo: [],
     });
 }

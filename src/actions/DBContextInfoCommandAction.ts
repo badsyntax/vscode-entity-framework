@@ -1,12 +1,13 @@
 import * as vscode from 'vscode';
-import { CLI } from '../cli/CLI';
 
+import { CLI } from '../cli/CLI';
 import { getCommandsConfig } from '../config/config';
+
 import type { TerminalProvider } from '../terminal/TerminalProvider';
 import { TextDocumentProvider } from '../util/TextDocumentProvider';
 import { TerminalAction } from './TerminalAction';
 
-export class GenerateScriptAction extends TerminalAction {
+export class DBContextInfoCommandAction extends TerminalAction {
   constructor(
     terminalProvider: TerminalProvider,
     workspaceRoot: string,
@@ -15,7 +16,7 @@ export class GenerateScriptAction extends TerminalAction {
   ) {
     super(
       terminalProvider,
-      getCommandsConfig().generateScript,
+      getCommandsConfig().dbContextInfo,
       {
         dbContext,
         project,
@@ -28,7 +29,7 @@ export class GenerateScriptAction extends TerminalAction {
     const output = CLI.getDataFromStdOut(await super.run());
     const uri = vscode.Uri.parse(`${TextDocumentProvider.scheme}:${output}`);
     const doc = await vscode.workspace.openTextDocument(uri);
-    await vscode.languages.setTextDocumentLanguage(doc, 'sql');
+    await vscode.languages.setTextDocumentLanguage(doc, 'json');
     await vscode.window.showTextDocument(doc, { preview: false });
     return output;
   }
