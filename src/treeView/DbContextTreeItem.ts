@@ -3,10 +3,10 @@ import type { Migration } from '../types/Migration';
 import { getIconPath } from './iconProvider';
 import { MigrationTreeItem } from './MigrationTreeItem';
 import { TreeItem } from './TreeItem';
-import { execEF, extractDataFromStdOut } from '../cli/ef';
+import { execEF, getDataFromStdOut } from '../cli/ef';
 import { TreeItemCache } from './TreeItemCache';
-import type { SolutionFile } from '../types/SolutionFile';
 import { ContextValues } from './ContextValues';
+import type { ProjectFile } from '../types/ProjectFile';
 
 export const dbContextsCache = new TreeItemCache<MigrationTreeItem[]>();
 
@@ -15,16 +15,16 @@ export class DbContextTreeItem extends TreeItem {
 
   constructor(
     public readonly label: string,
-    solutionFile: SolutionFile,
+    private readonly projectFile: ProjectFile,
     public readonly project: string,
     collapsibleState: vscode.TreeItemCollapsibleState = vscode
       .TreeItemCollapsibleState.Collapsed,
   ) {
-    super(label, solutionFile, collapsibleState);
+    super(label, projectFile.workspaceRoot, collapsibleState);
     this.iconPath = getIconPath('database_light.svg', 'database_dark.svg');
     this.contextValue = ContextValues.dbContext;
     this.cacheId = DbContextTreeItem.getCacheId(
-      solutionFile.workspaceRoot,
+      projectFile.workspaceRoot,
       this.project,
       this.label,
     );
@@ -48,16 +48,14 @@ export class DbContextTreeItem extends TreeItem {
     try {
       const output = await execEF(
         `migrations list --context ${this.label} --project ${this.project} --no-color --json --prefix-output`,
-        this.solutionFile.workspaceRoot,
+        this.projectFile.workspaceRoot,
       );
-      const migrations = JSON.parse(
-        extractDataFromStdOut(output),
-      ) as Migration[];
+      const migrations = JSON.parse(getDataFromStdOut(output)) as Migration[];
       const children = migrations.map(
         (migration, index) =>
           new MigrationTreeItem(
             migration.name,
-            this.solutionFile,
+            this.projectFile.workspaceRoot,
             this.label,
             this.project,
             migration,

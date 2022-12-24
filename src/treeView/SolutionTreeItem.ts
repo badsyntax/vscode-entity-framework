@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { getIconPath } from './iconProvider';
-import { ProjectTreeItem } from './ProjectTreeItem';
 import type { SolutionFile } from '../types/SolutionFile';
+import type { ProjectTreeItem } from './ProjectTreeItem';
 
 export class SolutionTreeItem extends vscode.TreeItem {
   constructor(
@@ -14,14 +14,6 @@ export class SolutionTreeItem extends vscode.TreeItem {
   }
 
   async getChildren(): Promise<ProjectTreeItem[]> {
-    return Promise.resolve(
-      this.solutionFile.solution.projects
-        .filter(project =>
-          (project.packages || []).find(
-            pkg => pkg.name === 'Microsoft.EntityFrameworkCore.Design',
-          ),
-        )
-        .map(project => new ProjectTreeItem(project.name, this.solutionFile)),
-    );
+    return Promise.resolve([]);
   }
 }

@@ -22,7 +22,7 @@ export class UndoMigrationCommand extends Command {
       return;
     }
     const cacheId = DbContextTreeItem.getCacheId(
-      this.item.solutionFile.workspaceRoot,
+      this.item.workspaceRoot,
       this.item.project,
       this.item.dbContext,
     );
@@ -33,7 +33,7 @@ export class UndoMigrationCommand extends Command {
         index === 0 ? '0' : migrations[index - 1].migration.id;
       return new RunMigrationAction(
         this.terminalProvider,
-        this.item.solutionFile.workspaceRoot,
+        this.item.workspaceRoot,
         this.item.dbContext,
         this.item.project,
         migrationId,

@@ -3,7 +3,7 @@ import { spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
 
 import { EventWaiter } from '../util/EventWaiter';
 import { getEnvConfig } from '../config/config';
-import { removePrefixFromStdOut } from '../cli/ef';
+import { getErrorsFromStdOut, removePrefixFromStdOut } from '../cli/ef';
 
 const NL = '\n';
 const CR = '\r';
@@ -50,7 +50,9 @@ export class Terminal implements vscode.Pseudoterminal {
     });
 
     return new Promise(res => {
-      this.write(this.cmdArgs.join(' ') + '\n');
+      // --prefix-output is an internal flag that is added to all commands
+      const argsWithoutPrefixOutput = this.cmdArgs.slice(0, -1);
+      this.write(argsWithoutPrefixOutput.join(' ') + '\n');
 
       this.cmd?.stdout.on('data', data => {
         const dataString = data.toString();
@@ -64,10 +66,13 @@ export class Terminal implements vscode.Pseudoterminal {
         this.write(removePrefixFromStdOut(dataString));
       });
 
-      this.cmd?.on('exit', code => {
+      this.cmd?.on('exit', async _code => {
         this.cmd = undefined;
-        this.write(`Exited with code ${code}\n\n`);
-        res(stderr || stdout);
+        const error = stderr || getErrorsFromStdOut(stdout);
+        if (error) {
+          await vscode.window.showErrorMessage(error);
+        }
+        res(stdout);
       });
     });
   }
@@ -80,7 +85,7 @@ export class Terminal implements vscode.Pseudoterminal {
   }
 
   public write(message: string): void {
-    // We need NLCR to move down and left
+    // NLCR is required to move down and left
     const sanitisedMessage = message.replace(nlRegExp, `${NL + CR}$1`);
     this.writeEmitter.fire(sanitisedMessage);
   }
