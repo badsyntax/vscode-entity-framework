@@ -3,28 +3,32 @@ import { promisify } from 'node:util';
 import { getEnvConfig } from '../config/config';
 
 const execAsync = promisify(exec);
-
-export function extractDataFromStdOut(output: string): string {
-  return output
-    .split(/\r\n|\r|\n/)
-    .filter(line => line.startsWith('data:    '))
-    .map(line => line.replace('data:    ', ''))
-    .join('\n');
-}
+const NEWLINE_SEPARATOR = /\r\n|\r|\n/;
+const STDOUT_PREFIX = /^[a-z]+:    /;
 
 export function removePrefixFromStdOut(output: string): string {
   return output
-    .split(/\r\n|\r|\n/)
-    .map(line => line.replace(/^[a-z]+:    /, ''))
+    .split(NEWLINE_SEPARATOR)
+    .map(line => line.replace(STDOUT_PREFIX, ''))
     .join('\n');
 }
 
+export function getDataFromStdOut(output: string): string {
+  return removePrefixFromStdOut(
+    output
+      .split(NEWLINE_SEPARATOR)
+      .filter(line => line.startsWith('data:'))
+      .join('\n'),
+  );
+}
+
 export function getErrorsFromStdOut(output: string): string {
-  return output
-    .split(/\r\n|\r|\n/)
-    .filter(line => line.startsWith('error:'))
-    .map(line => line.replace(/^[a-z]+:    /, ''))
-    .join('\n');
+  return removePrefixFromStdOut(
+    output
+      .split(NEWLINE_SEPARATOR)
+      .filter(line => line.startsWith('error:'))
+      .join('\n'),
+  );
 }
 
 export async function execEF(

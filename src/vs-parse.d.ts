@@ -24,4 +24,10 @@ declare module 'vs-parse' {
       deepParse: boolean;
     },
   ): Promise<Solution>;
+  export function parseProject(
+    path: string,
+    opts?: {
+      deepParse: boolean;
+    },
+  ): Promise<Project>;
 }

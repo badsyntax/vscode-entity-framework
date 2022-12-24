@@ -3,7 +3,7 @@ import { parseSolution } from 'vs-parse';
 import path from 'node:path';
 import type { SolutionFile } from '../types/SolutionFile';
 
-export class SolutionFinder {
+export class SolutionFilesProvider {
   public static async getSolutionFiles() {
     const workspaceRoots =
       vscode.workspace.workspaceFolders?.map(w => w.uri.fsPath) || [];

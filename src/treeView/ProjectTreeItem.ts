@@ -1,13 +1,13 @@
 import * as vscode from 'vscode';
-
+import path from 'node:path';
 import type { DbContext } from '../types/DbContext';
 import { DbContextTreeItem } from './DbContextTreeItem';
 import { getIconPath } from './iconProvider';
 
 import { TreeItem } from './TreeItem';
-import { execEF, extractDataFromStdOut } from '../cli/ef';
+import { execEF, getDataFromStdOut } from '../cli/ef';
 import { TreeItemCache } from './TreeItemCache';
-import type { SolutionFile } from '../types/SolutionFile';
+import type { ProjectFile } from '../types/ProjectFile';
 
 export const projectsCache = new TreeItemCache<DbContextTreeItem[]>();
 
@@ -15,14 +15,14 @@ export class ProjectTreeItem extends TreeItem {
   private readonly cacheId: string;
   constructor(
     public readonly label: string,
-    solutionFile: SolutionFile,
+    private readonly projectFile: ProjectFile,
     collapsibleState: vscode.TreeItemCollapsibleState = vscode
       .TreeItemCollapsibleState.Collapsed,
   ) {
-    super(label, solutionFile, collapsibleState);
+    super(label, projectFile.workspaceRoot, collapsibleState);
     this.iconPath = getIconPath('csproj.svg');
     this.cacheId = ProjectTreeItem.getCacheId(
-      solutionFile.workspaceRoot,
+      projectFile.workspaceRoot,
       this.label,
     );
   }
@@ -38,20 +38,23 @@ export class ProjectTreeItem extends TreeItem {
       return cachedChildren;
     }
 
+    const projectFileDir = path.resolve(path.dirname(this.projectFile.path));
+    const workspaceRootDir = path.resolve(this.workspaceRoot);
+    const isRootProject = projectFileDir === workspaceRootDir;
+    const project = isRootProject ? '.' : this.label;
+
     try {
       const output = await execEF(
-        `dbcontext list --project ${this.label} --no-color --json --prefix-output`,
-        this.solutionFile.workspaceRoot,
+        `dbcontext list --project ${project} --no-color --json --prefix-output`,
+        this.projectFile.workspaceRoot,
       );
-      const dbContexts = JSON.parse(
-        extractDataFromStdOut(output),
-      ) as DbContext[];
+      const dbContexts = JSON.parse(getDataFromStdOut(output)) as DbContext[];
       const children = dbContexts.map(
         dbContext =>
           new DbContextTreeItem(
             dbContext.name,
-            this.solutionFile,
-            this.label,
+            this.projectFile,
+            project,
             vscode.TreeItemCollapsibleState.Collapsed,
           ),
       );

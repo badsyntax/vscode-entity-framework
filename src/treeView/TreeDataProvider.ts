@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
 import { type TreeItem } from './TreeItem';
-import { SolutionTreeItem } from './SolutionTreeItem';
 import { Disposable } from '../util/Disposable';
-import type { SolutionFile } from '../types/SolutionFile';
 import { EXTENSION_NAMESPACE } from '../constants/constants';
+import type { ProjectFile } from '../types/ProjectFile';
+import { ProjectTreeItem } from './ProjectTreeItem';
 
 export class TreeDataProvider
   extends Disposable
@@ -17,7 +17,7 @@ export class TreeDataProvider
     TreeItem | undefined | null | void
   > = this._onDidChangeTreeData.event;
 
-  constructor(private readonly solutionFiles: SolutionFile[]) {
+  constructor(private readonly projectFiles: ProjectFile[]) {
     super();
     this.subscriptions.push(
       vscode.window.registerTreeDataProvider(
@@ -39,9 +39,12 @@ export class TreeDataProvider
     if (element) {
       return element.getChildren();
     } else {
-      return this.solutionFiles.map(
-        solutionFile => new SolutionTreeItem(solutionFile),
+      return this.projectFiles.map(
+        projectFile => new ProjectTreeItem(projectFile.name, projectFile),
       );
+      // return this.solutionFiles.map(
+      //   solutionFile => new SolutionTreeItem(solutionFile),
+      // );
     }
   }
 }

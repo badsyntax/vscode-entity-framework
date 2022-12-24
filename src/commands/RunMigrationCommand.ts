@@ -19,7 +19,7 @@ export class RunMigrationCommand extends Command {
     }
     return new RunMigrationAction(
       this.terminalProvider,
-      this.item.solutionFile.workspaceRoot,
+      this.item.workspaceRoot,
       this.item.dbContext,
       this.item.project,
       this.item.migration.id,

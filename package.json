@@ -29,7 +29,7 @@
     "Other"
   ],
   "activationEvents": [
-    "workspaceContains:**/*.sln"
+    "workspaceContains:**/*.csproj"
   ],
   "license": "SEE LICENSE IN LICENSE.md",
   "bugs": {

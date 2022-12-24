@@ -19,7 +19,7 @@ export class AddMigrationCommand extends Command {
     }
     return new AddMigrationAction(
       this.terminalProvider,
-      this.item.solutionFile.workspaceRoot,
+      this.item.workspaceRoot,
       this.item.label,
       this.item.project,
     ).run();

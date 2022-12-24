@@ -16,24 +16,13 @@ A VS Code extension to manage Entity Framework migrations.
 
 - [dotnet sdk](https://dotnet.microsoft.com/download)
 - [efcore tools](https://learn.microsoft.com/en-us/ef/core/cli/dotnet)
-- A solution (`.sln`) file with projects
 - [Microsoft.EntityFrameworkCore.Design](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Design) must be installed in one of the projects
 
 ## Extension Settings
 
 This extension contributes the following settings:
 
-- `entityframework.env`: Custom environment variables, for example:
-  ```json
-  {
-    "entityframework.env": {
-      "ASPNETCORE_ENVIRONMENT": "LocalDev",
-      "TenantId": "12345"
-    }
-  }
-  ```
 - `entityframework.commands`: Custom commands, for example:
-
   ```json
   {
     "entityframework.commands": {
@@ -88,10 +77,24 @@ This extension contributes the following settings:
     }
   }
   ```
+- `entityframework.env`: Custom environment variables, for example:
+  ```json
+  {
+    "entityframework.env": {
+      "ASPNETCORE_ENVIRONMENT": "LocalDev",
+      "TenantId": "12345"
+    }
+  }
+  ```
 
 ## Performance
 
-The EF tools execute application code at design time to get information about the project, thus performance can be slow on large projects.
+The EF tools execute application code at design time to get information about the project, thus performance on large projects can be slow.
+
+## Support
+
+- 👉 [Submit a bug report](https://github.com/badsyntax/vscode-entity-framework/issues/new?assignees=badsyntax&labels=bug&template=bug_report.md&title=)
+- 👉 [Submit a feature request](https://github.com/badsyntax/vscode-entity-framework/issues/new?assignees=badsyntax&labels=enhancement&template=feature_request.md&title=)
 
 ## License
 
