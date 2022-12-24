@@ -5,6 +5,9 @@ import { EXTENSION_NAMESPACE } from '../constants/constants';
 import type { ProjectFile } from '../types/ProjectFile';
 import { ProjectTreeItem } from './ProjectTreeItem';
 import type { CLI } from '../cli/CLI';
+import { MigrationTreeItem } from './MigrationTreeItem';
+import { CommandProvider } from '../commands/CommandProvider';
+import { OpenMigrationFileCommand } from '../commands/OpenMigrationFileCommand';
 
 export class TreeDataProvider
   extends Disposable
@@ -23,12 +26,25 @@ export class TreeDataProvider
     private readonly cli: CLI,
   ) {
     super();
-    this.subscriptions.push(
-      vscode.window.registerTreeDataProvider(
-        `${EXTENSION_NAMESPACE}Tree`,
-        this,
-      ),
-    );
+    const view = vscode.window.createTreeView(`${EXTENSION_NAMESPACE}Tree`, {
+      treeDataProvider: this,
+    });
+    view.onDidChangeSelection(this.handleTreeItemSelection.bind(this));
+    this.subscriptions.push(view);
+  }
+
+  private async handleTreeItemSelection(
+    e: vscode.TreeViewSelectionChangeEvent<vscode.TreeItem>,
+  ) {
+    if (
+      e.selection.length === 1 &&
+      e.selection[0] instanceof MigrationTreeItem
+    ) {
+      await vscode.commands.executeCommand(
+        CommandProvider.getCommandName(OpenMigrationFileCommand.commandName),
+        e.selection[0],
+      );
+    }
   }
 
   public refresh(): void {
