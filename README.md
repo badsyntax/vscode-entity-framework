@@ -74,6 +74,28 @@ This extension contributes the following settings:
         "\"$project\"",
         "--context",
         "\"$dbContext\""
+      ],
+      "listDbContexts": [
+        "dotnet",
+        "ef",
+        "dbcontext",
+        "list",
+        "--project",
+        "\"$project\"",
+        "--no-color",
+        "--json"
+      ],
+      "listMigrations": [
+        "dotnet",
+        "ef",
+        "migrations",
+        "list",
+        "--context",
+        "\"$context\"",
+        "--project",
+        "\"$project\"",
+        "--no-color",
+        "--json"
       ]
     }
   }
