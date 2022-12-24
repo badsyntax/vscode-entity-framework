@@ -217,7 +217,7 @@
           "default": {
             "ASPNETCORE_ENVIRONMENT": "Development"
           },
-          "description": "Environment vars when interacting with entitity framework."
+          "description": "Environment variables when interacting with Entity Framework."
         },
         "entityframework.commands": {
           "type": "object",
@@ -305,7 +305,7 @@
               "--json"
             ]
           },
-          "description": "Environment variables when interacting with Entity Framework."
+          "description": "Custom dotnet ef commands."
         }
       }
     }
