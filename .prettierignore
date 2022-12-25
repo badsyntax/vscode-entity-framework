@@ -1,5 +1,7 @@
 node_modules
 .vscode-test
 package-lock.json
-dist/
-sample_dotnet/
+dist
+sample_dotnet
+.wdio-vscode-service
+out

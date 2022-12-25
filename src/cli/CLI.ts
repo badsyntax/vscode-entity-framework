@@ -1,5 +1,5 @@
-import type { ChildProcessWithoutNullStreams } from 'node:child_process';
-import { spawn } from 'node:child_process';
+import type { ChildProcessWithoutNullStreams } from 'child_process';
+import { spawn } from 'child_process';
 
 import { getEnvConfig } from '../config/config';
 import type { Logger } from '../util/Logger';
@@ -68,6 +68,7 @@ export class CLI {
 
     const cmd = spawn(args[0], args.slice(1), {
       cwd,
+      shell: true,
       env: {
         ...process.env,
         ...getEnvConfig(),

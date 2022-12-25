@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { type ChildProcessWithoutNullStreams } from 'node:child_process';
+import { type ChildProcessWithoutNullStreams } from 'child_process';
 
 import { EventWaiter } from '../util/EventWaiter';
 import { CLI } from '../cli/CLI';

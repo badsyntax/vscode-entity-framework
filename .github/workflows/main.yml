@@ -9,20 +9,46 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+        vscodeVersion:
+          - 1.64.2
+          - stable
+    runs-on: ${{ matrix.os }}
     name: Build
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node ${{ matrix.node-version }}
+      - name: Setup Node.js
         uses: actions/setup-node@v3.5.1
         with:
           node-version: 16
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '7.x.x'
       - name: Install NPM Packages
         run: npm ci
       - name: Lint
         run: npm run lint
       - name: Build
         run: npm run package
+      - name: Prepare test project
+        run: |
+          dotnet tool restore
+          dotnet build
+          dotnet ef --version
+        working-directory: ./sample_dotnet
+      - name: Test
+        run: |
+          Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
+          npm test
+        env:
+          DISPLAY: ':99.0'
+          VSCODE_VERSION: ${{ matrix.vscodeVersion }}
 
   publish:
     name: Publish

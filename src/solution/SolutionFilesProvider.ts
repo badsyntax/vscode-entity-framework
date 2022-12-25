@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { parseSolution } from 'vs-parse';
-import path from 'node:path';
+import path from 'path';
 import type { SolutionFile } from '../types/SolutionFile';
 
 export class SolutionFilesProvider {

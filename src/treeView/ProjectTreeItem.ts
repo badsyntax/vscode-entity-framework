@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import path from 'node:path';
+import path from 'path';
 import type { DbContext } from '../types/DbContext';
 import { DbContextTreeItem } from './DbContextTreeItem';
 import { getIconPath } from './iconProvider';
