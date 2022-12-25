@@ -68,6 +68,7 @@ export class CLI {
 
     const cmd = spawn(args[0], args.slice(1), {
       cwd,
+      shell: true,
       env: {
         ...process.env,
         ...getEnvConfig(),

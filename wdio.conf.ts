@@ -29,7 +29,7 @@ export const config: Options.Testrunner = {
   ],
   services: ['vscode'],
   logLevel: 'warn',
-  waitforTimeout: 40000,
+  waitforTimeout: 20000,
   // If you only want to run your tests until a specific amount of tests have failed use
   // bail (default is 0 - don't bail, run all tests).
   bail: 0,
