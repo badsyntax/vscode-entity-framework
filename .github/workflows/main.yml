@@ -9,7 +9,16 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+        vscodeVersion:
+          - 1.56.0
+          - stable
+    runs-on: ${{ matrix.os }}
     name: Build
     steps:
       - uses: actions/checkout@v3
@@ -40,6 +49,7 @@ jobs:
           npm test
         env:
           DISPLAY: ':99.0'
+          VSCODE_VERSION: ${{ matrix.vscodeVersion }}
 
   publish:
     name: Publish

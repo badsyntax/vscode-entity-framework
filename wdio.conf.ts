@@ -17,7 +17,7 @@ export const config: Options.Testrunner = {
   capabilities: [
     {
       browserName: 'vscode',
-      browserVersion: '1.71.0', // "insiders" or "stable" for latest VSCode version
+      browserVersion: process.env.VSCODE_VERSION || '1.56.0', // "insiders" or "stable" for latest VSCode version
       // @ts-ignore
       'wdio:vscodeOptions': {
         extensionPath: __dirname,
