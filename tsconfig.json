@@ -1,5 +1,5 @@
 {
-  "exclude": ["dist", "*.js"],
+  "exclude": ["dist", "out", "*.js", "*.ts", "test"],
   "compilerOptions": {
     "module": "commonjs",
     "target": "ES2020",

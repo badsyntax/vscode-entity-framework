@@ -53,6 +53,10 @@
     "entityframework",
     "NLCR",
     "Pseudoterminal",
-    "richardwillis"
+    "richardwillis",
+    "Testrunner",
+    "waitfor",
+    "wdio",
+    "Xvfb"
   ]
 }
