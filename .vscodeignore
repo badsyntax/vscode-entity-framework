@@ -17,3 +17,4 @@ webpack.config.js
 .github/**
 images/**
 sample_dotnet/**
+.wdio-vscode-service/**

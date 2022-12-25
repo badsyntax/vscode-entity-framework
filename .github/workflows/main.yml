@@ -41,7 +41,6 @@ jobs:
           dotnet tool restore
           dotnet build
           dotnet ef --version
-          dotnet ef dbcontext list --project "ExampleAPI" --no-color --json
         working-directory: ./sample_dotnet
       - name: Test
         run: |

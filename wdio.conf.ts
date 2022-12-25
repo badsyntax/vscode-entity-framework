@@ -9,7 +9,7 @@ export const config: Options.Testrunner = {
       project: './test/tsconfig.json',
     },
   },
-  specs: ['./test/specs/**/*.ts'],
+  specs: ['./src/test/specs/**/*.ts'],
   exclude: [
     // 'path/to/excluded/files'
   ],
@@ -29,7 +29,7 @@ export const config: Options.Testrunner = {
   ],
   services: ['vscode'],
   logLevel: 'warn',
-  waitforTimeout: 20000,
+  waitforTimeout: 40000,
   // If you only want to run your tests until a specific amount of tests have failed use
   // bail (default is 0 - don't bail, run all tests).
   bail: 0,
