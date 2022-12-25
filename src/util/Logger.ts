@@ -16,7 +16,7 @@ export class Logger {
   }
 
   public format(message: string, type: LogType): string {
-    return `[${type}] ${message}`;
+    return `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()} [${type}] ${message}`;
   }
 
   public info(...messages: string[]): void {

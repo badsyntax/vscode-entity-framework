@@ -9,12 +9,14 @@ import { CLI } from '../cli/CLI';
 import { TreeItemCache } from './TreeItemCache';
 import type { ProjectFile } from '../types/ProjectFile';
 import { getCommandsConfig } from '../config/config';
+import type { Logger } from '../util/Logger';
 
 export const projectsCache = new TreeItemCache<DbContextTreeItem[]>();
 
 export class ProjectTreeItem extends TreeItem {
   private readonly cacheId: string;
   constructor(
+    private readonly logger: Logger,
     public readonly label: string,
     private readonly projectFile: ProjectFile,
     private readonly cli: CLI,
@@ -59,6 +61,7 @@ export class ProjectTreeItem extends TreeItem {
       const children = dbContexts.map(
         dbContext =>
           new DbContextTreeItem(
+            this.logger,
             dbContext.name,
             this.projectFile,
             project,
@@ -69,9 +72,9 @@ export class ProjectTreeItem extends TreeItem {
       projectsCache.set(this.cacheId, children);
       return children;
     } catch (e) {
-      await vscode.window.showErrorMessage(
-        `Unable to get dbContexts: ${(e as Error).message}`,
-      );
+      const msg = `Unable to get dbContexts: ${(e as Error).message}`.trim();
+      this.logger.error(msg);
+      await vscode.window.showErrorMessage(msg, 'OK');
       return [];
     }
   }
