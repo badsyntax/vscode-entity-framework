@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import path from 'node:path';
+import path from 'path';
 import { parseProject } from 'vs-parse';
 import type { ProjectFile } from '../types/ProjectFile';
 

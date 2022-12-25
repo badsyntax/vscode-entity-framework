@@ -16,7 +16,7 @@ jobs:
           - macos-latest
           - windows-latest
         vscodeVersion:
-          - 1.56.0
+          - 1.64.2
           - stable
     runs-on: ${{ matrix.os }}
     name: Build
