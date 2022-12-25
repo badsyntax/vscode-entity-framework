@@ -19,7 +19,7 @@ export async function activate(_context: vscode.ExtensionContext) {
   const textDocumentProvider = new TextDocumentProvider();
   const migrationTreeItemDecorationProvider =
     new MigrationTreeItemDecorationProvider();
-  const treeDataProvider = new TreeDataProvider(projectFiles, cli);
+  const treeDataProvider = new TreeDataProvider(logger, projectFiles, cli);
   const terminalProvider = new TerminalProvider(new Terminal(cli));
   const commandProvider = new CommandProvider(
     treeDataProvider,
@@ -32,6 +32,7 @@ export async function activate(_context: vscode.ExtensionContext) {
     terminalProvider,
     textDocumentProvider,
   );
+  logger.info(`extension activated`);
 }
 
 export function deactivate() {

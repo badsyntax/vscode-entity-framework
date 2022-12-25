@@ -37,6 +37,13 @@ export class CLI {
     );
   }
 
+  public static removeInfoPrefixFromStdErr(stdErr: string): string {
+    return stdErr
+      .split(NEWLINE_SEPARATOR)
+      .filter(line => !line.startsWith('info:'))
+      .join('\n');
+  }
+
   public static removePrefixFromStdOut(output: string): string {
     return output
       .split(NEWLINE_SEPARATOR)
@@ -88,8 +95,7 @@ export class CLI {
         cmd?.on('exit', async code => {
           const error = stderr || CLI.getErrorsFromStdOut(stdout);
           if (error || code !== 0) {
-            const finalError = error || stdout;
-            this.logger.error(finalError);
+            const finalError = CLI.removeInfoPrefixFromStdErr(error || stdout);
             rej(new Error(finalError));
           } else {
             res(stdout);

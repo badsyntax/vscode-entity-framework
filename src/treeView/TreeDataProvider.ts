@@ -8,6 +8,7 @@ import type { CLI } from '../cli/CLI';
 import { MigrationTreeItem } from './MigrationTreeItem';
 import { CommandProvider } from '../commands/CommandProvider';
 import { OpenMigrationFileCommand } from '../commands/OpenMigrationFileCommand';
+import type { Logger } from '../util/Logger';
 
 export class TreeDataProvider
   extends Disposable
@@ -22,6 +23,7 @@ export class TreeDataProvider
   > = this._onDidChangeTreeData.event;
 
   constructor(
+    private readonly logger: Logger,
     private readonly projectFiles: ProjectFile[],
     private readonly cli: CLI,
   ) {
@@ -61,7 +63,12 @@ export class TreeDataProvider
     } else {
       return this.projectFiles.map(
         projectFile =>
-          new ProjectTreeItem(projectFile.name, projectFile, this.cli),
+          new ProjectTreeItem(
+            this.logger,
+            projectFile.name,
+            projectFile,
+            this.cli,
+          ),
       );
     }
   }

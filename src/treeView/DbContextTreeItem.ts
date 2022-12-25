@@ -8,6 +8,7 @@ import { TreeItemCache } from './TreeItemCache';
 import { ContextValues } from './ContextValues';
 import type { ProjectFile } from '../types/ProjectFile';
 import { getCommandsConfig } from '../config/config';
+import type { Logger } from '../util/Logger';
 
 export const dbContextsCache = new TreeItemCache<MigrationTreeItem[]>();
 
@@ -15,6 +16,7 @@ export class DbContextTreeItem extends TreeItem {
   private readonly cacheId: string;
 
   constructor(
+    private readonly logger: Logger,
     public readonly label: string,
     private readonly projectFile: ProjectFile,
     public readonly project: string,
@@ -72,9 +74,9 @@ export class DbContextTreeItem extends TreeItem {
       dbContextsCache.set(this.cacheId, children);
       return children;
     } catch (e) {
-      await vscode.window.showErrorMessage(
-        `Unable to get migrations: ${(e as Error).message}`,
-      );
+      const msg = `Unable to get migrations: ${(e as Error).message}`.trim();
+      this.logger.error(msg);
+      await vscode.window.showErrorMessage(msg, 'OK');
       return [];
     }
   }
