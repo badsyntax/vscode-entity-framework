@@ -4,7 +4,7 @@
 
 A VS Code extension to manage Entity Framework migrations.
 
-<img src="./images/treeview-screenshot.png" style="max-width:460px" alt="Entity Framework Migrations" />
+<img src="./images/treeview-screenshot.png" width="460" alt="Entity Framework Migrations" />
 
 ## Features
 
