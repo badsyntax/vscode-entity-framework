@@ -1,7 +1,7 @@
-import type { ViewSection } from 'wdio-vscode-service';
+import type { TreeItem, ViewSection } from 'wdio-vscode-service';
 
 describe('Entity Framework Extension', function () {
-  this.retries(3);
+  this.retries(2);
 
   describe('Tree View', () => {
     let treeView: ViewSection | undefined;
@@ -35,15 +35,13 @@ describe('Entity Framework Extension', function () {
 
     it('should render projects', async () => {
       const [projectItem] = await treeView!.getVisibleItems();
-      // @ts-ignore
-      const projectItemLabel = await projectItem.getLabel();
+      const projectItemLabel = await (projectItem as TreeItem).getLabel();
       expect(projectItemLabel).toBe('ExampleAPI');
     });
 
     it('should render db contexts', async () => {
       const [projectItem] = await treeView!.getVisibleItems();
-      // @ts-ignore
-      await projectItem.expand();
+      await (projectItem as TreeItem).expand();
 
       await browser.waitUntil(async () => {
         const [, dbContextItem] = await treeView!.getVisibleItems();
@@ -52,16 +50,14 @@ describe('Entity Framework Extension', function () {
 
       const [, dbContextItem] = await treeView!.getVisibleItems();
 
-      // @ts-ignore
-      const dbContextLabel = await dbContextItem.getLabel();
+      const dbContextLabel = await (dbContextItem as TreeItem).getLabel();
 
       expect(dbContextLabel).toBe('BloggingContext');
     });
 
     it('should render migrations', async () => {
       const [projectItem] = await treeView!.getVisibleItems();
-      // @ts-ignore
-      await projectItem.expand();
+      await (projectItem as TreeItem).expand();
 
       await browser.waitUntil(async () => {
         const [, dbContextItem] = await treeView!.getVisibleItems();
@@ -69,8 +65,7 @@ describe('Entity Framework Extension', function () {
       });
 
       const [, dbContextItem] = await treeView!.getVisibleItems();
-      // @ts-ignore
-      await dbContextItem.expand();
+      await (dbContextItem as TreeItem).expand();
 
       await browser.waitUntil(async () => {
         const [, , migrationOneItem] = await treeView!.getVisibleItems();
@@ -80,10 +75,8 @@ describe('Entity Framework Extension', function () {
       const [, , migrationOneItem, migrationTwoItem] =
         await treeView!.getVisibleItems();
 
-      // @ts-ignore
-      const migrationOneLabel = await migrationOneItem.getLabel();
-      // @ts-ignore
-      const migrationTwoLabel = await migrationTwoItem.getLabel();
+      const migrationOneLabel = await (migrationOneItem as TreeItem).getLabel();
+      const migrationTwoLabel = await (migrationTwoItem as TreeItem).getLabel();
 
       expect(migrationOneLabel).toBe('InitialSchema');
       expect(migrationTwoLabel).toBe('NewMigration');
