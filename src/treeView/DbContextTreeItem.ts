@@ -9,7 +9,6 @@ import { ContextValues } from './ContextValues';
 import type { ProjectFile } from '../types/ProjectFile';
 import { getCommandsConfig } from '../config/config';
 import type { Logger } from '../util/Logger';
-import type { Project } from 'vs-parse';
 
 export const dbContextsCache = new TreeItemCache<MigrationTreeItem[]>();
 

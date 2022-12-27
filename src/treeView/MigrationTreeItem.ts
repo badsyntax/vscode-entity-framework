@@ -1,4 +1,3 @@
-import type { Project } from 'vs-parse';
 import * as vscode from 'vscode';
 import type { Migration } from '../types/Migration';
 import type { ProjectFile } from '../types/ProjectFile';
