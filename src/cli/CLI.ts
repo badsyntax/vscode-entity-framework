@@ -2,10 +2,11 @@ import type { ChildProcessWithoutNullStreams } from 'child_process';
 import { spawn } from 'child_process';
 
 import { getEnvConfig } from '../config/config';
+import { TerminalColors } from '../terminal/TerminalColors';
 import type { Logger } from '../util/Logger';
 
 const NEWLINE_SEPARATOR = /\r\n|\r|\n/;
-const STDOUT_PREFIX = /^[a-z]+:    /;
+const OUTPUT_PREFIX = /^([a-z]+:    )/;
 
 export class CLI {
   constructor(private readonly logger: Logger) {}
@@ -44,10 +45,25 @@ export class CLI {
       .join('\n');
   }
 
+  public static colorizeOutput(output: string): string {
+    return output
+      .split(NEWLINE_SEPARATOR)
+      .map(line => {
+        if (line.startsWith('warn:')) {
+          return (
+            line.replace(OUTPUT_PREFIX, `$1${TerminalColors.yellow}`) +
+            TerminalColors.reset
+          );
+        }
+        return line;
+      })
+      .join('\n');
+  }
+
   public static removePrefixFromStdOut(output: string): string {
     return output
       .split(NEWLINE_SEPARATOR)
-      .map(line => line.replace(STDOUT_PREFIX, ''))
+      .map(line => line.replace(OUTPUT_PREFIX, ''))
       .join('\n');
   }
 
