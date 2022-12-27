@@ -3,15 +3,11 @@ import { type ChildProcessWithoutNullStreams } from 'child_process';
 
 import { EventWaiter } from '../util/EventWaiter';
 import { CLI } from '../cli/CLI';
+import { TerminalColors } from './TerminalColors';
 
 const NL = '\n';
 const CR = '\r';
 const nlRegExp = new RegExp(`${NL}([^${CR}]|$)`, 'g');
-
-class TerminalColors {
-  public static blue = '\u001b[34m';
-  public static reset = `\u001b[0m`;
-}
 
 export class Terminal implements vscode.Pseudoterminal {
   private cmd: ChildProcessWithoutNullStreams | undefined;
@@ -43,10 +39,10 @@ export class Terminal implements vscode.Pseudoterminal {
 
     const { cmd, output } = this.cli.exec(cmdArgs, cwd, {
       onStdOut: (buffer: string) => {
-        this.write(CLI.removePrefixFromStdOut(buffer));
+        this.write(CLI.removePrefixFromStdOut(CLI.colorizeOutput(buffer)));
       },
       onStdErr: (buffer: string) => {
-        this.write(CLI.removePrefixFromStdOut(buffer));
+        this.write(CLI.removePrefixFromStdOut(CLI.colorizeOutput(buffer)));
       },
     });
     this.cmd = cmd;
