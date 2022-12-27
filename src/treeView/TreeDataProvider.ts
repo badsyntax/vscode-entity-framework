@@ -62,13 +62,7 @@ export class TreeDataProvider
       return element.getChildren();
     } else {
       return this.projectFiles.map(
-        projectFile =>
-          new ProjectTreeItem(
-            this.logger,
-            projectFile.name,
-            projectFile,
-            this.cli,
-          ),
+        projectFile => new ProjectTreeItem(this.logger, projectFile, this.cli),
       );
     }
   }

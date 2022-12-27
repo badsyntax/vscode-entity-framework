@@ -9,6 +9,7 @@ import { ContextValues } from './ContextValues';
 import type { ProjectFile } from '../types/ProjectFile';
 import { getCommandsConfig } from '../config/config';
 import type { Logger } from '../util/Logger';
+import type { Project } from 'vs-parse';
 
 export const dbContextsCache = new TreeItemCache<MigrationTreeItem[]>();
 
@@ -18,8 +19,7 @@ export class DbContextTreeItem extends TreeItem {
   constructor(
     private readonly logger: Logger,
     public readonly label: string,
-    private readonly projectFile: ProjectFile,
-    public readonly project: string,
+    public readonly projectFile: ProjectFile,
     private readonly cli: CLI,
     collapsibleState: vscode.TreeItemCollapsibleState = vscode
       .TreeItemCollapsibleState.Collapsed,
@@ -29,7 +29,7 @@ export class DbContextTreeItem extends TreeItem {
     this.contextValue = ContextValues.dbContext;
     this.cacheId = DbContextTreeItem.getCacheId(
       projectFile.workspaceRoot,
-      this.project,
+      this.projectFile.name,
       this.label,
     );
   }
@@ -53,9 +53,9 @@ export class DbContextTreeItem extends TreeItem {
       const { output } = this.cli.exec(
         CLI.getInterpolatedArgs(getCommandsConfig().listMigrations, {
           context: this.label,
-          project: this.project,
+          project: this.projectFile.name,
         }),
-        this.projectFile.workspaceRoot,
+        this.workspaceRoot,
       );
       const migrations = JSON.parse(
         CLI.getDataFromStdOut(await output),
@@ -64,9 +64,8 @@ export class DbContextTreeItem extends TreeItem {
         (migration, index) =>
           new MigrationTreeItem(
             migration.name,
-            this.projectFile.workspaceRoot,
             this.label,
-            this.project,
+            this.projectFile,
             migration,
             index === migrations.length - 1,
           ),

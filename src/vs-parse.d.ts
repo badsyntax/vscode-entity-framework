@@ -6,11 +6,11 @@ declare module 'vs-parse' {
   };
   type Project = {
     codeFiles: string[];
-    id: string;
-    name: string;
+    id?: string;
+    name?: string;
     packages?: Package[];
-    projectTypeId: string;
-    relativePath: string;
+    projectTypeId?: string;
+    relativePath?: string;
   };
   type Solution = {
     fileFormatVersion: string;

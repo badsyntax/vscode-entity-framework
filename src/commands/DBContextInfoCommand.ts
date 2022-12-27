@@ -21,7 +21,7 @@ export class DBContextInfoCommand extends Command {
       this.terminalProvider,
       this.item.workspaceRoot,
       this.item.label,
-      this.item.project,
+      this.item.projectFile.name,
     ).run();
   }
 }

@@ -1,10 +1,10 @@
-import { GenerateScriptAction } from '../actions/GenerateScriptAction';
+import { ScaffoldAction } from '../actions/ScaffoldAction';
 import type { TerminalProvider } from '../terminal/TerminalProvider';
 import { type DbContextTreeItem } from '../treeView/DbContextTreeItem';
 import { Command } from './Command';
 
-export class GenerateScriptCommand extends Command {
-  public static commandName = 'generateScript';
+export class ScaffoldCommand extends Command {
+  public static commandName = 'scaffold';
 
   constructor(
     private readonly terminalProvider: TerminalProvider,
@@ -17,11 +17,9 @@ export class GenerateScriptCommand extends Command {
     if (!this.item) {
       return;
     }
-    return new GenerateScriptAction(
+    return new ScaffoldAction(
       this.terminalProvider,
-      this.item.workspaceRoot,
-      this.item.label,
-      this.item.projectFile.name,
+      this.item.projectFile,
     ).run();
   }
 }

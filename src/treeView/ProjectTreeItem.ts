@@ -10,6 +10,7 @@ import { TreeItemCache } from './TreeItemCache';
 import type { ProjectFile } from '../types/ProjectFile';
 import { getCommandsConfig } from '../config/config';
 import type { Logger } from '../util/Logger';
+import { ContextValues } from './ContextValues';
 
 export const projectsCache = new TreeItemCache<DbContextTreeItem[]>();
 
@@ -17,14 +18,14 @@ export class ProjectTreeItem extends TreeItem {
   private readonly cacheId: string;
   constructor(
     private readonly logger: Logger,
-    public readonly label: string,
     private readonly projectFile: ProjectFile,
     private readonly cli: CLI,
     collapsibleState: vscode.TreeItemCollapsibleState = vscode
       .TreeItemCollapsibleState.Collapsed,
   ) {
-    super(label, projectFile.workspaceRoot, collapsibleState);
+    super(projectFile.name, projectFile.workspaceRoot, collapsibleState);
     this.iconPath = getIconPath('csproj.svg');
+    this.contextValue = ContextValues.project;
     this.cacheId = ProjectTreeItem.getCacheId(
       projectFile.workspaceRoot,
       this.label,
@@ -52,7 +53,7 @@ export class ProjectTreeItem extends TreeItem {
         CLI.getInterpolatedArgs(getCommandsConfig().listDbContexts, {
           project,
         }),
-        this.projectFile.workspaceRoot,
+        this.workspaceRoot,
       );
 
       const dbContexts = JSON.parse(
@@ -64,7 +65,6 @@ export class ProjectTreeItem extends TreeItem {
             this.logger,
             dbContext.name,
             this.projectFile,
-            project,
             this.cli,
             vscode.TreeItemCollapsibleState.Collapsed,
           ),
