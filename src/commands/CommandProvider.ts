@@ -13,6 +13,7 @@ import { OpenMigrationFileCommand } from './OpenMigrationFileCommand';
 import { RefreshTreeCommand } from './RefreshTreeCommand';
 import { RemoveMigrationCommand } from './RemoveMigrationCommand';
 import { RunMigrationCommand } from './RunMigrationCommand';
+import { ScaffoldCommand } from './ScaffoldCommand';
 import { UndoMigrationCommand } from './UndoMigrationCommand';
 
 export class CommandProvider extends Disposable {
@@ -60,6 +61,10 @@ export class CommandProvider extends Disposable {
       DBContextInfoCommand.commandName,
       (item?: DbContextTreeItem) =>
         new DBContextInfoCommand(terminalProvider, item),
+    );
+    this.registerCommand(
+      ScaffoldCommand.commandName,
+      (item?: DbContextTreeItem) => new ScaffoldCommand(terminalProvider, item),
     );
   }
 

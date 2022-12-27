@@ -15,7 +15,7 @@ export class CLI {
     params: { [key: string]: string },
   ) {
     return args.map(arg =>
-      arg.replace(/\$[\w]+/, a => params[a.slice(1)] || a),
+      arg.replace(/\$[\w]+/, a => params[a.slice(1)] || ''),
     );
   }
 

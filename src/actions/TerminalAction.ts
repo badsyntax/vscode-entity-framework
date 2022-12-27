@@ -12,9 +12,7 @@ export abstract class TerminalAction implements IAction {
 
   public async run(params = this.params): Promise<string> {
     const terminal = this.terminalProvider.provideTerminal();
-    return await terminal.exec(
-      CLI.getInterpolatedArgs(this.args, params),
-      this.workingFolder,
-    );
+    const args = CLI.getInterpolatedArgs(this.args, params);
+    return await terminal.exec(args, this.workingFolder);
   }
 }

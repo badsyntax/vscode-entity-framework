@@ -23,7 +23,7 @@ export class UndoMigrationCommand extends Command {
     }
     const cacheId = DbContextTreeItem.getCacheId(
       this.item.workspaceRoot,
-      this.item.project,
+      this.item.projectFile.name,
       this.item.dbContext,
     );
     const migrations = dbContextsCache.get(cacheId);
@@ -35,7 +35,7 @@ export class UndoMigrationCommand extends Command {
         this.terminalProvider,
         this.item.workspaceRoot,
         this.item.dbContext,
-        this.item.project,
+        this.item.projectFile.name,
         migrationId,
       ).run();
     }

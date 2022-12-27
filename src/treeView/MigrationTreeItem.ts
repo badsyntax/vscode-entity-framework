@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import type { Migration } from '../types/Migration';
+import type { ProjectFile } from '../types/ProjectFile';
 
 import { getIconPath } from './iconProvider';
 import { MigrationTreeItemScheme } from './MigrationTreeItemScheme';
@@ -8,13 +9,16 @@ import { TreeItem } from './TreeItem';
 export class MigrationTreeItem extends TreeItem {
   constructor(
     public readonly label: string,
-    workspaceRoot: string,
     public readonly dbContext: string,
-    public readonly project: string,
+    public readonly projectFile: ProjectFile,
     public readonly migration: Migration,
     isLast: boolean,
   ) {
-    super(label, workspaceRoot, vscode.TreeItemCollapsibleState.None);
+    super(
+      label,
+      projectFile.workspaceRoot,
+      vscode.TreeItemCollapsibleState.None,
+    );
     this.iconPath = getIconPath('file-code_light.svg', 'file-code_dark.svg');
     this.contextValue =
       'migration-' + getMigrationContextValue(migration, isLast);

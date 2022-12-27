@@ -14,8 +14,12 @@ const subscriptions: vscode.Disposable[] = [];
 
 export async function activate(_context: vscode.ExtensionContext) {
   const logger = new Logger();
-  const cli = new CLI(logger);
+  logger.info(`Extension activated`);
+
   const projectFiles = await ProjectFilesProvider.getProjectFiles();
+  logger.info(`Discovered ${projectFiles.length} compatible projects`);
+
+  const cli = new CLI(logger);
   const textDocumentProvider = new TextDocumentProvider();
   const migrationTreeItemDecorationProvider =
     new MigrationTreeItemDecorationProvider();
@@ -25,6 +29,7 @@ export async function activate(_context: vscode.ExtensionContext) {
     treeDataProvider,
     terminalProvider,
   );
+
   subscriptions.push(
     migrationTreeItemDecorationProvider,
     treeDataProvider,
@@ -32,7 +37,6 @@ export async function activate(_context: vscode.ExtensionContext) {
     terminalProvider,
     textDocumentProvider,
   );
-  logger.info(`extension activated`);
 }
 
 export function deactivate() {

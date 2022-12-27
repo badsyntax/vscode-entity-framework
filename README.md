@@ -9,10 +9,11 @@ A VS Code extension to manage Entity Framework migrations.
 ## Features
 
 - List migrations by [`DbContext`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.dbcontext)
-- Add/remove/run/undo migrations
+- Add / Remove / Run / Undo migrations
 - Show migration applied status
 - Export `DbContext` as SQL script
 - View `DbContext` information
+- [Scaffold](https://learn.microsoft.com/en-us/ef/core/cli/dotnet#dotnet-ef-dbcontext-scaffold) `DbContext` & entity types
 
 ## Requirements
 
@@ -75,6 +76,8 @@ This extension contributes the following settings:
         "script",
         "--project",
         "\"$project\"",
+        "--startup-project",
+        "\"$project\"",
         "--context",
         "\"$dbContext\""
       ],
@@ -84,6 +87,8 @@ This extension contributes the following settings:
         "dbcontext",
         "list",
         "--project",
+        "\"$project\"",
+        "--startup-project",
         "\"$project\"",
         "--no-color",
         "--json"
@@ -97,6 +102,8 @@ This extension contributes the following settings:
         "\"$context\"",
         "--project",
         "\"$project\"",
+        "--startup-project",
+        "\"$project\"",
         "--no-color",
         "--json"
       ],
@@ -109,6 +116,28 @@ This extension contributes the following settings:
         "\"$dbContext\"",
         "--project",
         "\"$project\"",
+        "--startup-project",
+        "\"$project\"",
+        "--no-color",
+        "--json"
+      ],
+      "scaffold": [
+        "dotnet",
+        "ef",
+        "dbcontext",
+        "scaffold",
+        "\"$connectionString\"",
+        "\"$provider\"",
+        "--output-dir",
+        "\"$outputDir\"",
+        "--context",
+        "\"$context\"",
+        "--project",
+        "\"$project\"",
+        "--context-dir",
+        "\"$contextDir\"",
+        "--namespace",
+        "\"$namespace\"",
         "--no-color",
         "--json"
       ]

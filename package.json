@@ -59,6 +59,14 @@
         }
       },
       {
+        "command": "entityframework.scaffold",
+        "title": "Scaffold",
+        "icon": {
+          "light": "icons/files_light.svg",
+          "dark": "icons/files_dark.svg"
+        }
+      },
+      {
         "command": "entityframework.refreshTree",
         "title": "Refresh Migrations",
         "icon": {
@@ -119,6 +127,10 @@
         },
         {
           "command": "entityframework.dbContextInfo",
+          "when": "false"
+        },
+        {
+          "command": "entityframework.scaffold",
           "when": "false"
         },
         {
@@ -205,6 +217,16 @@
           "command": "entityframework.dbContextInfo",
           "when": "viewItem == dbContext",
           "group": "context@1"
+        },
+        {
+          "command": "entityframework.scaffold",
+          "when": "viewItem == project",
+          "group": "inline@1"
+        },
+        {
+          "command": "entityframework.scaffold",
+          "when": "viewItem == project",
+          "group": "context@1"
         }
       ]
     },
@@ -267,6 +289,8 @@
               "script",
               "--project",
               "\"$project\"",
+              "--startup-project",
+              "\"$project\"",
               "--context",
               "\"$dbContext\""
             ],
@@ -276,6 +300,8 @@
               "dbcontext",
               "list",
               "--project",
+              "\"$project\"",
+              "--startup-project",
               "\"$project\"",
               "--no-color",
               "--json"
@@ -289,6 +315,8 @@
               "\"$context\"",
               "--project",
               "\"$project\"",
+              "--startup-project",
+              "\"$project\"",
               "--no-color",
               "--json"
             ],
@@ -301,6 +329,28 @@
               "\"$dbContext\"",
               "--project",
               "\"$project\"",
+              "--startup-project",
+              "\"$project\"",
+              "--no-color",
+              "--json"
+            ],
+            "scaffold": [
+              "dotnet",
+              "ef",
+              "dbcontext",
+              "scaffold",
+              "\"$connectionString\"",
+              "\"$provider\"",
+              "--output-dir",
+              "\"$outputDir\"",
+              "--context",
+              "\"$context\"",
+              "--project",
+              "\"$project\"",
+              "--context-dir",
+              "\"$contextDir\"",
+              "--namespace",
+              "\"$namespace\"",
               "--no-color",
               "--json"
             ]

@@ -16,7 +16,10 @@ export class Logger {
   }
 
   public format(message: string, type: LogType): string {
-    return `${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()} [${type}] ${message}`;
+    const now = new Date();
+    return `${now.toLocaleTimeString(undefined, {
+      hour12: false,
+    })} [${type}] ${message}`;
   }
 
   public info(...messages: string[]): void {

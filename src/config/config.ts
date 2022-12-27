@@ -13,6 +13,7 @@ type CommandsConfig = {
   listDbContexts: string[];
   listMigrations: string[];
   dbContextInfo: string[];
+  scaffold: string[];
 };
 
 export function getEnvConfig() {
@@ -32,5 +33,6 @@ export function getCommandsConfig() {
       listDbContexts: [],
       listMigrations: [],
       dbContextInfo: [],
+      scaffold: [],
     });
 }

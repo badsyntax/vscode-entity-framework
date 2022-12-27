@@ -21,7 +21,7 @@ export class RunMigrationCommand extends Command {
       this.terminalProvider,
       this.item.workspaceRoot,
       this.item.dbContext,
-      this.item.project,
+      this.item.projectFile.name,
       this.item.migration.id,
     ).run();
   }

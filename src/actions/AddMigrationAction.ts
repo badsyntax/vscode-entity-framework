@@ -31,8 +31,7 @@ export class AddMigrationAction extends TerminalAction {
   public async run() {
     const migrationName = await vscode.window.showInputBox({
       title: 'Enter Migration Name',
-      placeHolder: 'eg MigrationName',
-      prompt: 'For example: MigrationName',
+      prompt: 'EG: MigrationName',
     });
     if (!migrationName) {
       return '';
