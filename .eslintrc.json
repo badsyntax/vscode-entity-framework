@@ -13,7 +13,7 @@
     "@typescript-eslint/semi": "warn",
     "@typescript-eslint/consistent-type-imports": "error",
     "@typescript-eslint/no-unused-vars": [
-      "error",
+      "warn",
       { "argsIgnorePattern": "^_" }
     ],
     "@typescript-eslint/no-floating-promises": "error",
