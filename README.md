@@ -15,6 +15,7 @@ A VS Code extension to manage Entity Framework migrations.
 - View `DbContext` information
 - [Scaffold](https://learn.microsoft.com/en-us/ef/core/cli/dotnet#dotnet-ef-dbcontext-scaffold) `DbContext` & entity types
 - Generate ER Diagram
+  - _(A [Mermaid](https://mermaid.js.org/) [`.t4`](https://learn.microsoft.com/en-us/ef/core/managing-schemas/scaffolding/templates) template will be installed into the project. It's suggested to add the template to source control.)_
 
 ## Requirements
 
@@ -170,5 +171,3 @@ The EF tools execute application code at design time to get information about th
 ## License
 
 See [LICENSE.md](./LICENSE.md).
-
-// https://youtu.be/x2nh1vZBsHE?t=4597
