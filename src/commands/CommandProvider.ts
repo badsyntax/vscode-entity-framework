@@ -4,9 +4,9 @@ import type { TerminalProvider } from '../terminal/TerminalProvider';
 import type { DbContextTreeItem } from '../treeView/DbContextTreeItem';
 import type { MigrationTreeItem } from '../treeView/MigrationTreeItem';
 import type { TreeDataProvider } from '../treeView/TreeDataProvider';
+import type { DbContextWebViewProvider } from '../util/DbContextWebViewProvider';
 import { Disposable } from '../util/Disposable';
 import type { Logger } from '../util/Logger';
-import type { MermaidWebViewProvider } from '../util/MermaidWebViewProvider';
 import { AddMigrationCommand } from './AddMigrationCommand';
 import type { Command } from './Command';
 import { DBContextInfoCommand } from './DBContextInfoCommand';
@@ -24,7 +24,7 @@ export class CommandProvider extends Disposable {
     logger: Logger,
     treeDataProvider: TreeDataProvider,
     terminalProvider: TerminalProvider,
-    mermaidWebViewProvider: MermaidWebViewProvider,
+    dbContextWebViewProvider: DbContextWebViewProvider,
   ) {
     super();
     this.registerCommand(
@@ -59,7 +59,7 @@ export class CommandProvider extends Disposable {
         new GenerateERDCommand(
           logger,
           terminalProvider,
-          mermaidWebViewProvider,
+          dbContextWebViewProvider,
           item,
         ),
     );

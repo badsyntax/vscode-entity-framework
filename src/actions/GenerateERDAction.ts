@@ -14,8 +14,8 @@ import type { ProjectFile } from '../types/ProjectFile';
 import { DEFAULT_EFCORE_PROVIDERS } from '../constants/constants';
 import { InputWizard } from '../util/InputWizard';
 import type { ScaffoldResult } from './ScaffoldAction';
-import type { MermaidWebViewProvider } from '../util/MermaidWebViewProvider';
 import type { Logger } from '../util/Logger';
+import type { DbContextWebViewProvider } from '../util/DbContextWebViewProvider';
 
 const copyFile = util.promisify(fs.copyFile);
 const rename = util.promisify(fs.rename);
@@ -25,8 +25,8 @@ export class GenerateERDAction extends TerminalAction {
   constructor(
     private readonly logger: Logger,
     terminalProvider: TerminalProvider,
-    private readonly mermaidWebViewProvider: MermaidWebViewProvider,
-    dbContext: string,
+    private readonly dbContextWebViewProvider: DbContextWebViewProvider,
+    private readonly dbContext: string,
     private readonly projectFile: ProjectFile,
     private readonly outputDir: string,
   ) {
@@ -44,7 +44,7 @@ export class GenerateERDAction extends TerminalAction {
   private async installTemplate(codeTemplatesPath: string) {
     const options = ['Yes', 'Cancel'];
     const answer = await vscode.window.showInformationMessage(
-      'Do you want to install the templates?',
+      'A .t4 template is required. Do you want to install the template?',
       ...options,
     );
     if (answer === 'Yes') {
@@ -52,6 +52,12 @@ export class GenerateERDAction extends TerminalAction {
       fs.mkdirSync(codeTemplatesPath, { recursive: true });
       const destPath = path.join(codeTemplatesPath, 'DbContext.Mermaid.t4');
       await copyFile(templatePath, destPath);
+      void vscode.window.showInformationMessage(
+        `Template installed at path: ${path.relative(
+          this.projectFile.workspaceRoot,
+          destPath,
+        )}`,
+      );
       return true;
     }
     return false;
@@ -132,7 +138,7 @@ export class GenerateERDAction extends TerminalAction {
 
       const fileContents = fs.readFileSync(result.contextFile, 'utf-8');
 
-      this.mermaidWebViewProvider.show(fileContents);
+      this.dbContextWebViewProvider.render(this.dbContext, fileContents);
 
       return output;
     } catch (e) {

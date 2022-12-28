@@ -427,6 +427,7 @@
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
+    "@vscode/webview-ui-toolkit": "^1.2.1",
     "vs-parse": "^3.1.2"
   }
 }

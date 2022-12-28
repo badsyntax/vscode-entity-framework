@@ -5,8 +5,8 @@ import { GenerateERDAction } from '../actions/GenerateERDAction';
 import type { TerminalProvider } from '../terminal/TerminalProvider';
 import { type DbContextTreeItem } from '../treeView/DbContextTreeItem';
 import { Command } from './Command';
-import type { MermaidWebViewProvider } from '../util/MermaidWebViewProvider';
 import type { Logger } from '../util/Logger';
+import type { DbContextWebViewProvider } from '../util/DbContextWebViewProvider';
 
 export class GenerateERDCommand extends Command {
   public static commandName = 'generateERD';
@@ -14,7 +14,7 @@ export class GenerateERDCommand extends Command {
   constructor(
     private readonly logger: Logger,
     private readonly terminalProvider: TerminalProvider,
-    private readonly mermaidWebViewProvider: MermaidWebViewProvider,
+    private readonly dbContextWebViewProvider: DbContextWebViewProvider,
     private readonly item?: DbContextTreeItem,
   ) {
     super();
@@ -28,7 +28,7 @@ export class GenerateERDCommand extends Command {
     return new GenerateERDAction(
       this.logger,
       this.terminalProvider,
-      this.mermaidWebViewProvider,
+      this.dbContextWebViewProvider,
       this.item.label,
       this.item.projectFile,
       outputDir,
