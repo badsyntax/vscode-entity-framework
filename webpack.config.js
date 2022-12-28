@@ -30,6 +30,17 @@ const extensionConfig = {
           },
         ],
       },
+      {
+        test: /\.t4$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+            },
+          },
+        ],
+      },
     ],
   },
   devtool: 'nosources-source-map',

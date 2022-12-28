@@ -1,4 +1,4 @@
-import type { ChildProcessWithoutNullStreams } from 'child_process';
+import type { ChildProcess } from 'child_process';
 import { spawn } from 'child_process';
 
 import { getEnvConfig } from '../config/config';
@@ -7,6 +7,17 @@ import type { Logger } from '../util/Logger';
 
 const NEWLINE_SEPARATOR = /\r\n|\r|\n/;
 const OUTPUT_PREFIX = /^([a-z]+:    )/;
+
+export type ExecOpts = {
+  cmdArgs: string[];
+  cwd: string;
+  removeDataFromOutput?: boolean;
+  asJson?: boolean;
+  handlers?: {
+    onStdOut?: (buffer: string) => void;
+    onStdErr?: (buffer: string) => void;
+  };
+};
 
 export class CLI {
   constructor(private readonly logger: Logger) {}
@@ -21,7 +32,7 @@ export class CLI {
   }
 
   public static getDataFromStdOut(output: string): string {
-    return this.removePrefixFromStdOut(
+    return this.stripPrefixFromStdOut(
       output
         .split(NEWLINE_SEPARATOR)
         .filter(line => line.startsWith('data:'))
@@ -30,7 +41,7 @@ export class CLI {
   }
 
   public static getErrorsFromStdOut(output: string): string {
-    return this.removePrefixFromStdOut(
+    return this.stripPrefixFromStdOut(
       output
         .split(NEWLINE_SEPARATOR)
         .filter(line => line.startsWith('error:'))
@@ -38,11 +49,19 @@ export class CLI {
     );
   }
 
-  public static removeInfoPrefixFromStdErr(stdErr: string): string {
-    return stdErr
+  private static filter(out: string, prefix: string) {
+    return out
       .split(NEWLINE_SEPARATOR)
-      .filter(line => !line.startsWith('info:'))
+      .filter(line => !line.trim().startsWith(prefix))
       .join('\n');
+  }
+
+  public static filterInfoFromOutput(out: string): string {
+    return this.filter(out, 'info:');
+  }
+
+  public static filterDataFromOutput(out: string): string {
+    return this.filter(out, 'data:');
   }
 
   public static colorizeOutput(output: string): string {
@@ -60,27 +79,25 @@ export class CLI {
       .join('\n');
   }
 
-  public static removePrefixFromStdOut(output: string): string {
+  public static stripPrefixFromStdOut(output: string): string {
     return output
       .split(NEWLINE_SEPARATOR)
       .map(line => line.replace(OUTPUT_PREFIX, ''))
       .join('\n');
   }
 
-  public exec(
-    cmdArgs: string[],
-    cwd: string,
-    handlers?: {
-      onStdOut?: (buffer: string) => void;
-      onStdErr?: (buffer: string) => void;
-    },
-  ): {
-    cmd: ChildProcessWithoutNullStreams;
+  public exec({ cmdArgs, cwd, handlers, asJson }: ExecOpts): {
+    cmd: ChildProcess;
     output: Promise<string>;
   } {
     this.logger.info(cmdArgs.join(' '));
 
-    const args = cmdArgs.concat(['--prefix-output']);
+    const additionalArgs = ['--prefix-output'];
+    if (asJson && !cmdArgs.includes('--json')) {
+      additionalArgs.push('--json');
+    }
+
+    const args = cmdArgs.concat(additionalArgs);
 
     const cmd = spawn(args[0], args.slice(1), {
       cwd,
@@ -97,13 +114,16 @@ export class CLI {
     return {
       cmd,
       output: new Promise((res, rej) => {
-        cmd?.stdout.on('data', buffer => {
+        cmd.stdout.setEncoding('utf-8');
+        cmd.stderr.setEncoding('utf-8');
+
+        cmd?.stdout?.on('data', buffer => {
           const data = buffer.toString();
           stdout += data;
           handlers?.onStdOut?.(data);
         });
 
-        cmd?.stderr.on('data', buffer => {
+        cmd?.stderr?.on('data', buffer => {
           const data = buffer.toString();
           stderr += data;
           handlers?.onStdErr?.(data);
@@ -112,7 +132,7 @@ export class CLI {
         cmd?.on('exit', async code => {
           const error = stderr || CLI.getErrorsFromStdOut(stdout);
           if (error || code !== 0) {
-            const finalError = CLI.removeInfoPrefixFromStdErr(error || stdout);
+            const finalError = CLI.filterInfoFromOutput(error || stdout);
             rej(new Error(finalError));
           } else {
             res(stdout);

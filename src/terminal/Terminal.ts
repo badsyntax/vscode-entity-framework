@@ -1,7 +1,8 @@
 import * as vscode from 'vscode';
-import { type ChildProcessWithoutNullStreams } from 'child_process';
+import type { ChildProcess } from 'child_process';
 
 import { EventWaiter } from '../util/EventWaiter';
+import type { ExecOpts } from '../cli/CLI';
 import { CLI } from '../cli/CLI';
 import { TerminalColors } from './TerminalColors';
 
@@ -10,7 +11,7 @@ const CR = '\r';
 const nlRegExp = new RegExp(`${NL}([^${CR}]|$)`, 'g');
 
 export class Terminal implements vscode.Pseudoterminal {
-  private cmd: ChildProcessWithoutNullStreams | undefined;
+  private cmd: ChildProcess | undefined;
 
   private readonly writeEmitter = new vscode.EventEmitter<string>();
   private readonly openEmitter = new vscode.EventEmitter<undefined>();
@@ -30,22 +31,47 @@ export class Terminal implements vscode.Pseudoterminal {
 
   public async close(): Promise<void> {}
 
-  public async exec(cmdArgs: string[], cwd: string): Promise<string> {
+  private handleCLIOutput(removeDataFromOutput?: boolean) {
+    let lineBuffer = '';
+    return (buffer: string) => {
+      if (!nlRegExp.test(buffer[buffer.length - 1])) {
+        lineBuffer += buffer;
+      } else {
+        let line = lineBuffer + buffer;
+        lineBuffer = '';
+        line = CLI.colorizeOutput(line);
+        if (removeDataFromOutput) {
+          line = CLI.filterDataFromOutput(line);
+        }
+        this.write(CLI.stripPrefixFromStdOut(line));
+      }
+    };
+  }
+
+  public async exec({
+    cmdArgs,
+    cwd,
+    removeDataFromOutput,
+    ...execOpts
+  }: ExecOpts): Promise<string> {
     await this.waitForOpen.wait();
 
     this.write(
       `${TerminalColors.blue}${cmdArgs.join(' ')}${TerminalColors.reset}\n`,
     );
 
-    const { cmd, output } = this.cli.exec(cmdArgs, cwd, {
-      onStdOut: (buffer: string) => {
-        this.write(CLI.removePrefixFromStdOut(CLI.colorizeOutput(buffer)));
+    const { cmd, output } = this.cli.exec({
+      cmdArgs,
+      cwd,
+      handlers: {
+        onStdOut: this.handleCLIOutput(removeDataFromOutput),
+        onStdErr: this.handleCLIOutput(removeDataFromOutput),
       },
-      onStdErr: (buffer: string) => {
-        this.write(CLI.removePrefixFromStdOut(CLI.colorizeOutput(buffer)));
-      },
+      ...execOpts,
     });
+
     this.cmd = cmd;
+
     return await output;
   }
 

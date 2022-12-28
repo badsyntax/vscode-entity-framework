@@ -67,6 +67,14 @@
         }
       },
       {
+        "command": "entityframework.generateERD",
+        "title": "Generate ER Diagram",
+        "icon": {
+          "light": "icons/references_light.svg",
+          "dark": "icons/references_dark.svg"
+        }
+      },
+      {
         "command": "entityframework.refreshTree",
         "title": "Refresh Migrations",
         "icon": {
@@ -134,6 +142,10 @@
           "when": "false"
         },
         {
+          "command": "entityframework.generateERD",
+          "when": "false"
+        },
+        {
           "command": "entityframework.addMigration",
           "when": "false"
         },
@@ -191,22 +203,32 @@
         {
           "command": "entityframework.addMigration",
           "when": "viewItem == dbContext",
-          "group": "context@3"
+          "group": "context@4"
         },
         {
           "command": "entityframework.addMigration",
           "when": "viewItem == dbContext",
+          "group": "inline@4"
+        },
+        {
+          "command": "entityframework.generateScript",
+          "when": "viewItem == dbContext",
+          "group": "context@3"
+        },
+        {
+          "command": "entityframework.generateScript",
+          "when": "viewItem == dbContext",
           "group": "inline@3"
         },
         {
-          "command": "entityframework.generateScript",
-          "when": "viewItem == dbContext",
-          "group": "context@2"
-        },
-        {
-          "command": "entityframework.generateScript",
+          "command": "entityframework.generateERD",
           "when": "viewItem == dbContext",
           "group": "inline@2"
+        },
+        {
+          "command": "entityframework.generateERD",
+          "when": "viewItem == dbContext",
+          "group": "context@2"
         },
         {
           "command": "entityframework.dbContextInfo",
@@ -302,9 +324,7 @@
               "--project",
               "\"$project\"",
               "--startup-project",
-              "\"$project\"",
-              "--no-color",
-              "--json"
+              "\"$project\""
             ],
             "listMigrations": [
               "dotnet",
@@ -316,9 +336,7 @@
               "--project",
               "\"$project\"",
               "--startup-project",
-              "\"$project\"",
-              "--no-color",
-              "--json"
+              "\"$project\""
             ],
             "dbContextInfo": [
               "dotnet",
@@ -330,9 +348,7 @@
               "--project",
               "\"$project\"",
               "--startup-project",
-              "\"$project\"",
-              "--no-color",
-              "--json"
+              "\"$project\""
             ],
             "scaffold": [
               "dotnet",
@@ -350,9 +366,21 @@
               "--context-dir",
               "\"$contextDir\"",
               "--namespace",
-              "\"$namespace\"",
-              "--no-color",
-              "--json"
+              "\"$namespace\""
+            ],
+            "generateERD": [
+              "dotnet",
+              "ef",
+              "dbcontext",
+              "scaffold",
+              "\"$connectionString\"",
+              "\"$provider\"",
+              "--context",
+              "\"$context\"",
+              "--project",
+              "\"$project\"",
+              "--output-dir",
+              "\"$outputDir\""
             ]
           },
           "description": "Custom dotnet ef commands."
@@ -389,6 +417,7 @@
     "eslint": "^8.30.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "file-loader": "^6.2.0",
     "prettier": "2.8.1",
     "ts-loader": "^9.4.2",
     "ts-node": "^10.9.1",

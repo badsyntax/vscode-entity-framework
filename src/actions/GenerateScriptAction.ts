@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
-import { CLI } from '../cli/CLI';
 
+import { CLI } from '../cli/CLI';
 import { getCommandsConfig } from '../config/config';
 import type { TerminalProvider } from '../terminal/TerminalProvider';
 import { TextDocumentProvider } from '../util/TextDocumentProvider';
@@ -25,7 +25,11 @@ export class GenerateScriptAction extends TerminalAction {
   }
 
   public async run() {
-    const output = CLI.getDataFromStdOut(await super.run());
+    const output = CLI.getDataFromStdOut(
+      await super.run(undefined, {
+        removeDataFromOutput: true,
+      }),
+    );
     const uri = vscode.Uri.parse(`${TextDocumentProvider.scheme}:${output}`);
     const doc = await vscode.workspace.openTextDocument(uri);
     await vscode.languages.setTextDocumentLanguage(doc, 'sql');

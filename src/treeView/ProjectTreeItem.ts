@@ -49,16 +49,19 @@ export class ProjectTreeItem extends TreeItem {
     const project = isRootProject ? '.' : this.label;
 
     try {
-      const { output } = this.cli.exec(
-        CLI.getInterpolatedArgs(getCommandsConfig().listDbContexts, {
-          project,
-        }),
-        this.workspaceRoot,
-      );
+      const args = CLI.getInterpolatedArgs(getCommandsConfig().listDbContexts, {
+        project,
+      });
+      const { output } = this.cli.exec({
+        cmdArgs: args,
+        cwd: this.workspaceRoot,
+        asJson: true,
+      });
 
       const dbContexts = JSON.parse(
         CLI.getDataFromStdOut(await output),
       ) as DbContext[];
+
       const children = dbContexts.map(
         dbContext =>
           new DbContextTreeItem(

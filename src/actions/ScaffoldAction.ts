@@ -12,7 +12,7 @@ import { InputWizard } from '../util/InputWizard';
 
 import { TerminalAction } from './TerminalAction';
 
-type ScaffoldResult = {
+export type ScaffoldResult = {
   contextFile: string;
   entityTypeFiles: string[];
 };
@@ -94,15 +94,20 @@ export class ScaffoldAction extends TerminalAction {
     }
     const output = JSON.parse(
       CLI.getDataFromStdOut(
-        await super.run({
-          ...this.params,
-          context,
-          connectionString,
-          provider,
-          outputDir,
-          contextDir,
-          namespace,
-        }),
+        await super.run(
+          {
+            ...this.params,
+            context,
+            connectionString,
+            provider,
+            outputDir,
+            contextDir,
+            namespace,
+          },
+          {
+            asJson: true,
+          },
+        ),
       ),
     ) as ScaffoldResult;
 

@@ -5,9 +5,12 @@ import type { DbContextTreeItem } from '../treeView/DbContextTreeItem';
 import type { MigrationTreeItem } from '../treeView/MigrationTreeItem';
 import type { TreeDataProvider } from '../treeView/TreeDataProvider';
 import { Disposable } from '../util/Disposable';
+import type { Logger } from '../util/Logger';
+import type { MermaidWebViewProvider } from '../util/MermaidWebViewProvider';
 import { AddMigrationCommand } from './AddMigrationCommand';
 import type { Command } from './Command';
 import { DBContextInfoCommand } from './DBContextInfoCommand';
+import { GenerateERDCommand } from './GenerateERDCommand';
 import { GenerateScriptCommand } from './GenerateScriptCommand';
 import { OpenMigrationFileCommand } from './OpenMigrationFileCommand';
 import { RefreshTreeCommand } from './RefreshTreeCommand';
@@ -18,8 +21,10 @@ import { UndoMigrationCommand } from './UndoMigrationCommand';
 
 export class CommandProvider extends Disposable {
   constructor(
+    logger: Logger,
     treeDataProvider: TreeDataProvider,
     terminalProvider: TerminalProvider,
+    mermaidWebViewProvider: MermaidWebViewProvider,
   ) {
     super();
     this.registerCommand(
@@ -47,6 +52,16 @@ export class CommandProvider extends Disposable {
       GenerateScriptCommand.commandName,
       (item?: DbContextTreeItem) =>
         new GenerateScriptCommand(terminalProvider, item),
+    );
+    this.registerCommand(
+      GenerateERDCommand.commandName,
+      (item?: DbContextTreeItem) =>
+        new GenerateERDCommand(
+          logger,
+          terminalProvider,
+          mermaidWebViewProvider,
+          item,
+        ),
     );
     this.registerCommand(
       RefreshTreeCommand.commandName,

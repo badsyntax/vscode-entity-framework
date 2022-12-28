@@ -1,0 +1,31 @@
+<#@ output extension=".md" #>
+<#@ assembly name="Microsoft.EntityFrameworkCore" #>
+<#@ assembly name="Microsoft.EntityFrameworkCore.Relational" #>
+<#@ assembly name="Microsoft.EntityFrameworkCore.Design" #>
+<#@ parameter name="Model" type="Microsoft.EntityFrameworkCore.Metadata.IModel" #>
+<#@ parameter name="Options" type="Microsoft.EntityFrameworkCore.Scaffolding.ModelCodeGenerationOptions" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="Microsoft.EntityFrameworkCore" #>
+erDiagram
+<#
+    foreach (var entityType in Model.GetEntityTypes().Where(e => !e.IsSimpleManyToManyJoinEntityType()))
+    {
+#>
+    <#= entityType.Name #> {
+    }
+<#
+        foreach (var foreignKey in entityType.GetForeignKeys())
+        {
+#>
+    <#= entityType.Name #> <#= foreignKey.IsUnique ? "|" : "}" #>o--<#= foreignKey.IsRequired ? "|" : "o" #>| <#= foreignKey.PrincipalEntityType.Name #> : <#= foreignKey.GetConstraintName() #>
+<#
+        }
+
+        foreach (var skipNavigation in entityType.GetSkipNavigations().Where(n => n.IsLeftNavigation()))
+        {
+#>
+    <#= entityType.Name #> }o--o{ <#= skipNavigation.TargetEntityType.Name #> : <#= skipNavigation.JoinEntityType.Name #>
+<#
+        }
+    }
+#>

@@ -1,3 +1,4 @@
+import type { ExecOpts } from '../cli/CLI';
 import { CLI } from '../cli/CLI';
 import type { TerminalProvider } from '../terminal/TerminalProvider';
 import type { IAction } from './IAction';
@@ -10,9 +11,16 @@ export abstract class TerminalAction implements IAction {
     private readonly workingFolder: string,
   ) {}
 
-  public async run(params = this.params): Promise<string> {
+  public async run(
+    params = this.params,
+    execOpts?: Partial<ExecOpts>,
+  ): Promise<string> {
     const terminal = this.terminalProvider.provideTerminal();
     const args = CLI.getInterpolatedArgs(this.args, params);
-    return await terminal.exec(args, this.workingFolder);
+    return await terminal.exec({
+      cmdArgs: args,
+      cwd: this.workingFolder,
+      ...execOpts,
+    });
   }
 }

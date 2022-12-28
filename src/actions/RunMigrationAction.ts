@@ -29,8 +29,8 @@ export class RunMigrationAction extends TerminalAction {
     );
   }
 
-  public async run(params = this.params): Promise<string> {
-    const output = await super.run(params);
+  public async run(): Promise<string> {
+    const output = await super.run();
 
     const cacheId = DbContextTreeItem.getCacheId(
       this.workspaceRoot,

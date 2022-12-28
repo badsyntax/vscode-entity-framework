@@ -14,6 +14,7 @@ A VS Code extension to manage Entity Framework migrations.
 - Export `DbContext` as SQL script
 - View `DbContext` information
 - [Scaffold](https://learn.microsoft.com/en-us/ef/core/cli/dotnet#dotnet-ef-dbcontext-scaffold) `DbContext` & entity types
+- Generate ER Diagram
 
 ## Requirements
 
@@ -89,9 +90,7 @@ This extension contributes the following settings:
         "--project",
         "\"$project\"",
         "--startup-project",
-        "\"$project\"",
-        "--no-color",
-        "--json"
+        "\"$project\""
       ],
       "listMigrations": [
         "dotnet",
@@ -103,9 +102,7 @@ This extension contributes the following settings:
         "--project",
         "\"$project\"",
         "--startup-project",
-        "\"$project\"",
-        "--no-color",
-        "--json"
+        "\"$project\""
       ],
       "dbContextInfo": [
         "dotnet",
@@ -173,3 +170,5 @@ The EF tools execute application code at design time to get information about th
 ## License
 
 See [LICENSE.md](./LICENSE.md).
+
+// https://youtu.be/x2nh1vZBsHE?t=4597

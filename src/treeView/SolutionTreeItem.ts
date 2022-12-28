@@ -5,7 +5,7 @@ import type { ProjectTreeItem } from './ProjectTreeItem';
 
 export class SolutionTreeItem extends vscode.TreeItem {
   constructor(
-    private readonly solutionFile: SolutionFile,
+    solutionFile: SolutionFile,
     public readonly collapsibleState: vscode.TreeItemCollapsibleState = vscode
       .TreeItemCollapsibleState.Collapsed,
   ) {

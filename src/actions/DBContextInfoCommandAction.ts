@@ -26,7 +26,12 @@ export class DBContextInfoCommandAction extends TerminalAction {
   }
 
   public async run() {
-    const output = CLI.getDataFromStdOut(await super.run());
+    const output = CLI.getDataFromStdOut(
+      await super.run(undefined, {
+        removeDataFromOutput: true,
+        asJson: true,
+      }),
+    );
     const uri = vscode.Uri.parse(`${TextDocumentProvider.scheme}:${output}`);
     const doc = await vscode.workspace.openTextDocument(uri);
     await vscode.languages.setTextDocumentLanguage(doc, 'json');
