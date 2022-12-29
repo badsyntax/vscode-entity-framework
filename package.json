@@ -266,9 +266,7 @@
         "entityframework.erDiagram": {
           "type": "object",
           "default": {
-            "ignoreTables": [
-              ".*Tracking$"
-            ]
+            "ignoreTables": []
           }
         },
         "entityframework.commands": {
@@ -388,7 +386,8 @@
               "--project",
               "\"$project\"",
               "--output-dir",
-              "\"$outputDir\""
+              "\"$outputDir\"",
+              "--use-database-names"
             ]
           },
           "description": "Custom dotnet ef commands."
@@ -435,7 +434,6 @@
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
-    "@vscode/webview-ui-toolkit": "^1.2.1",
     "vs-parse": "^3.1.2"
   }
 }

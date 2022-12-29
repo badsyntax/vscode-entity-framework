@@ -3,17 +3,26 @@
 <#@ assembly name="Microsoft.EntityFrameworkCore" #>
 <#@ assembly name="Microsoft.EntityFrameworkCore.Relational" #>
 <#@ assembly name="Microsoft.EntityFrameworkCore.Design" #>
+<#@ assembly name="Microsoft.Extensions.DependencyInjection.Abstractions" #>
 <#@ parameter name="Model" type="Microsoft.EntityFrameworkCore.Metadata.IModel" #>
 <#@ parameter name="Options" type="Microsoft.EntityFrameworkCore.Scaffolding.ModelCodeGenerationOptions" #>
+<#@ parameter name="NamespaceHint" type="System.String" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="Microsoft.EntityFrameworkCore" #>
+<#@ import namespace="Microsoft.EntityFrameworkCore.Design" #>
+<#@ import namespace="Microsoft.EntityFrameworkCore.Infrastructure" #>
+<#@ import namespace="Microsoft.EntityFrameworkCore.Scaffolding" #>
+<#@ import namespace="Microsoft.Extensions.DependencyInjection" #>
 <#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text" #>
 <#@ import namespace="System.Text.RegularExpressions" #>
 <#@ import namespace="System.Text.Json" #>
 <#@ import namespace="System.Collections.Generic" #>
 
 erDiagram
 <#
+    var services = (IServiceProvider)Host;
+    var code = services.GetRequiredService<ICSharpHelper>();
     var json = File.ReadAllText(Path.Combine(Host.ResolvePath(""), ".mermaid.config.json"));
     var config = JsonSerializer.Deserialize<Dictionary<string, List<string>>>(json);
     var ignoreTables = config["ignoreTables"];
@@ -31,7 +40,7 @@ erDiagram
         foreach (var property in entityType.GetProperties().OrderBy(p => p.GetColumnOrder() ?? -1))
         {
 #>
-            integer <#= property.Name #>
+            <#= code.Reference(property.ClrType).Replace("?", "").ToLower() #> <#= property.Name #> "<#= property.IsNullable ? "NULL" : "NOT NULL" #>"
 <#      } #>
     }
 <#
@@ -42,7 +51,7 @@ erDiagram
                 continue;
             }
 #>
-    <#= entityType.Name #> <#= foreignKey.IsUnique ? "|" : "}" #>o--<#= foreignKey.IsRequired ? "|" : "o" #>| <#= foreignKey.PrincipalEntityType.Name #> : <#= foreignKey.GetConstraintName() #>
+    <#= entityType.Name #> <#= foreignKey.IsUnique ? "|" : "}" #>o--<#= foreignKey.IsRequired ? "|" : "o" #>| <#= foreignKey.PrincipalEntityType.Name #> : <#= foreignKey.GetConstraintName().Split("_").Last() #>
 <#
         }
 

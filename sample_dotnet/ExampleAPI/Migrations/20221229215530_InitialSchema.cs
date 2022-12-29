@@ -16,7 +16,8 @@ namespace ExampleAPI.Migrations
                 {
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Title = table.Column<string>(type: "TEXT", nullable: false)
+                    Title = table.Column<string>(type: "TEXT", nullable: false),
+                    Ranking = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {

@@ -8,14 +8,15 @@ import path from 'path';
 import fs from 'fs';
 import util from 'util';
 
-// @ts-ignore
-import mermaidTemplate from '../templates/DbContext.Mermaid.t4';
 import type { ProjectFile } from '../types/ProjectFile';
 import { DEFAULT_EFCORE_PROVIDERS } from '../constants/constants';
 import { InputWizard } from '../util/InputWizard';
 import type { ScaffoldResult } from './ScaffoldAction';
 import type { Logger } from '../util/Logger';
 import type { DbContextWebViewProvider } from '../util/DbContextWebViewProvider';
+
+// @ts-ignore
+import mermaidTemplate from '../templates/DbContext.Mermaid.t4';
 
 const copyFile = util.promisify(fs.copyFile);
 const rename = util.promisify(fs.rename);
@@ -53,12 +54,6 @@ export class GenerateERDAction extends TerminalAction {
       fs.mkdirSync(codeTemplatesPath, { recursive: true });
       const destPath = path.join(codeTemplatesPath, 'DbContext.Mermaid.t4');
       await copyFile(templatePath, destPath);
-      void vscode.window.showInformationMessage(
-        `Template installed at path: ${path.relative(
-          this.projectFile.workspaceRoot,
-          destPath,
-        )}`,
-      );
       return true;
     }
     return false;

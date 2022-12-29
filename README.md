@@ -18,11 +18,9 @@ A VS Code extension to manage Entity Framework migrations.
 
 ### ER Diagram
 
-This extension can generate an Entity Relationship Diagram from your DbContext using [Mermaid](https://mermaid.js.org/syntax/entityRelationshipDiagram.html).
+This extension can generate an Entity Relationship Diagram from your database using [Mermaid](https://mermaid.js.org/syntax/entityRelationshipDiagram.html).
 
 A `Mermaid` [`.t4`](https://learn.microsoft.com/en-us/ef/core/managing-schemas/scaffolding/templates) template will be installed into the project. You can ignore this file (by adding it to `.gitignore`), or add it to source control. The template file is used to generate the ER Diagram, feel free to customise it. If you delete it, it will be regenerated next time you generate an ER Diagram.
-
-_Note, you can filter tables from the ER Diagram with the `entityframework.erDiagram.ignoreTables` setting (see below)._
 
 ## Requirements
 
@@ -122,9 +120,7 @@ This extension contributes the following settings:
         "--project",
         "\"$project\"",
         "--startup-project",
-        "\"$project\"",
-        "--no-color",
-        "--json"
+        "\"$project\""
       ],
       "scaffold": [
         "dotnet",
@@ -142,9 +138,22 @@ This extension contributes the following settings:
         "--context-dir",
         "\"$contextDir\"",
         "--namespace",
-        "\"$namespace\"",
-        "--no-color",
-        "--json"
+        "\"$namespace\""
+      ],
+      "generateERD": [
+        "dotnet",
+        "ef",
+        "dbcontext",
+        "scaffold",
+        "\"$connectionString\"",
+        "\"$provider\"",
+        "--context",
+        "\"$context\"",
+        "--project",
+        "\"$project\"",
+        "--output-dir",
+        "\"$outputDir\"",
+        "--use-database-names"
       ]
     }
   }

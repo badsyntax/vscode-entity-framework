@@ -28,32 +28,37 @@ public class BloggingContext : DbContext
     protected override void OnModelCreating(ModelBuilder builder)
     {
         var typeAlias = new Dictionary<Type, string>
-{
-    { typeof(bool), "bool" },
-    { typeof(byte), "byte" },
-    { typeof(char), "char" },
-    { typeof(decimal), "decimal" },
-    { typeof(double), "double" },
-    { typeof(float), "float" },
-    { typeof(int), "int" },
-    { typeof(long), "int" },
-    { typeof(object), "object" },
-    { typeof(sbyte), "sbyte" },
-    { typeof(short), "short" },
-    { typeof(string), "string" },
-    { typeof(uint), "uint" },
-    { typeof(ulong), "ulong" },
-    // Yes, this is an odd one.  Technically it's a type though.
-    { typeof(void), "void" }
-};
+        {
+            { typeof(bool), "boolean" },
+            { typeof(byte), "byte" },
+            { typeof(char), "char" },
+            { typeof(decimal), "decimal" },
+            { typeof(double), "double" },
+            { typeof(float), "float" },
+            { typeof(int), "integer" },
+            { typeof(long), "long" },
+            { typeof(object), "object" },
+            { typeof(sbyte), "sbyte" },
+            { typeof(short), "integer" },
+            { typeof(string), "string" },
+            { typeof(uint), "uint" },
+            { typeof(ulong), "long" },
+        };
 
         foreach (var entityType in builder.Model.GetEntityTypes())
-    {
-foreach (var property in entityType.GetProperties().OrderBy(p => p.GetColumnOrder() ?? -1))
-    {
-        Console.WriteLine(property.ClrType.GetType);
-    }
-    }
+        {
+            foreach (var property in entityType.GetProperties().OrderBy(p => p.GetColumnOrder() ?? -1))
+            {
+                // property.ClrType.Name
+                // var isNullable = property.IsNullable;
+                // if (isNullable) {
+                // Console.WriteLine(property.PropertyInfo.PropertyType);
+
+                // }
+                // var dbType = typeAlias[property.ClrType];
+                // Console.WriteLine(property.PropertyInfo.PropertyType);
+            }
+        }
 
         builder.ApplyConfiguration(new TagEntityTypeConfiguration());
         builder.ApplyConfiguration(new PostEntityTypeConfiguration());
@@ -111,6 +116,8 @@ public class Post
     public List<Tag> Tags { get; } = new List<Tag>();
 
     public List<PostTag> PostTags { get; } = new List<PostTag>();
+
+    public int? Ranking { get; set; }
 }
 
 [Table("Tags")]
