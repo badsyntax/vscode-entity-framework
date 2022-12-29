@@ -145,6 +145,17 @@ This extension contributes the following settings:
 
   </details>
 
+- `entityframework.erDiagram.ignoreTables`: A list of tables to ignore from the ER Diagram
+  <details><summary>Example</summary>
+
+  ```json
+  {
+    "entityframework.erDiagram": {
+      "ignoreTables": [".*Tracking$"]
+    }
+  }
+  ```
+
 - `entityframework.env`: Custom environment variables
   <details><summary>Example</summary>
 

@@ -1,3 +1,4 @@
+<#@ template debug="false" hostspecific="true" language="C#" #>
 <#@ output extension=".md" #>
 <#@ assembly name="Microsoft.EntityFrameworkCore" #>
 <#@ assembly name="Microsoft.EntityFrameworkCore.Relational" #>
@@ -6,16 +7,40 @@
 <#@ parameter name="Options" type="Microsoft.EntityFrameworkCore.Scaffolding.ModelCodeGenerationOptions" #>
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="Microsoft.EntityFrameworkCore" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="System.Text.Json" #>
+<#@ import namespace="System.Collections.Generic" #>
+
 erDiagram
 <#
+    string json = System.IO.File.ReadAllText(Path.Combine(Host.ResolvePath(""), ".mermaid.config.json"));
+    var obj = JsonSerializer.Deserialize<Dictionary<string, List<string>>>(json);
+    var ignoreTables = obj["ignoreTables"];
+
     foreach (var entityType in Model.GetEntityTypes().Where(e => !e.IsSimpleManyToManyJoinEntityType()))
     {
+        var isIgnored = ignoreTables.Any(ignoreRegEx => Regex.IsMatch(entityType.Name, ignoreRegEx));
+        if (isIgnored) {
+            continue;
+        }
+
 #>
     <#= entityType.Name #> {
+<#
+        foreach (var property in entityType.GetProperties().OrderBy(p => p.GetColumnOrder() ?? -1))
+        {
+#>
+            integer <#= property.Name #>
+<#      } #>
     }
 <#
         foreach (var foreignKey in entityType.GetForeignKeys())
         {
+            var isFKIgnored = ignoreTables.Any(ignoreRegEx => Regex.IsMatch(foreignKey.PrincipalEntityType.Name, ignoreRegEx));
+            if (isFKIgnored) {
+                continue;
+            }
 #>
     <#= entityType.Name #> <#= foreignKey.IsUnique ? "|" : "}" #>o--<#= foreignKey.IsRequired ? "|" : "o" #>| <#= foreignKey.PrincipalEntityType.Name #> : <#= foreignKey.GetConstraintName() #>
 <#
@@ -23,6 +48,10 @@ erDiagram
 
         foreach (var skipNavigation in entityType.GetSkipNavigations().Where(n => n.IsLeftNavigation()))
         {
+            var isSkipNavIgnored = ignoreTables.Any(ignoreRegEx => Regex.IsMatch(skipNavigation.TargetEntityType.Name, ignoreRegEx));
+            if (isSkipNavIgnored) {
+                continue;
+            }
 #>
     <#= entityType.Name #> }o--o{ <#= skipNavigation.TargetEntityType.Name #> : <#= skipNavigation.JoinEntityType.Name #>
 <#

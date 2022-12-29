@@ -81,19 +81,29 @@ function getWebviewContent(
   const mainUri = getUri(webview, extensionUri, ['webview-ui', 'main.js']);
 
   return `<!DOCTYPE html>
-  <html lang="en">
+  <html lang="en" style="height:100%">
     <head>
       <meta charset="utf-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <script type="module" src="${toolkitUri}"></script>
       <script type="module" src="${mainUri}"></script>
+      <script src="https://cdn.jsdelivr.net/npm/d3@7.8.0/dist/d3.min.js"></script>
+      <style type="text/css">
+      .mermaid svg {
+        height: 100%;
+        width: 100%;
+        max-width: 100% !important;
+      }
+      </style>
     </head>
-    <body>
-      <h1>${dbContext} Entity Relationships</h1>
-      <vscode-button id="export-svg-button">Export SVG</vscode-button>
-      <pre class="mermaid" id="mermaid" style="text-align:center">
-      ${mermaidContent}
-      </pre>
+    <body style="height:100%">
+      <div style="display:flex;height:100%;flex-direction:column">
+        <h1>${dbContext} Entity Relationships</h1>
+        <div><vscode-button id="export-svg-button">Export SVG</vscode-button></div>
+        <pre class="mermaid" id="mermaid" style="text-align:center;overflow:hidden;flex-grow:1">
+        ${mermaidContent}
+        </pre>
+      </div>
       <script type="module">
         import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@9/dist/mermaid.esm.min.mjs';
         mermaid.initialize({ startOnLoad: true, theme: '${mermaidTheme}' });

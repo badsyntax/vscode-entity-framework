@@ -38,3 +38,15 @@ export function getCommandsConfig() {
       scaffold: [],
     });
 }
+
+type ERDiagramConfig = {
+  ignoreTables: string[];
+};
+
+export function getERDConfig() {
+  return vscode.workspace
+    .getConfiguration(EXTENSION_NAMESPACE)
+    .get<ERDiagramConfig>('erDiagram', {
+      ignoreTables: [],
+    });
+}

@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 
 import { CLI } from '../cli/CLI';
-import { getCommandsConfig } from '../config/config';
+import { getCommandsConfig, getERDConfig } from '../config/config';
 import type { TerminalProvider } from '../terminal/TerminalProvider';
 import { TerminalAction } from './TerminalAction';
 import path from 'path';
@@ -20,6 +20,7 @@ import type { DbContextWebViewProvider } from '../util/DbContextWebViewProvider'
 const copyFile = util.promisify(fs.copyFile);
 const rename = util.promisify(fs.rename);
 const unlink = util.promisify(fs.unlink);
+const writeFile = util.promisify(fs.writeFile);
 
 export class GenerateERDAction extends TerminalAction {
   constructor(
@@ -71,6 +72,10 @@ export class GenerateERDAction extends TerminalAction {
     const templatePath = path.join(codeTemplatesPath, 'DbContext.Mermaid.t4');
 
     const finalTemplatePath = path.join(codeTemplatesPath, 'DbContext.t4');
+    const finalConfigPath = path.join(
+      codeTemplatesPath,
+      '.mermaid.config.json',
+    );
     const finalTemplatePathBackup = path.join(
       codeTemplatesPath,
       '.DbContext.t4.bak',
@@ -111,6 +116,8 @@ export class GenerateERDAction extends TerminalAction {
       return '';
     }
 
+    const erDiagramConfig = getERDConfig();
+
     try {
       // Backup any existing DbContext template
       const finalTemplatePathExists = fs.existsSync(finalTemplatePath);
@@ -119,6 +126,11 @@ export class GenerateERDAction extends TerminalAction {
       }
 
       await copyFile(templatePath, finalTemplatePath);
+      await writeFile(
+        finalConfigPath,
+        JSON.stringify(erDiagramConfig, null, 2),
+      );
+
       const output = CLI.getDataFromStdOut(
         await super.run(
           {
@@ -145,9 +157,31 @@ export class GenerateERDAction extends TerminalAction {
       this.logger.error('Unable to generate ER diagram', (e as Error).message);
       return '';
     } finally {
-      await unlink(finalTemplatePath);
-      if (fs.existsSync(finalTemplatePathBackup)) {
-        await rename(finalTemplatePathBackup, finalTemplatePath);
+      try {
+        await unlink(finalTemplatePath);
+      } catch (e) {
+        this.logger.error(
+          'Unable to remove template file',
+          (e as Error).message,
+        );
+      }
+      try {
+        await unlink(finalConfigPath);
+      } catch (e) {
+        this.logger.error(
+          'Unable to remove template config file',
+          (e as Error).message,
+        );
+      }
+      try {
+        if (fs.existsSync(finalTemplatePathBackup)) {
+          await rename(finalTemplatePathBackup, finalTemplatePath);
+        }
+      } catch (e) {
+        this.logger.error(
+          'Unable to restore template backup file',
+          (e as Error).message,
+        );
       }
     }
   }

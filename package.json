@@ -263,6 +263,14 @@
           },
           "description": "Environment variables when interacting with Entity Framework."
         },
+        "entityframework.erDiagram": {
+          "type": "object",
+          "default": {
+            "ignoreTables": [
+              ".*Tracking$"
+            ]
+          }
+        },
         "entityframework.commands": {
           "type": "object",
           "default": {

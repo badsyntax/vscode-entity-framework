@@ -6,7 +6,7 @@ import { TerminalColors } from '../terminal/TerminalColors';
 import type { Logger } from '../util/Logger';
 
 const NEWLINE_SEPARATOR = /\r\n|\r|\n/;
-const OUTPUT_PREFIX = /^([a-z]+:    )/;
+const OUTPUT_PREFIX = /^([a-z]+:\s+)/;
 
 export type ExecOpts = {
   cmdArgs: string[];
@@ -71,6 +71,12 @@ export class CLI {
         if (line.startsWith('warn:')) {
           return (
             line.replace(OUTPUT_PREFIX, `$1${TerminalColors.yellow}`) +
+            TerminalColors.reset
+          );
+        }
+        if (line.startsWith('error:')) {
+          return (
+            line.replace(OUTPUT_PREFIX, `$1${TerminalColors.red}`) +
             TerminalColors.reset
           );
         }

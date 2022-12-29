@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+namespace ExampleAPI.Context;
 
 public class BloggingContext : DbContext
 {
@@ -27,6 +27,34 @@ public class BloggingContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        var typeAlias = new Dictionary<Type, string>
+{
+    { typeof(bool), "bool" },
+    { typeof(byte), "byte" },
+    { typeof(char), "char" },
+    { typeof(decimal), "decimal" },
+    { typeof(double), "double" },
+    { typeof(float), "float" },
+    { typeof(int), "int" },
+    { typeof(long), "int" },
+    { typeof(object), "object" },
+    { typeof(sbyte), "sbyte" },
+    { typeof(short), "short" },
+    { typeof(string), "string" },
+    { typeof(uint), "uint" },
+    { typeof(ulong), "ulong" },
+    // Yes, this is an odd one.  Technically it's a type though.
+    { typeof(void), "void" }
+};
+
+        foreach (var entityType in builder.Model.GetEntityTypes())
+    {
+foreach (var property in entityType.GetProperties().OrderBy(p => p.GetColumnOrder() ?? -1))
+    {
+        Console.WriteLine(property.ClrType.GetType);
+    }
+    }
+
         builder.ApplyConfiguration(new TagEntityTypeConfiguration());
         builder.ApplyConfiguration(new PostEntityTypeConfiguration());
     }
