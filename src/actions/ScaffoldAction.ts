@@ -92,38 +92,46 @@ export class ScaffoldAction extends TerminalAction {
     if (!context || !connectionString || !provider || !outputDir) {
       return '';
     }
-    const output = JSON.parse(
-      CLI.getDataFromStdOut(
-        await super.run(
-          {
-            ...this.params,
-            context,
-            connectionString,
-            provider,
-            outputDir,
-            contextDir,
-            namespace,
-          },
-          {
-            asJson: true,
-          },
-        ),
-      ),
-    ) as ScaffoldResult;
+    return vscode.window.withProgress(
+      {
+        title: 'Scaffolding...',
+        location: vscode.ProgressLocation.Window,
+      },
+      async () => {
+        const output = JSON.parse(
+          CLI.getDataFromStdOut(
+            await super.run(
+              {
+                ...this.params,
+                context,
+                connectionString,
+                provider,
+                outputDir,
+                contextDir,
+                namespace,
+              },
+              {
+                asJson: true,
+              },
+            ),
+          ),
+        ) as ScaffoldResult;
 
-    const uri = vscode.Uri.file(output.contextFile);
-    const doc = await vscode.workspace.openTextDocument(uri);
-    await vscode.window.showTextDocument(doc);
+        const uri = vscode.Uri.file(output.contextFile);
+        const doc = await vscode.workspace.openTextDocument(uri);
+        await vscode.window.showTextDocument(doc);
 
-    const cacheId = ProjectTreeItem.getCacheId(
-      this.projectFile.workspaceRoot,
-      this.projectFile.name,
+        const cacheId = ProjectTreeItem.getCacheId(
+          this.projectFile.workspaceRoot,
+          this.projectFile.name,
+        );
+        projectsCache.clear(cacheId);
+        await vscode.commands.executeCommand(
+          CommandProvider.getCommandName(RefreshTreeCommand.commandName),
+          false,
+        );
+        return '';
+      },
     );
-    projectsCache.clear(cacheId);
-    await vscode.commands.executeCommand(
-      CommandProvider.getCommandName(RefreshTreeCommand.commandName),
-      false,
-    );
-    return '';
   }
 }

@@ -118,71 +118,82 @@ export class GenerateERDAction extends TerminalAction {
 
     const erDiagramConfig = getERDConfig();
 
-    try {
-      // Backup any existing DbContext template
-      const finalTemplatePathExists = fs.existsSync(finalTemplatePath);
-      if (finalTemplatePathExists) {
-        await rename(finalTemplatePath, finalTemplatePathBackup);
-      }
+    return vscode.window.withProgress(
+      {
+        title: 'Generating diagram...',
+        location: vscode.ProgressLocation.Window,
+      },
+      async () => {
+        try {
+          // Backup any existing DbContext template
+          const finalTemplatePathExists = fs.existsSync(finalTemplatePath);
+          if (finalTemplatePathExists) {
+            await rename(finalTemplatePath, finalTemplatePathBackup);
+          }
 
-      await copyFile(templatePath, finalTemplatePath);
-      await writeFile(
-        finalConfigPath,
-        JSON.stringify(erDiagramConfig, null, 2),
-      );
+          await copyFile(templatePath, finalTemplatePath);
+          await writeFile(
+            finalConfigPath,
+            JSON.stringify(erDiagramConfig, null, 2),
+          );
 
-      const output = CLI.getDataFromStdOut(
-        await super.run(
-          {
-            ...this.params,
-            connectionString,
-            provider,
-            outputDir: this.outputDir,
-          },
-          {
-            asJson: true,
-            removeDataFromOutput: true,
-          },
-        ),
-      );
+          const output = CLI.getDataFromStdOut(
+            await super.run(
+              {
+                ...this.params,
+                connectionString,
+                provider,
+                outputDir: this.outputDir,
+              },
+              {
+                asJson: true,
+                removeDataFromOutput: true,
+              },
+            ),
+          );
 
-      const result = JSON.parse(output) as ScaffoldResult;
+          const result = JSON.parse(output) as ScaffoldResult;
 
-      const fileContents = fs.readFileSync(result.contextFile, 'utf-8');
+          const fileContents = fs.readFileSync(result.contextFile, 'utf-8');
 
-      this.dbContextWebViewProvider.render(this.dbContext, fileContents);
+          this.dbContextWebViewProvider.render(this.dbContext, fileContents);
 
-      return output;
-    } catch (e) {
-      this.logger.error('Unable to generate ER diagram', (e as Error).message);
-      return '';
-    } finally {
-      try {
-        await unlink(finalTemplatePath);
-      } catch (e) {
-        this.logger.error(
-          'Unable to remove template file',
-          (e as Error).message,
-        );
-      }
-      try {
-        await unlink(finalConfigPath);
-      } catch (e) {
-        this.logger.error(
-          'Unable to remove template config file',
-          (e as Error).message,
-        );
-      }
-      try {
-        if (fs.existsSync(finalTemplatePathBackup)) {
-          await rename(finalTemplatePathBackup, finalTemplatePath);
+          return output;
+        } catch (e) {
+          this.logger.error(
+            'Unable to generate ER diagram',
+            (e as Error).message,
+          );
+          return '';
+        } finally {
+          try {
+            await unlink(finalTemplatePath);
+          } catch (e) {
+            this.logger.error(
+              'Unable to remove template file',
+              (e as Error).message,
+            );
+          }
+          try {
+            await unlink(finalConfigPath);
+          } catch (e) {
+            this.logger.error(
+              'Unable to remove template config file',
+              (e as Error).message,
+            );
+          }
+          try {
+            if (fs.existsSync(finalTemplatePathBackup)) {
+              await rename(finalTemplatePathBackup, finalTemplatePath);
+            }
+          } catch (e) {
+            this.logger.error(
+              'Unable to restore template backup file',
+              (e as Error).message,
+            );
+          }
         }
-      } catch (e) {
-        this.logger.error(
-          'Unable to restore template backup file',
-          (e as Error).message,
-        );
-      }
-    }
+      },
+    );
   }
 }

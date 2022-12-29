@@ -30,20 +30,28 @@ export class RunMigrationAction extends TerminalAction {
   }
 
   public async run(): Promise<string> {
-    const output = await super.run();
+    return vscode.window.withProgress(
+      {
+        title: 'Running Migration...',
+        location: vscode.ProgressLocation.Window,
+      },
+      async () => {
+        const output = await super.run();
 
-    const cacheId = DbContextTreeItem.getCacheId(
-      this.workspaceRoot,
-      this.project,
-      this.dbContext,
+        const cacheId = DbContextTreeItem.getCacheId(
+          this.workspaceRoot,
+          this.project,
+          this.dbContext,
+        );
+        dbContextsCache.clear(cacheId);
+
+        await vscode.commands.executeCommand(
+          CommandProvider.getCommandName(RefreshTreeCommand.commandName),
+          false,
+        );
+
+        return output;
+      },
     );
-    dbContextsCache.clear(cacheId);
-
-    await vscode.commands.executeCommand(
-      CommandProvider.getCommandName(RefreshTreeCommand.commandName),
-      false,
-    );
-
-    return output;
   }
 }
