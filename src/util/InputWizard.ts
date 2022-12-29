@@ -11,6 +11,7 @@ export class InputWizard {
     for (const input of inputs) {
       const inputVal = await vscode.window.showInputBox({
         ...input.options,
+        ignoreFocusOut: true,
         title: input.required
           ? input.options.title
           : `${input.options.title} (Optional)`,

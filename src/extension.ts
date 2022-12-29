@@ -8,7 +8,6 @@ import { TextDocumentProvider } from './util/TextDocumentProvider';
 import { ProjectFilesProvider } from './solution/ProjectFilesProvider';
 import { Logger } from './util/Logger';
 import { CLI } from './cli/CLI';
-import { DbContextWebViewProvider } from './util/DbContextWebViewProvider';
 
 export async function activate(context: vscode.ExtensionContext) {
   const logger = new Logger();
@@ -19,9 +18,6 @@ export async function activate(context: vscode.ExtensionContext) {
 
   const cli = new CLI(logger);
   const textDocumentProvider = new TextDocumentProvider();
-  const dbContextWebViewProvider = new DbContextWebViewProvider(
-    context.extensionUri,
-  );
   const migrationTreeItemDecorationProvider =
     new MigrationTreeItemDecorationProvider();
   const treeDataProvider = new TreeDataProvider(logger, projectFiles, cli);
@@ -30,7 +26,7 @@ export async function activate(context: vscode.ExtensionContext) {
     logger,
     treeDataProvider,
     terminalProvider,
-    dbContextWebViewProvider,
+    context.extensionUri,
   );
 
   context.subscriptions.push(
@@ -39,7 +35,6 @@ export async function activate(context: vscode.ExtensionContext) {
     commandProvider,
     terminalProvider,
     textDocumentProvider,
-    dbContextWebViewProvider,
   );
 }
 

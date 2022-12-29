@@ -13,7 +13,7 @@ import { DEFAULT_EFCORE_PROVIDERS } from '../constants/constants';
 import { InputWizard } from '../util/InputWizard';
 import type { ScaffoldResult } from './ScaffoldAction';
 import type { Logger } from '../util/Logger';
-import type { DbContextWebViewProvider } from '../util/DbContextWebViewProvider';
+import { ERDiagramWebViewProvider } from '../util/ERDiagramWebViewProvider';
 
 // @ts-ignore
 import mermaidTemplate from '../templates/DbContext.Mermaid.t4';
@@ -27,10 +27,10 @@ export class GenerateERDAction extends TerminalAction {
   constructor(
     private readonly logger: Logger,
     terminalProvider: TerminalProvider,
-    private readonly dbContextWebViewProvider: DbContextWebViewProvider,
     private readonly dbContext: string,
     private readonly projectFile: ProjectFile,
     private readonly outputDir: string,
+    private readonly extensionUri: vscode.Uri,
   ) {
     super(
       terminalProvider,
@@ -151,7 +151,11 @@ export class GenerateERDAction extends TerminalAction {
 
           const fileContents = fs.readFileSync(result.contextFile, 'utf-8');
 
-          this.dbContextWebViewProvider.render(this.dbContext, fileContents);
+          ERDiagramWebViewProvider.render(
+            this.extensionUri,
+            this.dbContext,
+            fileContents,
+          );
 
           return output;
         } catch (e) {

@@ -32,6 +32,7 @@ export class AddMigrationAction extends TerminalAction {
     const migrationName = await vscode.window.showInputBox({
       title: 'Enter Migration Name',
       prompt: 'EG: MigrationName',
+      ignoreFocusOut: true,
     });
     if (!migrationName) {
       return '';

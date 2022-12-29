@@ -2,25 +2,19 @@ import * as vscode from 'vscode';
 import { EXTENSION_NAMESPACE } from '../constants/constants';
 import { Disposable } from './Disposable';
 
-export class DbContextWebViewProvider extends Disposable {
-  private panel: vscode.WebviewPanel | undefined;
-  constructor(private readonly extensionUri: vscode.Uri) {
-    super();
-  }
+export class ERDiagramWebViewProvider extends Disposable {
+  public static currentProvider: ERDiagramWebViewProvider | undefined;
 
-  public render(dbContext: string, mermaidContent: string) {
-    if (!this.panel) {
-      this.panel = vscode.window.createWebviewPanel(
-        `${EXTENSION_NAMESPACE}-dbcontext`,
-        'Entity Relationship Diagram',
-        vscode.ViewColumn.One,
-        {
-          enableScripts: true,
-        },
-      );
-      this.subscriptions.push(this.panel);
-      this.setWebviewMessageListener(this.panel.webview);
-    }
+  constructor(
+    private readonly panel: vscode.WebviewPanel,
+    private readonly extensionUri: vscode.Uri,
+    dbContext: string,
+    mermaidContent: string,
+  ) {
+    super();
+    this.setWebviewMessageListener(this.panel.webview);
+    this.subscriptions.push(this.panel);
+    this.panel.onDidDispose(() => this.dispose(), null, this.subscriptions);
 
     const activeTheme = vscode.window.activeColorTheme;
     const mermaidTheme =
@@ -33,6 +27,38 @@ export class DbContextWebViewProvider extends Disposable {
       mermaidContent,
       mermaidTheme,
     );
+  }
+
+  public dispose(): void {
+    super.dispose();
+    ERDiagramWebViewProvider.currentProvider = undefined;
+  }
+
+  public static render(
+    extensionUri: vscode.Uri,
+    dbContext: string,
+    mermaidContent: string,
+  ) {
+    if (ERDiagramWebViewProvider.currentProvider) {
+      ERDiagramWebViewProvider.currentProvider.panel.reveal(
+        vscode.ViewColumn.One,
+      );
+    } else {
+      const panel = vscode.window.createWebviewPanel(
+        `${EXTENSION_NAMESPACE}-dbcontext`,
+        'Entity Relationship Diagram',
+        vscode.ViewColumn.One,
+        {
+          enableScripts: true,
+        },
+      );
+      ERDiagramWebViewProvider.currentProvider = new ERDiagramWebViewProvider(
+        panel,
+        extensionUri,
+        dbContext,
+        mermaidContent,
+      );
+    }
   }
 
   private setWebviewMessageListener(webview: vscode.Webview) {

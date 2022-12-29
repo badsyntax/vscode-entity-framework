@@ -4,7 +4,6 @@ import type { TerminalProvider } from '../terminal/TerminalProvider';
 import type { DbContextTreeItem } from '../treeView/DbContextTreeItem';
 import type { MigrationTreeItem } from '../treeView/MigrationTreeItem';
 import type { TreeDataProvider } from '../treeView/TreeDataProvider';
-import type { DbContextWebViewProvider } from '../util/DbContextWebViewProvider';
 import { Disposable } from '../util/Disposable';
 import type { Logger } from '../util/Logger';
 import { AddMigrationCommand } from './AddMigrationCommand';
@@ -24,7 +23,7 @@ export class CommandProvider extends Disposable {
     logger: Logger,
     treeDataProvider: TreeDataProvider,
     terminalProvider: TerminalProvider,
-    dbContextWebViewProvider: DbContextWebViewProvider,
+    extensionUri: vscode.Uri,
   ) {
     super();
     this.registerCommand(
@@ -56,12 +55,7 @@ export class CommandProvider extends Disposable {
     this.registerCommand(
       GenerateERDCommand.commandName,
       (item?: DbContextTreeItem) =>
-        new GenerateERDCommand(
-          logger,
-          terminalProvider,
-          dbContextWebViewProvider,
-          item,
-        ),
+        new GenerateERDCommand(logger, terminalProvider, extensionUri, item),
     );
     this.registerCommand(
       RefreshTreeCommand.commandName,
