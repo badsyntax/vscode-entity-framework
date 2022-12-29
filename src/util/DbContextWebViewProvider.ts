@@ -6,6 +6,145 @@ export class DbContextWebViewProvider extends Disposable {
   private panel: vscode.WebviewPanel | undefined;
   constructor(private readonly extensionUri: vscode.Uri) {
     super();
+    // this.render(
+    //   'foo',
+    //   `erDiagram
+    // CountriesTracking {
+    // }
+    // Country {
+    // }
+    // DefectStatusCode {
+    // }
+    // DefectStatusCodesTracking {
+    // }
+    // EventType {
+    // }
+    // EventTypesTracking {
+    // }
+    // FuelType {
+    // }
+    // FuelTypesTracking {
+    // }
+    // FuelUnit {
+    // }
+    // FuelUnitsTracking {
+    // }
+    // JobCategoriesTracking {
+    // }
+    // JobCategory {
+    // }
+    // JobPartUnit {
+    // }
+    // JobPartUnitsTracking {
+    // }
+    // JobReason {
+    // }
+    // JobReasonsTracking {
+    // }
+    // JobServiceType {
+    // }
+    // JobServiceTypesTracking {
+    // }
+    // JobStatusCode {
+    // }
+    // JobStatusCodesTracking {
+    // }
+    // Locale {
+    // }
+    // LocalesTracking {
+    // }
+    // RecurrencePattern {
+    // }
+    // RecurrencePatternsTracking {
+    // }
+    // RecurrenceType {
+    // }
+    // RecurrenceTypesTracking {
+    // }
+    // ScopeInfo {
+    // }
+    // ScopeInfoClient {
+    // }
+    // ServiceContractStatus {
+    // }
+    // ServiceContractStatusesTracking {
+    // }
+    // SeveritiesTracking {
+    // }
+    // Severity {
+    // }
+    // SupplierType {
+    // }
+    // SupplierTypesTracking {
+    // }
+    // Theme {
+    // }
+    // ThemesTracking {
+    // }
+    // UserStatus {
+    // }
+    // UserStatusesTracking {
+    // }
+    // VehicleBodyType {
+    // }
+    // VehicleBodyTypesTracking {
+    // }
+    // VehicleDerivative {
+    // }
+    // VehicleDerivative }o--|| VehicleBodyType : FK_VehicleDerivatives_VehicleBodyTypes_BodyTypeId
+    // VehicleDerivative }o--o| FuelType : FK_VehicleDerivatives_FuelTypes_FuelType2Id
+    // VehicleDerivative }o--|| FuelType : FK_VehicleDerivatives_FuelTypes_FuelTypeId
+    // VehicleDerivative }o--|| VehicleTransmissionType : FK_VehicleDerivatives_VehicleTransmissionTypes_TransmissionTypeId
+    // VehicleDerivative }o--|| VehicleModel : FK_VehicleDerivatives_VehicleModels_VehicleModelId
+    // VehicleDerivative }o--|| VehicleType : FK_VehicleDerivatives_VehicleTypes_VehicleTypeId
+    // VehicleDerivativesTracking {
+    // }
+    // VehicleDiaryEventType {
+    // }
+    // VehicleDiaryEventTypesTracking {
+    // }
+    // VehicleDisposalMethod {
+    // }
+    // VehicleDisposalMethodsTracking {
+    // }
+    // VehicleDisposalReason {
+    // }
+    // VehicleDisposalReasonsTracking {
+    // }
+    // VehicleExpenseType {
+    // }
+    // VehicleExpenseTypesTracking {
+    // }
+    // VehicleManufacturer {
+    // }
+    // VehicleManufacturersTracking {
+    // }
+    // VehicleModel {
+    // }
+    // VehicleModel }o--|| VehicleManufacturer : FK_VehicleModels_VehicleManufacturers_ManufacturerId
+    // VehicleModelsTracking {
+    // }
+    // VehicleOdometerType {
+    // }
+    // VehicleOdometerTypesTracking {
+    // }
+    // VehicleStatus {
+    // }
+    // VehicleStatusesTracking {
+    // }
+    // VehicleSupplyMethod {
+    // }
+    // VehicleSupplyMethodsTracking {
+    // }
+    // VehicleTransmissionType {
+    // }
+    // VehicleTransmissionTypesTracking {
+    // }
+    // VehicleType {
+    // }
+    // VehicleTypesTracking {
+    // }`.trim(),
+    // );
   }
 
   public render(dbContext: string, mermaidContent: string) {
@@ -70,44 +209,36 @@ function getWebviewContent(
   mermaidContent: string,
   mermaidTheme: 'dark' | 'default',
 ) {
-  const toolkitUri = getUri(webview, extensionUri, [
-    'node_modules',
-    '@vscode',
-    'webview-ui-toolkit',
-    'dist',
-    'toolkit.js',
+  const stylesUri = getUri(webview, extensionUri, [
+    'webview-ui',
+    'build',
+    'assets',
+    'index.css',
+  ]);
+  const scriptUri = getUri(webview, extensionUri, [
+    'webview-ui',
+    'build',
+    'assets',
+    'index.js',
   ]);
 
-  const mainUri = getUri(webview, extensionUri, ['webview-ui', 'main.js']);
-
-  return `<!DOCTYPE html>
-  <html lang="en" style="height:100%">
-    <head>
-      <meta charset="utf-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <script type="module" src="${toolkitUri}"></script>
-      <script type="module" src="${mainUri}"></script>
-      <script src="https://cdn.jsdelivr.net/npm/d3@7.8.0/dist/d3.min.js"></script>
-      <style type="text/css">
-      .mermaid svg {
-        height: 100%;
-        width: 100%;
-        max-width: 100% !important;
-      }
-      </style>
-    </head>
-    <body style="height:100%">
-      <div style="display:flex;height:100%;flex-direction:column">
-        <h1>${dbContext} Entity Relationships</h1>
-        <div><vscode-button id="export-svg-button">Export SVG</vscode-button></div>
-        <pre class="mermaid" id="mermaid" style="text-align:center;overflow:hidden;flex-grow:1">
-        ${mermaidContent}
-        </pre>
-      </div>
-      <script type="module">
-        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@9/dist/mermaid.esm.min.mjs';
-        mermaid.initialize({ startOnLoad: true, theme: '${mermaidTheme}' });
-      </script>
-    </body>
-  </html>`;
+  return /*html*/ `
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" type="text/css" href="${stylesUri}">
+        <title>ER Diagram</title>
+      </head>
+      <body>
+        <script>
+          window['mermaidContent'] = \`${mermaidContent}\`;
+          window['mermaidTheme'] = '${mermaidTheme}';
+        </script>
+        <div id="root"></div>
+        <script type="module" src="${scriptUri}"></script>
+      </body>
+    </html>
+   `;
 }

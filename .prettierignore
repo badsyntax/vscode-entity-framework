@@ -5,3 +5,4 @@ dist
 sample_dotnet
 .wdio-vscode-service
 out
+webview-ui

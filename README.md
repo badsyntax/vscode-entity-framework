@@ -15,7 +15,14 @@ A VS Code extension to manage Entity Framework migrations.
 - View `DbContext` information
 - [Scaffold](https://learn.microsoft.com/en-us/ef/core/cli/dotnet#dotnet-ef-dbcontext-scaffold) `DbContext` & entity types
 - Generate ER Diagram
-  - _(A [Mermaid](https://mermaid.js.org/) [`.t4`](https://learn.microsoft.com/en-us/ef/core/managing-schemas/scaffolding/templates) template will be installed into the project. It's suggested to add the template to source control.)_
+
+### ER Diagram
+
+This extension can generate an Entity Relationship Diagram from your DbContext using [Mermaid](https://mermaid.js.org/syntax/entityRelationshipDiagram.html).
+
+A `Mermaid` [`.t4`](https://learn.microsoft.com/en-us/ef/core/managing-schemas/scaffolding/templates) template will be installed into the project. You can ignore this file (by adding it to `.gitignore`), or add it to source control. The template file is used to generate the ER Diagram, feel free to customise it. If you delete it, it will be regenerated next time you generate an ER Diagram.
+
+_Note, you can filter tables from the ER Diagram with the `entityframework.erDiagram.ignoreTables` setting (see below)._
 
 ## Requirements
 

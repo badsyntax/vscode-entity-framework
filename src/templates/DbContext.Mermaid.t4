@@ -14,14 +14,14 @@
 
 erDiagram
 <#
-    string json = System.IO.File.ReadAllText(Path.Combine(Host.ResolvePath(""), ".mermaid.config.json"));
-    var obj = JsonSerializer.Deserialize<Dictionary<string, List<string>>>(json);
-    var ignoreTables = obj["ignoreTables"];
+    var json = File.ReadAllText(Path.Combine(Host.ResolvePath(""), ".mermaid.config.json"));
+    var config = JsonSerializer.Deserialize<Dictionary<string, List<string>>>(json);
+    var ignoreTables = config["ignoreTables"];
 
     foreach (var entityType in Model.GetEntityTypes().Where(e => !e.IsSimpleManyToManyJoinEntityType()))
     {
-        var isIgnored = ignoreTables.Any(ignoreRegEx => Regex.IsMatch(entityType.Name, ignoreRegEx));
-        if (isIgnored) {
+        var isTableIgnored = ignoreTables.Any(ignoreRegEx => Regex.IsMatch(entityType.Name, ignoreRegEx));
+        if (isTableIgnored) {
             continue;
         }
 
