@@ -1,4 +1,4 @@
-# Entity Framework Migrations
+# Entity Framework
 
 [![Build & Publish](https://github.com/badsyntax/vscode-entity-framework/actions/workflows/main.yml/badge.svg)](https://github.com/badsyntax/vscode-entity-framework/actions/workflows/main.yml)
 
@@ -26,7 +26,7 @@ A VS Code extension to manage Entity Framework migrations.
 
 A [`Mermaid`](https://mermaid.js.org/syntax/entityRelationshipDiagram.html) [`.t4`](https://learn.microsoft.com/en-us/ef/core/managing-schemas/scaffolding/templates) template will be installed into the project. You can ignore this file (by adding it to `.gitignore`), or add it to source control. The template file is used to generate the ER Diagram, feel free to customise it. If you delete it, it will be regenerated next time you generate an ER Diagram.
 
-<img src="./images/er-diagram.png" width="640" alt="Entity Framework Migrations" />
+<img src="./images/er-diagram.png" width="640" alt="Entity Framework ER Diagram" />
 
 ## Extension Settings
 

@@ -1,6 +1,6 @@
 {
   "name": "vscode-entity-framework",
-  "displayName": "Entity Framework Migrations",
+  "displayName": "Entity Framework",
   "description": "Manage Entity Framework migrations in VS Code",
   "version": "0.0.0",
   "engines": {

@@ -2,7 +2,7 @@ export const EXTENSION_NAMESPACE = 'entityframework';
 
 export const TERMINAL_NAME = 'dotnet ef';
 
-export const OUTPUT_CHANNEL_ID = 'Entity Framework Migrations';
+export const OUTPUT_CHANNEL_ID = 'Entity Framework';
 
 // https://learn.microsoft.com/en-us/ef/core/providers
 export const DEFAULT_EFCORE_PROVIDERS = [
