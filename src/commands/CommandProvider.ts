@@ -1,3 +1,4 @@
+import type { Project } from 'nuget-deps-tree';
 import * as vscode from 'vscode';
 import { EXTENSION_NAMESPACE } from '../constants/constants';
 import type { TerminalProvider } from '../terminal/TerminalProvider';
@@ -5,9 +6,11 @@ import type { DbContextTreeItem } from '../treeView/DbContextTreeItem';
 import type { MigrationTreeItem } from '../treeView/MigrationTreeItem';
 import type { TreeDataProvider } from '../treeView/TreeDataProvider';
 import { Disposable } from '../util/Disposable';
+import type { Logger } from '../util/Logger';
 import { AddMigrationCommand } from './AddMigrationCommand';
 import type { Command } from './Command';
 import { DBContextInfoCommand } from './DBContextInfoCommand';
+import { GenerateERDCommand } from './GenerateERDCommand';
 import { GenerateScriptCommand } from './GenerateScriptCommand';
 import { OpenMigrationFileCommand } from './OpenMigrationFileCommand';
 import { RefreshTreeCommand } from './RefreshTreeCommand';
@@ -18,8 +21,11 @@ import { UndoMigrationCommand } from './UndoMigrationCommand';
 
 export class CommandProvider extends Disposable {
   constructor(
+    logger: Logger,
     treeDataProvider: TreeDataProvider,
     terminalProvider: TerminalProvider,
+    extensionUri: vscode.Uri,
+    solutionProjects?: Project[],
   ) {
     super();
     this.registerCommand(
@@ -49,6 +55,17 @@ export class CommandProvider extends Disposable {
         new GenerateScriptCommand(terminalProvider, item),
     );
     this.registerCommand(
+      GenerateERDCommand.commandName,
+      (item?: DbContextTreeItem) =>
+        new GenerateERDCommand(
+          logger,
+          terminalProvider,
+          extensionUri,
+          item,
+          solutionProjects,
+        ),
+    );
+    this.registerCommand(
       RefreshTreeCommand.commandName,
       (clearCache: boolean) =>
         new RefreshTreeCommand(treeDataProvider, clearCache),
@@ -64,7 +81,8 @@ export class CommandProvider extends Disposable {
     );
     this.registerCommand(
       ScaffoldCommand.commandName,
-      (item?: DbContextTreeItem) => new ScaffoldCommand(terminalProvider, item),
+      (item?: DbContextTreeItem) =>
+        new ScaffoldCommand(terminalProvider, item, solutionProjects),
     );
   }
 

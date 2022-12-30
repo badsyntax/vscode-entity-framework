@@ -26,11 +26,26 @@ export class DBContextInfoCommandAction extends TerminalAction {
   }
 
   public async run() {
-    const output = CLI.getDataFromStdOut(await super.run());
-    const uri = vscode.Uri.parse(`${TextDocumentProvider.scheme}:${output}`);
-    const doc = await vscode.workspace.openTextDocument(uri);
-    await vscode.languages.setTextDocumentLanguage(doc, 'json');
-    await vscode.window.showTextDocument(doc, { preview: false });
-    return output;
+    return vscode.window.withProgress(
+      {
+        title: 'Getting DbContext Info...',
+        location: vscode.ProgressLocation.Window,
+      },
+      async () => {
+        const output = CLI.getDataFromStdOut(
+          await super.run(undefined, {
+            removeDataFromOutput: true,
+            asJson: true,
+          }),
+        );
+        const uri = vscode.Uri.parse(
+          `${TextDocumentProvider.scheme}:${output}`,
+        );
+        const doc = await vscode.workspace.openTextDocument(uri);
+        await vscode.languages.setTextDocumentLanguage(doc, 'json');
+        await vscode.window.showTextDocument(doc, { preview: false });
+        return output;
+      },
+    );
   }
 }

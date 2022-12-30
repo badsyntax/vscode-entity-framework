@@ -1,4 +1,4 @@
-import type { Project } from 'vs-parse';
+import type { Project } from 'nuget-deps-tree';
 
 export type ProjectFile = {
   name: string;

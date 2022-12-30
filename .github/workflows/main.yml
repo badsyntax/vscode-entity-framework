@@ -34,7 +34,16 @@ jobs:
         run: npm ci
       - name: Lint
         run: npm run lint
-      - name: Build
+      - name: Install webview-ui NPM Packages
+        run: npm ci
+        working-directory: ./webview-ui
+      - name: Lint webview-ui
+        run: npm run lint
+        working-directory: ./webview-ui
+      - name: Build webview-ui
+        run: npm run build
+        working-directory: ./webview-ui
+      - name: Package extension
         run: npm run package
       - name: Prepare test project
         run: |

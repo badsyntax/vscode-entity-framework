@@ -1,0 +1,6 @@
+{
+    "entityframework.erDiagram": {
+        "ignoreTables": [
+        ]
+    }
+}

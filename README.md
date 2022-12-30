@@ -6,6 +6,12 @@ A VS Code extension to manage Entity Framework migrations.
 
 <img src="./images/treeview-screenshot.png" width="460" alt="Entity Framework Migrations" />
 
+## Requirements
+
+- [dotnet sdk](https://dotnet.microsoft.com/download)
+- [efcore tools](https://learn.microsoft.com/en-us/ef/core/cli/dotnet)
+- [Microsoft.EntityFrameworkCore.Design](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Design) must be installed in one of the projects
+
 ## Features
 
 - List migrations by [`DbContext`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.dbcontext)
@@ -14,12 +20,13 @@ A VS Code extension to manage Entity Framework migrations.
 - Export `DbContext` as SQL script
 - View `DbContext` information
 - [Scaffold](https://learn.microsoft.com/en-us/ef/core/cli/dotnet#dotnet-ef-dbcontext-scaffold) `DbContext` & entity types
+- Generate ER Diagram (Requires EF Core 7+)
 
-## Requirements
+### ER Diagram
 
-- [dotnet sdk](https://dotnet.microsoft.com/download)
-- [efcore tools](https://learn.microsoft.com/en-us/ef/core/cli/dotnet)
-- [Microsoft.EntityFrameworkCore.Design](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Design) must be installed in one of the projects
+A [`Mermaid`](https://mermaid.js.org/syntax/entityRelationshipDiagram.html) [`.t4`](https://learn.microsoft.com/en-us/ef/core/managing-schemas/scaffolding/templates) template will be installed into the project. You can ignore this file (by adding it to `.gitignore`), or add it to source control. The template file is used to generate the ER Diagram, feel free to customise it. If you delete it, it will be regenerated next time you generate an ER Diagram.
+
+<img src="./images/er-diagram.png" width="640" alt="Entity Framework Migrations" />
 
 ## Extension Settings
 
@@ -89,9 +96,7 @@ This extension contributes the following settings:
         "--project",
         "\"$project\"",
         "--startup-project",
-        "\"$project\"",
-        "--no-color",
-        "--json"
+        "\"$project\""
       ],
       "listMigrations": [
         "dotnet",
@@ -103,9 +108,7 @@ This extension contributes the following settings:
         "--project",
         "\"$project\"",
         "--startup-project",
-        "\"$project\"",
-        "--no-color",
-        "--json"
+        "\"$project\""
       ],
       "dbContextInfo": [
         "dotnet",
@@ -117,9 +120,7 @@ This extension contributes the following settings:
         "--project",
         "\"$project\"",
         "--startup-project",
-        "\"$project\"",
-        "--no-color",
-        "--json"
+        "\"$project\""
       ],
       "scaffold": [
         "dotnet",
@@ -137,15 +138,39 @@ This extension contributes the following settings:
         "--context-dir",
         "\"$contextDir\"",
         "--namespace",
-        "\"$namespace\"",
-        "--no-color",
-        "--json"
+        "\"$namespace\""
+      ],
+      "generateERD": [
+        "dotnet",
+        "ef",
+        "dbcontext",
+        "scaffold",
+        "\"$connectionString\"",
+        "\"$provider\"",
+        "--context",
+        "\"$context\"",
+        "--project",
+        "\"$project\"",
+        "--output-dir",
+        "\"$outputDir\"",
+        "--use-database-names"
       ]
     }
   }
   ```
 
   </details>
+
+- `entityframework.erDiagram.ignoreTables`: A list of tables to ignore from the ER Diagram
+  <details><summary>Example</summary>
+
+  ```json
+  {
+    "entityframework.erDiagram": {
+      "ignoreTables": [".*Tracking$"]
+    }
+  }
+  ```
 
 - `entityframework.env`: Custom environment variables
   <details><summary>Example</summary>

@@ -1,3 +1,8 @@
+import type { ExecOpts } from '../cli/CLI';
+
 export interface IAction {
-  run(): Promise<string | void>;
+  run(
+    params?: { [key: string]: string },
+    execArgs?: Partial<ExecOpts>,
+  ): Promise<string | void>;
 }

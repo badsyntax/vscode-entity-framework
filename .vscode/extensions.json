@@ -3,6 +3,7 @@
     "dbaeumer.vscode-eslint",
     "amodio.tsl-problem-matcher",
     "esbenp.prettier-vscode",
-    "streetsidesoftware.code-spell-checker"
+    "streetsidesoftware.code-spell-checker",
+    "Tobermory.es6-string-html"
   ]
 }

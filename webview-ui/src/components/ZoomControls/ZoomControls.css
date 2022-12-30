@@ -1,0 +1,9 @@
+.zoom-controls {
+  position: absolute;
+  display: flex;
+  left: 20px;
+  bottom: 20px;
+  width: 120px;
+  flex-direction: column;
+  gap: 5px;
+}
