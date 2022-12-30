@@ -1,5 +1,5 @@
 {
-  "extends": ["plugin:prettier/recommended"],
+  "extends": ["plugin:react/recommended", "plugin:prettier/recommended"],
   "root": true,
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -7,9 +7,13 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
   "plugins": ["@typescript-eslint"],
   "rules": {
-    "@typescript-eslint/naming-convention": "warn",
     "@typescript-eslint/semi": "warn",
     "@typescript-eslint/consistent-type-imports": "error",
     "@typescript-eslint/no-unused-vars": [
@@ -20,7 +24,9 @@
     "curly": "warn",
     "eqeqeq": "warn",
     "no-throw-literal": "warn",
-    "semi": "off"
+    "semi": "off",
+    "no-var": "error",
+    "prefer-const": "error"
   },
   "ignorePatterns": ["vite.config.ts", "build"]
 }

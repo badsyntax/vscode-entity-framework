@@ -122,6 +122,7 @@ function getWebviewContent(
         <script>
           window['mermaidContent'] = \`${mermaidContent}\`;
           window['mermaidTheme'] = '${mermaidTheme}';
+          window['erDiagramTitle'] = '${dbContext} Entity Relationships';
         </script>
         <div id="root"></div>
         <script type="module" src="${scriptUri}"></script>

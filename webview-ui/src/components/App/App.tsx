@@ -1,11 +1,12 @@
-import { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import './App.css';
 
 import { VSCodeButton } from '@vscode/webview-ui-toolkit/react';
-import { Mermaid, MermaidAPI } from '../Mermaid/Mermaid';
+import type { MermaidAPI } from '../Mermaid/Mermaid';
+import { Mermaid } from '../Mermaid/Mermaid';
 import { ZoomControls } from '../ZoomControls/ZoomControls';
 
-function App() {
+export function App() {
   const mermaidApiRef = useRef<MermaidAPI>();
 
   const handleZoomIn = () => {
@@ -20,13 +21,31 @@ function App() {
     mermaidApiRef.current?.reset();
   };
 
+  const handleExportSvg = () => {
+    const vscode = acquireVsCodeApi();
+    // @ts-ignore
+    const svg = mermaidApiRef.current?.getSvg()?.node()?.outerHTML;
+    if (svg) {
+      vscode.postMessage({
+        command: 'exportSvg',
+        text: svg,
+      });
+    }
+  };
+
   return (
     <div className="App">
-      <h1>BloggingContext Entity Relationships</h1>
+      <h1>{(window as any).erDiagramTitle}</h1>
       <div>
-        <VSCodeButton appearance={'primary'}>Export SVG</VSCodeButton>
+        <VSCodeButton appearance={'primary'} onClick={handleExportSvg}>
+          Export SVG
+        </VSCodeButton>
       </div>
-      <Mermaid chart={(window as any).mermaidContent} theme={(window as any).mermaidTheme} mermaidRef={mermaidApiRef} />
+      <Mermaid
+        chart={(window as any).mermaidContent}
+        theme={(window as any).mermaidTheme}
+        mermaidRef={mermaidApiRef}
+      />
       <ZoomControls
         onZoomIn={handleZoomIn}
         onReset={handleReset}
@@ -35,5 +54,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
