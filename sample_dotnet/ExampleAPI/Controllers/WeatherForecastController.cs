@@ -24,11 +24,6 @@ public class WeatherForecastController : ControllerBase
     [HttpGet(Name = "GetWeatherForecast")]
     public IEnumerable<WeatherForecast> Get()
     {
-        var posts = _context.Posts.ToList();
-        var myString = "Foo_One_TableId";
-
-        Console.WriteLine(myString.Split("/").Last());
-        var name = "Doo_Foo_ManuFacId";
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {
             Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),

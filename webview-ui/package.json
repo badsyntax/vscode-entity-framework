@@ -10,8 +10,8 @@
     "lint": "npm run lint:prettier && npm run lint:ts && npm run lint:eslint",
     "lint:ts": "tsc --noEmit",
     "lint:fix": "npm run lint:fix:prettier && npm run lint:eslint -- --fix",
-    "lint:prettier": "prettier --check \"**/*.{js,json,svg,md,yml}\"",
-    "lint:fix:prettier": "prettier --write '**/*.{js,json,svg,md,yml}'",
+    "lint:prettier": "prettier --check \"**/*.{js,json,svg,md,yml,css}\"",
+    "lint:fix:prettier": "prettier --write '**/*.{js,json,svg,md,yml,css}'",
     "lint:eslint": "eslint src --ext .ts"
   },
   "dependencies": {

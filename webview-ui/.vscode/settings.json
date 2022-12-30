@@ -8,11 +8,6 @@
     "dist": true
   },
   "typescript.tsc.autoDetect": "off",
-  "workbench.colorCustomizations": {
-    "activityBar.background": "#073430",
-    "titleBar.activeBackground": "#0A4843",
-    "titleBar.activeForeground": "#EEFDFC"
-  },
   "javascript.suggestionActions.enabled": false,
   "typescript.updateImportsOnFileMove.enabled": "always",
   "typescript.tsdk": "./node_modules/typescript/lib",
@@ -44,19 +39,9 @@
   "[xml]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "cSpell.language": "en-GB",
-  "cSpell.words": [
-    "ASPNETCORE",
-    "color",
-    "dbcontext",
-    "efcore",
-    "entityframework",
-    "NLCR",
-    "Pseudoterminal",
-    "richardwillis",
-    "Testrunner",
-    "waitfor",
-    "wdio",
-    "Xvfb"
-  ]
+  "cSpell.words": []
 }

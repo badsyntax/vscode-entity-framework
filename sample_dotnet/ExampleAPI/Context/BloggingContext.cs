@@ -27,39 +27,6 @@ public class BloggingContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        var typeAlias = new Dictionary<Type, string>
-        {
-            { typeof(bool), "boolean" },
-            { typeof(byte), "byte" },
-            { typeof(char), "char" },
-            { typeof(decimal), "decimal" },
-            { typeof(double), "double" },
-            { typeof(float), "float" },
-            { typeof(int), "integer" },
-            { typeof(long), "long" },
-            { typeof(object), "object" },
-            { typeof(sbyte), "sbyte" },
-            { typeof(short), "integer" },
-            { typeof(string), "string" },
-            { typeof(uint), "uint" },
-            { typeof(ulong), "long" },
-        };
-
-        foreach (var entityType in builder.Model.GetEntityTypes())
-        {
-            foreach (var property in entityType.GetProperties().OrderBy(p => p.GetColumnOrder() ?? -1))
-            {
-                // property.ClrType.Name
-                // var isNullable = property.IsNullable;
-                // if (isNullable) {
-                // Console.WriteLine(property.PropertyInfo.PropertyType);
-
-                // }
-                // var dbType = typeAlias[property.ClrType];
-                // Console.WriteLine(property.PropertyInfo.PropertyType);
-            }
-        }
-
         builder.ApplyConfiguration(new TagEntityTypeConfiguration());
         builder.ApplyConfiguration(new PostEntityTypeConfiguration());
     }
