@@ -6,6 +6,12 @@ A VS Code extension to manage Entity Framework migrations.
 
 <img src="./images/treeview-screenshot.png" width="460" alt="Entity Framework Migrations" />
 
+## Requirements
+
+- [dotnet sdk](https://dotnet.microsoft.com/download)
+- [efcore tools](https://learn.microsoft.com/en-us/ef/core/cli/dotnet)
+- [Microsoft.EntityFrameworkCore.Design](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Design) must be installed in one of the projects
+
 ## Features
 
 - List migrations by [`DbContext`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.dbcontext)
@@ -18,15 +24,9 @@ A VS Code extension to manage Entity Framework migrations.
 
 ### ER Diagram
 
-This extension can generate an Entity Relationship Diagram from your database using [Mermaid](https://mermaid.js.org/syntax/entityRelationshipDiagram.html).
+A [`Mermaid`](https://mermaid.js.org/syntax/entityRelationshipDiagram.html) [`.t4`](https://learn.microsoft.com/en-us/ef/core/managing-schemas/scaffolding/templates) template will be installed into the project. You can ignore this file (by adding it to `.gitignore`), or add it to source control. The template file is used to generate the ER Diagram, feel free to customise it. If you delete it, it will be regenerated next time you generate an ER Diagram.
 
-A `Mermaid` [`.t4`](https://learn.microsoft.com/en-us/ef/core/managing-schemas/scaffolding/templates) template will be installed into the project. You can ignore this file (by adding it to `.gitignore`), or add it to source control. The template file is used to generate the ER Diagram, feel free to customise it. If you delete it, it will be regenerated next time you generate an ER Diagram.
-
-## Requirements
-
-- [dotnet sdk](https://dotnet.microsoft.com/download)
-- [efcore tools](https://learn.microsoft.com/en-us/ef/core/cli/dotnet)
-- [Microsoft.EntityFrameworkCore.Design](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Design) must be installed in one of the projects
+<img src="./images/er-diagram.png" width="640" alt="Entity Framework Migrations" />
 
 ## Extension Settings
 
