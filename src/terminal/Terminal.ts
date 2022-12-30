@@ -76,6 +76,7 @@ export class Terminal implements vscode.Pseudoterminal {
   }
 
   public async handleInput(data: string): Promise<void> {
+    // FIXME: this doesn't work
     const SIGINT = '\x03';
     if (data === SIGINT) {
       this.cmd?.kill('SIGINT');

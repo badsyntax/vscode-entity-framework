@@ -434,6 +434,6 @@
     "webpack-cli": "^5.0.1"
   },
   "dependencies": {
-    "vs-parse": "^3.1.2"
+    "nuget-deps-tree": "^0.3.0"
   }
 }

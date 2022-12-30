@@ -7,6 +7,7 @@ import type { TerminalProvider } from '../terminal/TerminalProvider';
 import { type DbContextTreeItem } from '../treeView/DbContextTreeItem';
 import { Command } from './Command';
 import type { Logger } from '../util/Logger';
+import type { Project } from 'nuget-deps-tree';
 
 export class GenerateERDCommand extends Command {
   public static commandName = 'generateERD';
@@ -16,6 +17,7 @@ export class GenerateERDCommand extends Command {
     private readonly terminalProvider: TerminalProvider,
     private readonly extensionUri: vscode.Uri,
     private readonly item?: DbContextTreeItem,
+    private readonly solutionProjects?: Project[],
   ) {
     super();
   }
@@ -32,6 +34,7 @@ export class GenerateERDCommand extends Command {
       this.item.projectFile,
       outputDir,
       this.extensionUri,
+      this.solutionProjects,
     ).run();
   }
 }

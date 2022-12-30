@@ -1,19 +1,20 @@
 import * as vscode from 'vscode';
-
-import { CLI } from '../cli/CLI';
-import { getCommandsConfig, getERDConfig } from '../config/config';
-import type { TerminalProvider } from '../terminal/TerminalProvider';
-import { TerminalAction } from './TerminalAction';
+import type { Project } from 'nuget-deps-tree';
 import path from 'path';
 import fs from 'fs';
 import util from 'util';
 
-import type { ProjectFile } from '../types/ProjectFile';
+import { CLI } from '../cli/CLI';
+import { getCommandsConfig, getERDConfig } from '../config/config';
+import { TerminalAction } from './TerminalAction';
 import { DEFAULT_EFCORE_PROVIDERS } from '../constants/constants';
 import { InputWizard } from '../util/InputWizard';
+import { ERDiagramWebViewProvider } from '../util/ERDiagramWebViewProvider';
+import { ProjectFilesProvider } from '../solution/ProjectFilesProvider';
+import type { TerminalProvider } from '../terminal/TerminalProvider';
+import type { ProjectFile } from '../types/ProjectFile';
 import type { ScaffoldResult } from './ScaffoldAction';
 import type { Logger } from '../util/Logger';
-import { ERDiagramWebViewProvider } from '../util/ERDiagramWebViewProvider';
 
 // @ts-ignore
 import mermaidTemplate from '../templates/DbContext.Mermaid.t4';
@@ -31,6 +32,7 @@ export class GenerateERDAction extends TerminalAction {
     private readonly projectFile: ProjectFile,
     private readonly outputDir: string,
     private readonly extensionUri: vscode.Uri,
+    private readonly solutionProjects?: Project[],
   ) {
     super(
       terminalProvider,
@@ -85,13 +87,23 @@ export class GenerateERDAction extends TerminalAction {
       }
     }
 
-    const packages = this.projectFile.project.packages || [];
     const defaultProvider =
-      packages.find(pkg => DEFAULT_EFCORE_PROVIDERS.includes(pkg.name))?.name ||
-      '';
+      ProjectFilesProvider.getProjectPackage(
+        this.solutionProjects || [this.projectFile.project],
+        id => DEFAULT_EFCORE_PROVIDERS.includes(id),
+        true,
+      )?.id || '';
+
+    const providerItems = DEFAULT_EFCORE_PROVIDERS.map(
+      (provider): vscode.QuickPickItem => ({
+        label: provider,
+        kind: vscode.QuickPickItemKind.Default,
+      }),
+    );
 
     const [connectionString, provider] = await InputWizard.getInputs([
       {
+        type: 'input',
         options: {
           title: 'Connection String',
           value: '',
@@ -99,9 +111,11 @@ export class GenerateERDAction extends TerminalAction {
         required: true,
       },
       {
+        type: 'quickpick',
+        items: providerItems,
+        value: defaultProvider,
         options: {
           title: 'EFCore Provider',
-          value: defaultProvider,
         },
         required: true,
       },

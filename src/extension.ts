@@ -13,7 +13,8 @@ export async function activate(context: vscode.ExtensionContext) {
   const logger = new Logger();
   logger.info(`Extension activated`);
 
-  const projectFiles = await ProjectFilesProvider.getProjectFiles();
+  const { projectFiles, solutionProjects } =
+    await ProjectFilesProvider.getProjectFiles();
   logger.info(`Discovered ${projectFiles.length} compatible projects`);
 
   const cli = new CLI(logger);
@@ -27,6 +28,7 @@ export async function activate(context: vscode.ExtensionContext) {
     treeDataProvider,
     terminalProvider,
     context.extensionUri,
+    solutionProjects,
   );
 
   context.subscriptions.push(

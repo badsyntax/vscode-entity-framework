@@ -1,3 +1,4 @@
+import type { Project } from 'nuget-deps-tree';
 import * as vscode from 'vscode';
 import { EXTENSION_NAMESPACE } from '../constants/constants';
 import type { TerminalProvider } from '../terminal/TerminalProvider';
@@ -24,6 +25,7 @@ export class CommandProvider extends Disposable {
     treeDataProvider: TreeDataProvider,
     terminalProvider: TerminalProvider,
     extensionUri: vscode.Uri,
+    solutionProjects?: Project[],
   ) {
     super();
     this.registerCommand(
@@ -55,7 +57,13 @@ export class CommandProvider extends Disposable {
     this.registerCommand(
       GenerateERDCommand.commandName,
       (item?: DbContextTreeItem) =>
-        new GenerateERDCommand(logger, terminalProvider, extensionUri, item),
+        new GenerateERDCommand(
+          logger,
+          terminalProvider,
+          extensionUri,
+          item,
+          solutionProjects,
+        ),
     );
     this.registerCommand(
       RefreshTreeCommand.commandName,
@@ -73,7 +81,8 @@ export class CommandProvider extends Disposable {
     );
     this.registerCommand(
       ScaffoldCommand.commandName,
-      (item?: DbContextTreeItem) => new ScaffoldCommand(terminalProvider, item),
+      (item?: DbContextTreeItem) =>
+        new ScaffoldCommand(terminalProvider, item, solutionProjects),
     );
   }
 

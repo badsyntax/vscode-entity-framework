@@ -1,9 +1,11 @@
+import type { Project } from 'nuget-deps-tree';
 import * as vscode from 'vscode';
 import { CLI } from '../cli/CLI';
 import { CommandProvider } from '../commands/CommandProvider';
 import { RefreshTreeCommand } from '../commands/RefreshTreeCommand';
 import { getCommandsConfig } from '../config/config';
 import { DEFAULT_EFCORE_PROVIDERS } from '../constants/constants';
+import { ProjectFilesProvider } from '../solution/ProjectFilesProvider';
 
 import type { TerminalProvider } from '../terminal/TerminalProvider';
 import { projectsCache, ProjectTreeItem } from '../treeView/ProjectTreeItem';
@@ -21,6 +23,7 @@ export class ScaffoldAction extends TerminalAction {
   constructor(
     terminalProvider: TerminalProvider,
     private readonly projectFile: ProjectFile,
+    private readonly solutionProjects?: Project[],
   ) {
     super(
       terminalProvider,
@@ -33,10 +36,20 @@ export class ScaffoldAction extends TerminalAction {
   }
 
   public async run() {
-    const packages = this.projectFile.project.packages || [];
     const defaultProvider =
-      packages.find(pkg => DEFAULT_EFCORE_PROVIDERS.includes(pkg.name))?.name ||
-      '';
+      ProjectFilesProvider.getProjectPackage(
+        this.solutionProjects || [this.projectFile.project],
+        id => DEFAULT_EFCORE_PROVIDERS.includes(id),
+        true,
+      )?.id || '';
+
+    const providerItems = DEFAULT_EFCORE_PROVIDERS.map(
+      (provider): vscode.QuickPickItem => ({
+        label: provider,
+        kind: vscode.QuickPickItemKind.Default,
+      }),
+    );
+
     const [
       context,
       connectionString,
@@ -46,6 +59,7 @@ export class ScaffoldAction extends TerminalAction {
       namespace,
     ] = await InputWizard.getInputs([
       {
+        type: 'input',
         options: {
           title: 'Context Name',
           value: '',
@@ -53,6 +67,7 @@ export class ScaffoldAction extends TerminalAction {
         required: true,
       },
       {
+        type: 'input',
         options: {
           title: 'Connection String',
           value: '',
@@ -60,13 +75,16 @@ export class ScaffoldAction extends TerminalAction {
         required: true,
       },
       {
+        type: 'quickpick',
+        items: providerItems,
+        value: defaultProvider,
         options: {
           title: 'EFCore Provider',
-          value: defaultProvider,
         },
         required: true,
       },
       {
+        type: 'input',
         options: {
           title: 'Output Directory',
           value: 'Scaffold_Out/Models',
@@ -74,6 +92,7 @@ export class ScaffoldAction extends TerminalAction {
         required: true,
       },
       {
+        type: 'input',
         options: {
           title: 'Context Directory',
           value: 'Scaffold_Out/Context',
@@ -81,6 +100,7 @@ export class ScaffoldAction extends TerminalAction {
         required: false,
       },
       {
+        type: 'input',
         options: {
           title: 'Namespace',
           value: '',
