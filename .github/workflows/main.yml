@@ -71,6 +71,12 @@ jobs:
           node-version: 16
       - name: Install packages
         run: npm ci
+      - name: Install webview-ui NPM Packages
+        run: npm ci
+        working-directory: ./webview-ui
+      - name: Build webview-ui
+        run: npm run build
+        working-directory: ./webview-ui
       - name: Build & publish extension
         env:
           AZURE_TOKEN: ${{ secrets.AZURE_TOKEN }}
