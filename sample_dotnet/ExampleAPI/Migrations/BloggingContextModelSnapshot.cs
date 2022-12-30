@@ -30,9 +30,14 @@ namespace ExampleAPI.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<long>("UserId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Posts");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("ExampleAPI.Context.PostTag", b =>
@@ -47,7 +52,7 @@ namespace ExampleAPI.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("PostTags");
+                    b.ToTable("PostTags", (string)null);
                 });
 
             modelBuilder.Entity("ExampleAPI.Context.Tag", b =>
@@ -66,7 +71,33 @@ namespace ExampleAPI.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Tags");
+                    b.ToTable("Tags", (string)null);
+                });
+
+            modelBuilder.Entity("ExampleAPI.Context.User", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("ExampleAPI.Context.Post", b =>
+                {
+                    b.HasOne("ExampleAPI.Context.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ExampleAPI.Context.PostTag", b =>

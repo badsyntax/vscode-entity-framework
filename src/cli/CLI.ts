@@ -136,6 +136,7 @@ export class CLI {
         });
 
         cmd?.on('exit', async code => {
+          handlers?.onStdOut?.(`Exited with code ${code}\n`);
           const error = stderr || CLI.getErrorsFromStdOut(stdout);
           if (error || code !== 0) {
             const finalError = CLI.filterInfoFromOutput(error || stdout);

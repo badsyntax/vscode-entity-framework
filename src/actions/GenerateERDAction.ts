@@ -173,10 +173,8 @@ export class GenerateERDAction extends TerminalAction {
 
           return output;
         } catch (e) {
-          this.logger.error(
-            'Unable to generate ER diagram',
-            (e as Error).message,
-          );
+          const msg = `Unable to generate ER diagram: ${(e as Error).message}`;
+          this.logger.error(msg);
           return '';
         } finally {
           try {

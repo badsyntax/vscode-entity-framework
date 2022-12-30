@@ -71,6 +71,16 @@ public class Blog
     public List<Post> Posts { get; } = new();
 }
 
+[Table("Users")]
+public class User
+{
+    [Required]
+    public long Id { get; set; }
+
+    [Required]
+    public string Name { get; set; }
+}
+
 [Table("Posts")]
 public class Post
 {
@@ -79,6 +89,9 @@ public class Post
 
     [Required]
     public string Title { get; set; }
+
+    [Required]
+    public User User { get; set; }
 
     public List<Tag> Tags { get; } = new List<Tag>();
 
