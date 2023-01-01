@@ -13,23 +13,21 @@ export type ExecOpts = {
   cwd: string;
   removeDataFromOutput?: boolean;
   asJson?: boolean;
+  params?: { [key: string]: string };
   handlers?: {
     onStdOut?: (buffer: string) => void;
     onStdErr?: (buffer: string) => void;
   };
 };
 
+export type ExecProcess = {
+  cmd: ChildProcess;
+  output: Promise<string>;
+  args: string[];
+};
+
 export class CLI {
   constructor(private readonly logger: Logger) {}
-
-  public static getInterpolatedArgs(
-    args: string[],
-    params: { [key: string]: string },
-  ) {
-    return args.map(arg =>
-      arg.replace(/\$[\w]+/, a => params[a.slice(1)] || ''),
-    );
-  }
 
   public static getDataFromStdOut(output: string): string {
     return this.stripPrefixFromStdOut(
@@ -92,18 +90,32 @@ export class CLI {
       .join('\n');
   }
 
-  public exec({ cmdArgs, cwd, handlers, asJson }: ExecOpts): {
-    cmd: ChildProcess;
-    output: Promise<string>;
-  } {
-    this.logger.info(cmdArgs.join(' '));
+  private getInterpolatedArgs(
+    args: string[],
+    params: { [key: string]: string },
+  ) {
+    return args.map(arg =>
+      arg.replace(/\$[\w]+/, a => params[a.slice(1)] || ''),
+    );
+  }
+
+  public exec({
+    cmdArgs,
+    cwd,
+    handlers,
+    asJson,
+    params = {},
+  }: ExecOpts): ExecProcess {
+    const interpolatedArgs = this.getInterpolatedArgs(cmdArgs, params);
+
+    this.logger.info(interpolatedArgs.join(' '));
 
     const additionalArgs = ['--prefix-output'];
-    if (asJson && !cmdArgs.includes('--json')) {
+    if (asJson && !interpolatedArgs.includes('--json')) {
       additionalArgs.push('--json');
     }
 
-    const args = cmdArgs.concat(additionalArgs);
+    const args = interpolatedArgs.concat(additionalArgs);
 
     const cmd = spawn(args[0], args.slice(1), {
       cwd,
@@ -119,6 +131,7 @@ export class CLI {
 
     return {
       cmd,
+      args: interpolatedArgs,
       output: new Promise((res, rej) => {
         cmd.stdout.setEncoding('utf-8');
         cmd.stderr.setEncoding('utf-8');

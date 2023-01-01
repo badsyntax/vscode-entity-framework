@@ -49,14 +49,14 @@ export class DbContextTreeItem extends TreeItem {
     }
 
     try {
-      const args = CLI.getInterpolatedArgs(getCommandsConfig().listMigrations, {
-        context: this.label,
-        project: this.projectFile.name,
-      });
       const { output } = this.cli.exec({
-        cmdArgs: args,
+        cmdArgs: getCommandsConfig().listMigrations,
         cwd: this.workspaceRoot,
         asJson: true,
+        params: {
+          context: this.label,
+          project: this.projectFile.name,
+        },
       });
 
       const migrations = JSON.parse(

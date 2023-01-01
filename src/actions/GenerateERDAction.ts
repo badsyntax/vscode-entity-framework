@@ -7,7 +7,7 @@ import util from 'util';
 import { CLI } from '../cli/CLI';
 import { getCommandsConfig, getERDConfig } from '../config/config';
 import { TerminalAction } from './TerminalAction';
-import { DEFAULT_EFCORE_PROVIDERS } from '../constants/constants';
+import { DEFAULT_EFCORE_PROVIDERS, TREE_VIEW_ID } from '../constants/constants';
 import { InputWizard } from '../util/InputWizard';
 import { ERDiagramWebViewProvider } from '../util/ERDiagramWebViewProvider';
 import { ProjectFilesProvider } from '../solution/ProjectFilesProvider';
@@ -130,9 +130,13 @@ export class GenerateERDAction extends TerminalAction {
     return vscode.window.withProgress(
       {
         title: 'Generating diagram...',
-        location: vscode.ProgressLocation.Window,
+        location: { viewId: TREE_VIEW_ID },
+        cancellable: true,
       },
-      async () => {
+      async (_progress, cancellationToken) => {
+        cancellationToken.onCancellationRequested(() => {
+          this.cancel();
+        });
         try {
           // Backup any existing DbContext template
           const finalTemplatePathExists = fs.existsSync(finalTemplatePath);
@@ -145,21 +149,19 @@ export class GenerateERDAction extends TerminalAction {
             finalConfigPath,
             JSON.stringify(erDiagramConfig, null, 2),
           );
-
-          const output = CLI.getDataFromStdOut(
-            await super.run(
-              {
-                ...this.params,
-                connectionString,
-                provider,
-                outputDir: this.outputDir,
-              },
-              {
-                asJson: true,
-                removeDataFromOutput: true,
-              },
-            ),
+          await this.start(
+            {
+              ...this.params,
+              connectionString,
+              provider,
+              outputDir: this.outputDir,
+            },
+            {
+              asJson: true,
+              removeDataFromOutput: true,
+            },
           );
+          const output = CLI.getDataFromStdOut(await this.getOutput());
 
           const result = JSON.parse(output) as ScaffoldResult;
 

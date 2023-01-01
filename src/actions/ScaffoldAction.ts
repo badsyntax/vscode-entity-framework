@@ -4,7 +4,7 @@ import { CLI } from '../cli/CLI';
 import { CommandProvider } from '../commands/CommandProvider';
 import { RefreshTreeCommand } from '../commands/RefreshTreeCommand';
 import { getCommandsConfig } from '../config/config';
-import { DEFAULT_EFCORE_PROVIDERS } from '../constants/constants';
+import { DEFAULT_EFCORE_PROVIDERS, TREE_VIEW_ID } from '../constants/constants';
 import { ProjectFilesProvider } from '../solution/ProjectFilesProvider';
 
 import type { TerminalProvider } from '../terminal/TerminalProvider';
@@ -115,26 +115,29 @@ export class ScaffoldAction extends TerminalAction {
     return vscode.window.withProgress(
       {
         title: 'Scaffolding...',
-        location: vscode.ProgressLocation.Window,
+        location: { viewId: TREE_VIEW_ID },
+        cancellable: true,
       },
-      async () => {
+      async (_progress, cancellationToken) => {
+        cancellationToken.onCancellationRequested(() => {
+          this.cancel();
+        });
+        await this.start(
+          {
+            ...this.params,
+            context,
+            connectionString,
+            provider,
+            outputDir,
+            contextDir,
+            namespace,
+          },
+          {
+            asJson: true,
+          },
+        );
         const output = JSON.parse(
-          CLI.getDataFromStdOut(
-            await super.run(
-              {
-                ...this.params,
-                context,
-                connectionString,
-                provider,
-                outputDir,
-                contextDir,
-                namespace,
-              },
-              {
-                asJson: true,
-              },
-            ),
-          ),
+          CLI.getDataFromStdOut(await this.getOutput()),
         ) as ScaffoldResult;
 
         const uri = vscode.Uri.file(output.contextFile);
