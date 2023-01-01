@@ -161,9 +161,9 @@ export class GenerateERDAction extends TerminalAction {
               removeDataFromOutput: true,
             },
           );
-          const output = CLI.getDataFromStdOut(await this.getOutput());
-
-          const result = JSON.parse(output) as ScaffoldResult;
+          const output = await this.getOutput();
+          const data = CLI.getDataFromStdOut(await this.getOutput());
+          const result = JSON.parse(data) as ScaffoldResult;
 
           const fileContents = fs.readFileSync(result.contextFile, 'utf-8');
 

@@ -64,13 +64,12 @@ export class DbContextTreeItem extends TreeItem {
       ) as Migration[];
 
       const children = migrations.map(
-        (migration, index) =>
+        migration =>
           new MigrationTreeItem(
             migration.name,
             this.label,
             this.projectFile,
             migration,
-            index === migrations.length - 1,
           ),
       );
       dbContextsCache.set(this.cacheId, children);

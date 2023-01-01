@@ -6,7 +6,7 @@ import { TerminalColors } from '../terminal/TerminalColors';
 import type { Logger } from '../util/Logger';
 
 const NEWLINE_SEPARATOR = /\r\n|\r|\n/;
-const OUTPUT_PREFIX = /^([a-z]+:\s+)/;
+const OUTPUT_PREFIX = /^([a-z]+:([\s]{4}|[\s]{3}))/;
 
 export type ExecOpts = {
   cmdArgs: string[];

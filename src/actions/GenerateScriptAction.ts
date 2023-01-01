@@ -39,14 +39,13 @@ export class GenerateScriptAction extends TerminalAction {
         await this.start(undefined, {
           removeDataFromOutput: true,
         });
-        const output = CLI.getDataFromStdOut(await this.getOutput());
-        const uri = vscode.Uri.parse(
-          `${TextDocumentProvider.scheme}:${output}`,
-        );
+        const output = await this.getOutput();
+        const data = CLI.getDataFromStdOut(output);
+        const uri = vscode.Uri.parse(`${TextDocumentProvider.scheme}:${data}`);
         const doc = await vscode.workspace.openTextDocument(uri);
         await vscode.languages.setTextDocumentLanguage(doc, 'sql');
         await vscode.window.showTextDocument(doc, { preview: false });
-        return output;
+        return data;
       },
     );
   }

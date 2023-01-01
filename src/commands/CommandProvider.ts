@@ -14,7 +14,7 @@ import { GenerateERDCommand } from './GenerateERDCommand';
 import { GenerateScriptCommand } from './GenerateScriptCommand';
 import { OpenMigrationFileCommand } from './OpenMigrationFileCommand';
 import { RefreshTreeCommand } from './RefreshTreeCommand';
-import { RemoveMigrationCommand } from './RemoveMigrationCommand';
+import { RemoveMigrationsCommand } from './RemoveMigrationsCommand';
 import { RunMigrationCommand } from './RunMigrationCommand';
 import { ScaffoldCommand } from './ScaffoldCommand';
 import { UndoMigrationCommand } from './UndoMigrationCommand';
@@ -34,9 +34,9 @@ export class CommandProvider extends Disposable {
         new AddMigrationCommand(terminalProvider, item),
     );
     this.registerCommand(
-      RemoveMigrationCommand.commandName,
+      RemoveMigrationsCommand.commandName,
       (item?: MigrationTreeItem) => {
-        return new RemoveMigrationCommand(terminalProvider, item);
+        return new RemoveMigrationsCommand(terminalProvider, item);
       },
     );
     this.registerCommand(
