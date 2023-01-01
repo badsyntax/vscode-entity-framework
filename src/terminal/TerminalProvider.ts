@@ -8,7 +8,7 @@ export class TerminalProvider extends Disposable {
     super();
   }
 
-  public provideTerminal(): Terminal {
+  public async provideTerminal(): Promise<Terminal> {
     let existingTerminal = vscode.window.terminals.find(
       ({ name }) => name === TERMINAL_NAME,
     );
@@ -20,6 +20,9 @@ export class TerminalProvider extends Disposable {
       this.subscriptions.push(existingTerminal);
     }
     existingTerminal.show();
+    await vscode.commands.executeCommand(
+      'workbench.action.terminal.scrollToBottom',
+    );
     return this.terminal;
   }
 }

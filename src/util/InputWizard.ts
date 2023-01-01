@@ -58,7 +58,7 @@ class QuickPick extends Disposable {
 }
 
 export class InputWizard {
-  private static async getInputVal(step: Step) {
+  private static async getInputVal(step: Step): Promise<string> {
     let inputVal: string | undefined;
     if (step.type === 'input') {
       inputVal = await vscode.window.showInputBox({
@@ -73,19 +73,21 @@ export class InputWizard {
     }
     const isCancelled = inputVal === undefined;
     if (step.required && !isCancelled && !inputVal) {
-      await vscode.window.showErrorMessage('Invalid input');
+      throw new Error('Invalid input');
     }
-    return inputVal;
+    return inputVal || '';
   }
 
   public static async getInputs(steps: Step[]): Promise<string[]> {
     const inputValues: string[] = [];
-    for (const step of steps) {
-      const inputVal = await this.getInputVal(step);
-      if (!inputVal) {
-        return [];
+    try {
+      for (const step of steps) {
+        const inputVal = await this.getInputVal(step);
+        inputValues.push(inputVal);
       }
-      inputValues.push(inputVal);
+    } catch (e) {
+      await vscode.window.showErrorMessage('Invalid input');
+      return [];
     }
     return inputValues;
   }

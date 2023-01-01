@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { CommandProvider } from '../commands/CommandProvider';
 import { RefreshTreeCommand } from '../commands/RefreshTreeCommand';
 import { getCommandsConfig } from '../config/config';
+import { TREE_VIEW_ID } from '../constants/constants';
 import type { TerminalProvider } from '../terminal/TerminalProvider';
 import {
   dbContextsCache,
@@ -15,6 +16,7 @@ export class RemoveMigrationAction extends TerminalAction {
     private readonly workspaceRoot: string,
     private readonly dbContext: string,
     private readonly project: string,
+    private readonly refresh?: boolean,
   ) {
     super(
       terminalProvider,
@@ -31,20 +33,28 @@ export class RemoveMigrationAction extends TerminalAction {
     return vscode.window.withProgress(
       {
         title: 'Removing Migration...',
-        location: vscode.ProgressLocation.Window,
+        location: { viewId: TREE_VIEW_ID },
+        cancellable: true,
       },
-      async () => {
-        const output = await super.run();
+      async (_progress, cancellationToken) => {
+        cancellationToken.onCancellationRequested(() => {
+          this.cancel();
+        });
+        await this.start();
+        const output = await this.getOutput();
         const cacheId = DbContextTreeItem.getCacheId(
           this.workspaceRoot,
           this.project,
           this.dbContext,
         );
         dbContextsCache.clear(cacheId);
-        await vscode.commands.executeCommand(
-          CommandProvider.getCommandName(RefreshTreeCommand.commandName),
-          false,
-        );
+        const refresh = this.refresh || this.refresh === undefined;
+        if (refresh) {
+          await vscode.commands.executeCommand(
+            CommandProvider.getCommandName(RefreshTreeCommand.commandName),
+            false,
+          );
+        }
         return output;
       },
     );
