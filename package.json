@@ -119,7 +119,7 @@
       "explorer": [
         {
           "id": "entityframeworkTree",
-          "name": "EF Migrations"
+          "name": "Entity Framework"
         }
       ]
     },
