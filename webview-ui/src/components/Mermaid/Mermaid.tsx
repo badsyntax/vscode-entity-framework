@@ -32,7 +32,6 @@ export function Mermaid({
     mermaid.contentLoaded();
 
     const svg = d3.select('.mermaid svg');
-    debugger;
     svg.html('<g>' + svg.html() + '</g>');
 
     const inner = svg.select('g');

@@ -26,7 +26,8 @@
     "no-throw-literal": "warn",
     "semi": "off",
     "no-var": "error",
-    "prefer-const": "error"
+    "prefer-const": "error",
+    "no-debugger": "error"
   },
   "ignorePatterns": ["vite.config.ts", "build"]
 }
