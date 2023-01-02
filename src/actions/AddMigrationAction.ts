@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import { CommandProvider } from '../commands/CommandProvider';
 import { RefreshTreeCommand } from '../commands/RefreshTreeCommand';
 import { getCommandsConfig } from '../config/config';
+import { TREE_VIEW_ID } from '../constants/constants';
 
 import type { TerminalProvider } from '../terminal/TerminalProvider';
 import {
@@ -40,13 +41,20 @@ export class AddMigrationAction extends TerminalAction {
     return vscode.window.withProgress(
       {
         title: 'Adding Migration...',
-        location: vscode.ProgressLocation.Window,
+        location: { viewId: TREE_VIEW_ID },
+        cancellable: true,
       },
-      async () => {
-        const output = await super.run({
+      async (_progress, cancellationToken) => {
+        cancellationToken.onCancellationRequested(() => {
+          this.cancel();
+        });
+
+        await this.start({
           ...this.params,
           migrationName,
         });
+
+        const output = await this.getOutput();
         const cacheId = DbContextTreeItem.getCacheId(
           this.workspaceRoot,
           this.project,

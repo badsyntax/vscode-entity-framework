@@ -49,14 +49,14 @@ export class DbContextTreeItem extends TreeItem {
     }
 
     try {
-      const args = CLI.getInterpolatedArgs(getCommandsConfig().listMigrations, {
-        context: this.label,
-        project: this.projectFile.name,
-      });
       const { output } = this.cli.exec({
-        cmdArgs: args,
+        cmdArgs: getCommandsConfig().listMigrations,
         cwd: this.workspaceRoot,
         asJson: true,
+        params: {
+          context: this.label,
+          project: this.projectFile.name,
+        },
       });
 
       const migrations = JSON.parse(
@@ -64,13 +64,12 @@ export class DbContextTreeItem extends TreeItem {
       ) as Migration[];
 
       const children = migrations.map(
-        (migration, index) =>
+        migration =>
           new MigrationTreeItem(
             migration.name,
             this.label,
             this.projectFile,
             migration,
-            index === migrations.length - 1,
           ),
       );
       dbContextsCache.set(this.cacheId, children);

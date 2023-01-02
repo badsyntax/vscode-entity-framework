@@ -17,13 +17,13 @@ describe('Entity Framework Extension', function () {
           await Promise.all(
             viewControls.map(vc => vc.getTitle().then(t => t.toUpperCase())),
           )
-        ).includes('EF MIGRATIONS');
+        ).includes('ENTITY FRAMEWORK');
       });
 
       treeView = await workbench
         .getSideBar()
         .getContent()
-        .getSection('EF MIGRATIONS');
+        .getSection('ENTITY FRAMEWORK');
 
       await treeView!.expand();
 

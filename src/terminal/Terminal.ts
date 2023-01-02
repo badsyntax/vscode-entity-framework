@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import type { ChildProcess } from 'child_process';
 
 import { EventWaiter } from '../util/EventWaiter';
-import type { ExecOpts } from '../cli/CLI';
+import type { ExecOpts, ExecProcess } from '../cli/CLI';
 import { CLI } from '../cli/CLI';
 import { TerminalColors } from './TerminalColors';
 
@@ -52,17 +52,15 @@ export class Terminal implements vscode.Pseudoterminal {
     cmdArgs,
     cwd,
     removeDataFromOutput,
+    params,
     ...execOpts
-  }: ExecOpts): Promise<string> {
+  }: ExecOpts): Promise<ExecProcess> {
     await this.waitForOpen.wait();
 
-    this.write(
-      `${TerminalColors.blue}${cmdArgs.join(' ')}${TerminalColors.reset}\n`,
-    );
-
-    const { cmd, output } = this.cli.exec({
+    const cp = this.cli.exec({
       cmdArgs,
       cwd,
+      params,
       handlers: {
         onStdOut: this.handleCLIOutput(removeDataFromOutput),
         onStdErr: this.handleCLIOutput(removeDataFromOutput),
@@ -70,9 +68,13 @@ export class Terminal implements vscode.Pseudoterminal {
       ...execOpts,
     });
 
-    this.cmd = cmd;
+    this.write(
+      `${TerminalColors.blue}${cp.args.join(' ')}${TerminalColors.reset}\n`,
+    );
 
-    return await output;
+    this.cmd = cp.cmd;
+
+    return cp;
   }
 
   public async handleInput(data: string): Promise<void> {

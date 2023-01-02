@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 
 import { CLI } from '../cli/CLI';
 import { getCommandsConfig } from '../config/config';
+import { TREE_VIEW_ID } from '../constants/constants';
 
 import type { TerminalProvider } from '../terminal/TerminalProvider';
 import { TextDocumentProvider } from '../util/TextDocumentProvider';
@@ -29,15 +30,19 @@ export class DBContextInfoCommandAction extends TerminalAction {
     return vscode.window.withProgress(
       {
         title: 'Getting DbContext Info...',
-        location: vscode.ProgressLocation.Window,
+        location: { viewId: TREE_VIEW_ID },
+        cancellable: true,
       },
-      async () => {
-        const output = CLI.getDataFromStdOut(
-          await super.run(undefined, {
-            removeDataFromOutput: true,
-            asJson: true,
-          }),
-        );
+      async (_progress, cancellationToken) => {
+        cancellationToken.onCancellationRequested(() => {
+          this.cancel();
+        });
+
+        await this.start(undefined, {
+          removeDataFromOutput: true,
+          asJson: true,
+        });
+        const output = CLI.getDataFromStdOut(await this.getOutput());
         const uri = vscode.Uri.parse(
           `${TextDocumentProvider.scheme}:${output}`,
         );

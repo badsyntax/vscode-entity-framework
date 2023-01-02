@@ -4,6 +4,8 @@ export const TERMINAL_NAME = 'dotnet ef';
 
 export const OUTPUT_CHANNEL_ID = 'Entity Framework';
 
+export const TREE_VIEW_ID = 'entityframeworkTree';
+
 // https://learn.microsoft.com/en-us/ef/core/providers
 export const DEFAULT_EFCORE_PROVIDERS = [
   'Microsoft.EntityFrameworkCore.SqlServer',
