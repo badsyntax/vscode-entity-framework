@@ -3,12 +3,13 @@ import type { Migration } from '../types/Migration';
 import { getIconPath } from './iconProvider';
 import { MigrationTreeItem } from './MigrationTreeItem';
 import { TreeItem } from './TreeItem';
-import { CLI } from '../cli/CLI';
+import type { CLI } from '../cli/CLI';
 import { TreeItemCache } from './TreeItemCache';
 import { ContextValues } from './ContextValues';
 import type { ProjectFile } from '../types/ProjectFile';
 import { getCommandsConfig } from '../config/config';
 import type { Logger } from '../util/Logger';
+import { EFOutputParser } from '../cli/EFOutputParser';
 
 export const dbContextsCache = new TreeItemCache<MigrationTreeItem[]>();
 
@@ -58,10 +59,14 @@ export class DbContextTreeItem extends TreeItem {
           project: this.projectFile.name,
         },
       });
+      const stdOut = await output;
+      const { data, warnings } = EFOutputParser.parse(stdOut);
 
-      const migrations = JSON.parse(
-        CLI.getDataFromStdOut(await output),
-      ) as Migration[];
+      if (warnings) {
+        void vscode.window.showWarningMessage(warnings);
+      }
+
+      const migrations = JSON.parse(data) as Migration[];
 
       const children = migrations.map(
         migration =>

@@ -5,12 +5,13 @@ import { DbContextTreeItem } from './DbContextTreeItem';
 import { getIconPath } from './iconProvider';
 
 import { TreeItem } from './TreeItem';
-import { CLI } from '../cli/CLI';
+import type { CLI } from '../cli/CLI';
 import { TreeItemCache } from './TreeItemCache';
 import type { ProjectFile } from '../types/ProjectFile';
 import { getCommandsConfig } from '../config/config';
 import type { Logger } from '../util/Logger';
 import { ContextValues } from './ContextValues';
+import { EFOutputParser } from '../cli/EFOutputParser';
 
 export const projectsCache = new TreeItemCache<DbContextTreeItem[]>();
 
@@ -57,10 +58,14 @@ export class ProjectTreeItem extends TreeItem {
           project,
         },
       });
+      const stdOut = await output;
+      const { data, warnings } = EFOutputParser.parse(stdOut);
 
-      const dbContexts = JSON.parse(
-        CLI.getDataFromStdOut(await output),
-      ) as DbContext[];
+      if (warnings) {
+        void vscode.window.showWarningMessage(warnings);
+      }
+
+      const dbContexts = JSON.parse(data) as DbContext[];
 
       const children = dbContexts.map(
         dbContext =>

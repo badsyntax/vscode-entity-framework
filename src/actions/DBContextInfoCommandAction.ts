@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { CLI } from '../cli/CLI';
+import { EFOutputParser } from '../cli/EFOutputParser';
 import { getCommandsConfig } from '../config/config';
 import { TREE_VIEW_ID } from '../constants/constants';
 
@@ -42,14 +42,12 @@ export class DBContextInfoCommandAction extends TerminalAction {
           removeDataFromOutput: true,
           asJson: true,
         });
-        const output = CLI.getDataFromStdOut(await this.getOutput());
-        const uri = vscode.Uri.parse(
-          `${TextDocumentProvider.scheme}:${output}`,
-        );
+        const { data } = EFOutputParser.parse(await this.getOutput());
+        const uri = vscode.Uri.parse(`${TextDocumentProvider.scheme}:${data}`);
         const doc = await vscode.workspace.openTextDocument(uri);
         await vscode.languages.setTextDocumentLanguage(doc, 'json');
         await vscode.window.showTextDocument(doc, { preview: false });
-        return output;
+        return data;
       },
     );
   }

@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { CLI } from '../cli/CLI';
+import { EFOutputParser } from '../cli/EFOutputParser';
 import { getCommandsConfig } from '../config/config';
 import { TREE_VIEW_ID } from '../constants/constants';
 import type { TerminalProvider } from '../terminal/TerminalProvider';
@@ -40,7 +40,7 @@ export class GenerateScriptAction extends TerminalAction {
           removeDataFromOutput: true,
         });
         const output = await this.getOutput();
-        const data = CLI.getDataFromStdOut(output);
+        const { data } = EFOutputParser.parse(output);
         const uri = vscode.Uri.parse(`${TextDocumentProvider.scheme}:${data}`);
         const doc = await vscode.workspace.openTextDocument(uri);
         await vscode.languages.setTextDocumentLanguage(doc, 'sql');

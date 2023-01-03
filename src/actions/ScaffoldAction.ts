@@ -1,6 +1,6 @@
 import type { Project } from 'nuget-deps-tree';
 import * as vscode from 'vscode';
-import { CLI } from '../cli/CLI';
+import { EFOutputParser } from '../cli/EFOutputParser';
 import { CommandProvider } from '../commands/CommandProvider';
 import { RefreshTreeCommand } from '../commands/RefreshTreeCommand';
 import { getCommandsConfig } from '../config/config';
@@ -136,10 +136,9 @@ export class ScaffoldAction extends TerminalAction {
             asJson: true,
           },
         );
-        const output = JSON.parse(
-          CLI.getDataFromStdOut(await this.getOutput()),
-        ) as ScaffoldResult;
 
+        const { data } = EFOutputParser.parse(await this.getOutput());
+        const output = JSON.parse(data) as ScaffoldResult;
         const uri = vscode.Uri.file(output.contextFile);
         const doc = await vscode.workspace.openTextDocument(uri);
         await vscode.window.showTextDocument(doc);
