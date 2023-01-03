@@ -11,16 +11,9 @@ public class BloggingContext : DbContext
 
     public DbSet<Tag> Tags { get; set; }
 
-    public string DbPath { get; private set; }
-
-    public BloggingContext()
-    {
-        DbPath = $"blogging.db";
-    }
-
     protected override void OnConfiguring(DbContextOptionsBuilder options)
     {
-        options.UseSqlite($"Data Source={DbPath}");
+        options.UseSqlite($"Data Source=blogging.db");
         options.LogTo(Console.WriteLine);
         options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
     }

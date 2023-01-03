@@ -3,8 +3,9 @@ import type { ChildProcess } from 'child_process';
 
 import { EventWaiter } from '../util/EventWaiter';
 import type { ExecOpts, ExecProcess } from '../cli/CLI';
-import { CLI } from '../cli/CLI';
+import type { CLI } from '../cli/CLI';
 import { TerminalColors } from './TerminalColors';
+import { EFOutputParser } from '../cli/EFOutputParser';
 
 const NL = '\n';
 const CR = '\r';
@@ -39,11 +40,11 @@ export class Terminal implements vscode.Pseudoterminal {
       } else {
         let line = lineBuffer + buffer;
         lineBuffer = '';
-        line = CLI.colorizeOutput(line);
+        line = EFOutputParser.colorizeOutput(line);
         if (removeDataFromOutput) {
-          line = CLI.filterDataFromOutput(line);
+          line = EFOutputParser.filterDataFromOutput(line);
         }
-        this.write(CLI.stripPrefixFromStdOut(line));
+        this.write(EFOutputParser.stripPrefixFromStdOut(line));
       }
     };
   }

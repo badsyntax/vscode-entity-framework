@@ -4,7 +4,6 @@ import path from 'path';
 import fs from 'fs';
 import util from 'util';
 
-import { CLI } from '../cli/CLI';
 import { getCommandsConfig, getERDConfig } from '../config/config';
 import { TerminalAction } from './TerminalAction';
 import { DEFAULT_EFCORE_PROVIDERS, TREE_VIEW_ID } from '../constants/constants';
@@ -18,6 +17,7 @@ import type { Logger } from '../util/Logger';
 
 // @ts-ignore
 import mermaidTemplate from '../templates/DbContext.Mermaid.t4';
+import { EFOutputParser } from '../cli/EFOutputParser';
 
 const copyFile = util.promisify(fs.copyFile);
 const rename = util.promisify(fs.rename);
@@ -162,7 +162,7 @@ export class GenerateERDAction extends TerminalAction {
             },
           );
           const output = await this.getOutput();
-          const data = CLI.getDataFromStdOut(await this.getOutput());
+          const { data } = EFOutputParser.parse(output);
           const result = JSON.parse(data) as ScaffoldResult;
 
           const fileContents = fs.readFileSync(result.contextFile, 'utf-8');

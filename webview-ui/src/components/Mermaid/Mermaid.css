@@ -9,3 +9,33 @@
   width: 100%;
   max-width: 100% !important;
 }
+
+.no-entities {
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.no-entities-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+body.mermaid-has-entities .mermaid {
+  display: block;
+}
+
+body.mermaid-has-entities .no-entities {
+  display: none;
+}
+
+body.mermaid-has-no-entities .mermaid {
+  display: none;
+}
+
+body.mermaid-has-no-entities .no-entities {
+  display: flex;
+}
