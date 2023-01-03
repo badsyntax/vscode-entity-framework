@@ -48,9 +48,9 @@ export class EFOutputParser {
   }
 
   public static parse(output: string) {
-    let warnings = '';
-    let data = '';
-    let errors = '';
+    let warnings: string[] = [];
+    let data: string[] = [];
+    let errors: string[] = [];
     let matchedWarning = false;
     let matchedError = false;
 
@@ -72,18 +72,18 @@ export class EFOutputParser {
       const lineWithoutPrefix = line.replace(OUTPUT_PREFIX, '');
 
       if (matchedWarning) {
-        warnings += lineWithoutPrefix;
+        warnings.push(lineWithoutPrefix);
       } else if (matchedError) {
-        errors += lineWithoutPrefix;
+        errors.push(lineWithoutPrefix);
       } else if (matchedData) {
-        data += lineWithoutPrefix;
+        data.push(lineWithoutPrefix);
       }
     });
 
     return {
-      warnings,
-      errors,
-      data,
+      warnings: warnings.join('\n'),
+      errors: errors.join('\n'),
+      data: data.join('\n'),
     };
   }
 }
