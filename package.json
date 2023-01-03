@@ -76,7 +76,23 @@
       },
       {
         "command": "entityframework.refreshTree",
-        "title": "Refresh Migrations",
+        "title": "Refresh",
+        "icon": {
+          "light": "icons/refresh_light.svg",
+          "dark": "icons/refresh_dark.svg"
+        }
+      },
+      {
+        "command": "entityframework.refreshDbContextTree",
+        "title": "Refresh",
+        "icon": {
+          "light": "icons/refresh_light.svg",
+          "dark": "icons/refresh_dark.svg"
+        }
+      },
+      {
+        "command": "entityframework.refreshProjectTree",
+        "title": "Refresh",
         "icon": {
           "light": "icons/refresh_light.svg",
           "dark": "icons/refresh_dark.svg"
@@ -127,6 +143,14 @@
       "commandPalette": [
         {
           "command": "entityframework.refreshTree",
+          "when": "false"
+        },
+        {
+          "command": "entityframework.refreshProjectTree",
+          "when": "false"
+        },
+        {
+          "command": "entityframework.refreshDbContextTree",
           "when": "false"
         },
         {
@@ -212,33 +236,19 @@
         },
         {
           "command": "entityframework.generateScript",
-          "when": "viewItem == dbContext",
-          "group": "inline@3"
-        },
-        {
-          "command": "entityframework.generateScript",
-          "when": "viewItem == dbContext",
-          "group": "context@2"
+          "when": "viewItem == dbContext"
         },
         {
           "command": "entityframework.generateERD",
-          "when": "viewItem == dbContext",
-          "group": "inline@2"
-        },
-        {
-          "command": "entityframework.generateERD",
-          "when": "viewItem == dbContext",
-          "group": "context@3"
+          "when": "viewItem == dbContext"
         },
         {
           "command": "entityframework.dbContextInfo",
-          "when": "viewItem == dbContext",
-          "group": "inline@1"
+          "when": "viewItem == dbContext"
         },
         {
-          "command": "entityframework.dbContextInfo",
-          "when": "viewItem == dbContext",
-          "group": "context@4"
+          "command": "entityframework.refreshDbContextTree",
+          "when": "viewItem == dbContext"
         },
         {
           "command": "entityframework.scaffold",
@@ -249,6 +259,11 @@
           "command": "entityframework.scaffold",
           "when": "viewItem == project",
           "group": "context@1"
+        },
+        {
+          "command": "entityframework.refreshProjectTree",
+          "when": "viewItem == project",
+          "group": "context@2"
         }
       ]
     },

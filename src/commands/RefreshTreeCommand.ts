@@ -1,4 +1,4 @@
-import { clearTreeCache } from '../treeView/treeCache';
+import { RefreshTreeAction } from '../actions/RefreshTreeAction';
 import type { TreeDataProvider } from '../treeView/TreeDataProvider';
 import { Command } from './Command';
 
@@ -13,9 +13,6 @@ export class RefreshTreeCommand extends Command {
   }
 
   public async run() {
-    if (this.clearCache) {
-      clearTreeCache();
-    }
-    this.treeDataProvider.refresh();
+    await new RefreshTreeAction(this.treeDataProvider, this.clearCache).run();
   }
 }
