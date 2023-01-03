@@ -1,6 +1,7 @@
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import mermaid from 'mermaid';
 import * as d3 from 'd3';
+import { VscWarning } from 'react-icons/vsc';
 import './Mermaid.css';
 
 export type MermaidAPI = {
@@ -32,6 +33,20 @@ export function Mermaid({
     mermaid.contentLoaded();
 
     const svg = d3.select('.mermaid svg');
+    if (!svg.node()) {
+      return;
+    }
+
+    const hasEntities = !!document.querySelector(
+      '.mermaid svg g[id^="entity"]',
+    );
+
+    if (hasEntities) {
+      document.body.classList.add('mermaid-has-entities');
+    } else {
+      document.body.classList.add('mermaid-has-no-entities');
+    }
+
     svg.html('<g>' + svg.html() + '</g>');
 
     const inner = svg.select('g');
@@ -70,8 +85,15 @@ export function Mermaid({
   }));
 
   return (
-    <pre className="mermaid" id="mermaid">
-      {chart}
-    </pre>
+    <>
+      <div className="no-entities">
+        <h2 className="no-entities-header">
+          <VscWarning /> No Entities Were Generated
+        </h2>
+      </div>
+      <pre className="mermaid" id="mermaid">
+        {chart}
+      </pre>
+    </>
   );
 }

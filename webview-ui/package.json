@@ -19,7 +19,8 @@
     "d3": "^7.8.0",
     "mermaid": "^9.3.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.7.1"
   },
   "devDependencies": {
     "@types/d3": "^7.4.0",
