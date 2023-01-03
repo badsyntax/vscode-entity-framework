@@ -4,6 +4,7 @@ import { EXTENSION_NAMESPACE } from '../constants/constants';
 import type { TerminalProvider } from '../terminal/TerminalProvider';
 import type { DbContextTreeItem } from '../treeView/DbContextTreeItem';
 import type { MigrationTreeItem } from '../treeView/MigrationTreeItem';
+import type { ProjectTreeItem } from '../treeView/ProjectTreeItem';
 import type { TreeDataProvider } from '../treeView/TreeDataProvider';
 import { Disposable } from '../util/Disposable';
 import type { Logger } from '../util/Logger';
@@ -13,6 +14,8 @@ import { DBContextInfoCommand } from './DBContextInfoCommand';
 import { GenerateERDCommand } from './GenerateERDCommand';
 import { GenerateScriptCommand } from './GenerateScriptCommand';
 import { OpenMigrationFileCommand } from './OpenMigrationFileCommand';
+import { RefreshDbContextTreeCommand } from './RefreshDbContextTreeCommand';
+import { RefreshProjectTreeCommand } from './RefreshProjectTreeCommand';
 import { RefreshTreeCommand } from './RefreshTreeCommand';
 import { RemoveMigrationsCommand } from './RemoveMigrationsCommand';
 import { RunMigrationCommand } from './RunMigrationCommand';
@@ -69,6 +72,14 @@ export class CommandProvider extends Disposable {
       RefreshTreeCommand.commandName,
       (clearCache: boolean) =>
         new RefreshTreeCommand(treeDataProvider, clearCache),
+    );
+    this.registerCommand(
+      RefreshDbContextTreeCommand.commandName,
+      (item?: DbContextTreeItem) => new RefreshDbContextTreeCommand(item),
+    );
+    this.registerCommand(
+      RefreshProjectTreeCommand.commandName,
+      (item?: ProjectTreeItem) => new RefreshProjectTreeCommand(item),
     );
     this.registerCommand(
       OpenMigrationFileCommand.commandName,

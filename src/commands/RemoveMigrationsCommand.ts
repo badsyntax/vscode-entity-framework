@@ -28,7 +28,7 @@ export class RemoveMigrationsCommand extends Command {
         this.item.dbContext,
       ),
     );
-    const index = migrations?.indexOf(this.item) || -1;
+    const index = (migrations || []).indexOf(this.item);
     if (index === -1) {
       return;
     }
