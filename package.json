@@ -430,7 +430,7 @@
     "@types/node": "16.x",
     "@types/vscode": "1.64.0",
     "@typescript-eslint/eslint-plugin": "^5.47.1",
-    "@typescript-eslint/parser": "^5.47.1",
+    "@typescript-eslint/parser": "^5.48.0",
     "@vscode/vsce": "^2.16.0",
     "@wdio/cli": "^8.0.15",
     "@wdio/local-runner": "^8.0.15",
