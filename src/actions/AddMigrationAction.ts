@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 import { EFOutputParser } from '../cli/EFOutputParser';
 import { CommandProvider } from '../commands/CommandProvider';
-import { OpenMigrationFileCommand } from '../commands/OpenMigrationFileCommand';
 import { RefreshTreeCommand } from '../commands/RefreshTreeCommand';
 import { getCommandsConfig } from '../config/config';
 import { TREE_VIEW_ID } from '../constants/constants';
