@@ -1,5 +1,7 @@
 import * as vscode from 'vscode';
+import { EFOutputParser } from '../cli/EFOutputParser';
 import { CommandProvider } from '../commands/CommandProvider';
+import { OpenMigrationFileCommand } from '../commands/OpenMigrationFileCommand';
 import { RefreshTreeCommand } from '../commands/RefreshTreeCommand';
 import { getCommandsConfig } from '../config/config';
 import { TREE_VIEW_ID } from '../constants/constants';
@@ -52,10 +54,13 @@ export class AddMigrationAction extends TerminalAction {
           this.cancel();
         });
 
-        await this.start({
-          ...this.params,
-          migrationName,
-        });
+        await this.start(
+          {
+            ...this.params,
+            migrationName,
+          },
+          { asJson: true, removeDataFromOutput: true },
+        );
 
         const output = await this.getOutput();
         const cacheId = DbContextTreeItem.getCacheId(
@@ -64,6 +69,12 @@ export class AddMigrationAction extends TerminalAction {
           this.dbContext,
         );
         dbContextsCache.clear(cacheId);
+        const { data } = EFOutputParser.parse(output);
+        const parsedData = JSON.parse(data);
+        await vscode.commands.executeCommand(
+          'vscode.open',
+          vscode.Uri.file(parsedData.migrationFile),
+        );
         await vscode.commands.executeCommand(
           CommandProvider.getCommandName(RefreshTreeCommand.commandName),
           false,
