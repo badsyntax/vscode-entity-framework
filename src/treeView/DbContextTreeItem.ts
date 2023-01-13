@@ -82,7 +82,7 @@ export class DbContextTreeItem extends TreeItem {
     } catch (e) {
       const msg = `Unable to get migrations: ${(e as Error).message}`.trim();
       this.logger.error(msg);
-      await vscode.window.showErrorMessage(msg, 'OK');
+      void vscode.window.showErrorMessage(msg, 'OK');
       return [];
     }
   }

@@ -13,6 +13,7 @@ export class UndoMigrationCommand extends Command {
   constructor(
     private readonly terminalProvider: TerminalProvider,
     private readonly item?: MigrationTreeItem,
+    private readonly refresh?: boolean,
   ) {
     super();
   }
@@ -31,12 +32,13 @@ export class UndoMigrationCommand extends Command {
       const index = migrations.indexOf(this.item);
       const migrationId =
         index === 0 ? '0' : migrations[index - 1].migration.id;
-      return new RunMigrationAction(
+      return await new RunMigrationAction(
         this.terminalProvider,
         this.item.workspaceRoot,
         this.item.dbContext,
         this.item.projectFile.name,
         migrationId,
+        this.refresh,
       ).run();
     }
   }

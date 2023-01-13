@@ -17,6 +17,7 @@ A VS Code extension to manage Entity Framework migrations.
 - List migrations by [`DbContext`](https://learn.microsoft.com/en-us/dotnet/api/microsoft.entityframeworkcore.dbcontext)
 - Add / Remove / Run / Undo migrations
 - Show migration applied status
+- Reset (Squash) Migrations
 - Export `DbContext` as SQL script
 - View `DbContext` information
 - [Scaffold](https://learn.microsoft.com/en-us/ef/core/cli/dotnet#dotnet-ef-dbcontext-scaffold) `DbContext` & entity types

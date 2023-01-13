@@ -31,11 +31,17 @@ export class MigrationTreeItem extends TreeItem {
 
 function getMigrationContextValue(migration: Migration): string {
   const states: Array<
-    'can-apply' | 'can-undo' | 'can-remove' | 'applied' | 'not-applied'
+    | 'can-apply'
+    | 'can-undo'
+    | 'can-remove'
+    | 'applied'
+    | 'not-applied'
+    | 'can-reset'
   > = [];
   if (migration.applied) {
     states.push('applied');
     states.push('can-undo');
+    states.push('can-reset');
   } else {
     states.push('can-remove');
     states.push('can-apply');

@@ -51,6 +51,14 @@
         }
       },
       {
+        "command": "entityframework.resetMigrations",
+        "title": "Reset Migrations to Here",
+        "icon": {
+          "light": "icons/reply_light.svg",
+          "dark": "icons/reply_dark.svg"
+        }
+      },
+      {
         "command": "entityframework.dbContextInfo",
         "title": "Information",
         "icon": {
@@ -158,6 +166,10 @@
           "when": "false"
         },
         {
+          "command": "entityframework.resetMigrations",
+          "when": "false"
+        },
+        {
           "command": "entityframework.dbContextInfo",
           "when": "false"
         },
@@ -203,6 +215,11 @@
           "command": "entityframework.removeMigrations",
           "when": "viewItem =~ /^migration-.*\\|?can-remove\\|?.*$/",
           "group": "context@2"
+        },
+        {
+          "command": "entityframework.resetMigrations",
+          "when": "viewItem =~ /^migration-.*\\|?can-reset\\|?.*$/",
+          "group": "context@3"
         },
         {
           "command": "entityframework.runMigration",

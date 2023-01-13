@@ -18,6 +18,7 @@ import { RefreshDbContextTreeCommand } from './RefreshDbContextTreeCommand';
 import { RefreshProjectTreeCommand } from './RefreshProjectTreeCommand';
 import { RefreshTreeCommand } from './RefreshTreeCommand';
 import { RemoveMigrationsCommand } from './RemoveMigrationsCommand';
+import { ResetMigrationsCommand } from './ResetMigrationsCommand';
 import { RunMigrationCommand } from './RunMigrationCommand';
 import { ScaffoldCommand } from './ScaffoldCommand';
 import { UndoMigrationCommand } from './UndoMigrationCommand';
@@ -40,6 +41,12 @@ export class CommandProvider extends Disposable {
       RemoveMigrationsCommand.commandName,
       (item?: MigrationTreeItem) => {
         return new RemoveMigrationsCommand(terminalProvider, item);
+      },
+    );
+    this.registerCommand(
+      ResetMigrationsCommand.commandName,
+      (item?: MigrationTreeItem) => {
+        return new ResetMigrationsCommand(terminalProvider, item);
       },
     );
     this.registerCommand(

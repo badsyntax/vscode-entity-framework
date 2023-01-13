@@ -1,10 +1,11 @@
-import { RunMigrationAction } from '../actions/RunMigrationAction';
+import { ResetMigrationsAction } from '../actions/ResetMigrationsAction';
 import type { TerminalProvider } from '../terminal/TerminalProvider';
-import type { MigrationTreeItem } from '../treeView/MigrationTreeItem';
+
+import { type MigrationTreeItem } from '../treeView/MigrationTreeItem';
 import { Command } from './Command';
 
-export class RunMigrationCommand extends Command {
-  public static commandName = 'runMigration';
+export class ResetMigrationsCommand extends Command {
+  public static commandName = 'resetMigrations';
 
   constructor(
     private readonly terminalProvider: TerminalProvider,
@@ -17,13 +18,12 @@ export class RunMigrationCommand extends Command {
     if (!this.item) {
       return;
     }
-    return new RunMigrationAction(
+    return new ResetMigrationsAction(
       this.terminalProvider,
       this.item.workspaceRoot,
       this.item.dbContext,
       this.item.projectFile.name,
-      this.item.migration.id,
-      true,
+      this.item,
     ).run();
   }
 }
