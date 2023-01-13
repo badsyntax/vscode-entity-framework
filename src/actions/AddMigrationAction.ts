@@ -17,6 +17,7 @@ export class AddMigrationAction extends TerminalAction {
     private readonly workspaceRoot: string,
     private readonly dbContext: string,
     private readonly project: string,
+    private readonly migrationName?: string,
   ) {
     super(
       terminalProvider,
@@ -30,11 +31,13 @@ export class AddMigrationAction extends TerminalAction {
   }
 
   public async run() {
-    const migrationName = await vscode.window.showInputBox({
-      title: 'Enter Migration Name',
-      prompt: 'EG: MigrationName',
-      ignoreFocusOut: true,
-    });
+    const migrationName =
+      this.migrationName ||
+      (await vscode.window.showInputBox({
+        title: 'Enter Migration Name',
+        prompt: 'EG: MigrationName',
+        ignoreFocusOut: true,
+      }));
     if (!migrationName) {
       return '';
     }

@@ -86,7 +86,7 @@ export class InputWizard {
         inputValues.push(inputVal);
       }
     } catch (e) {
-      await vscode.window.showErrorMessage('Invalid input');
+      void vscode.window.showErrorMessage('Invalid input');
       return [];
     }
     return inputValues;

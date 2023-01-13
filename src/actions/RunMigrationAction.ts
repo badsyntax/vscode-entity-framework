@@ -17,6 +17,7 @@ export class RunMigrationAction extends TerminalAction {
     private readonly dbContext: string,
     private readonly project: string,
     migrationId: string,
+    private readonly refresh?: boolean,
   ) {
     super(
       terminalProvider,
@@ -51,10 +52,12 @@ export class RunMigrationAction extends TerminalAction {
         );
         dbContextsCache.clear(cacheId);
 
-        await vscode.commands.executeCommand(
-          CommandProvider.getCommandName(RefreshTreeCommand.commandName),
-          false,
-        );
+        if (this.refresh) {
+          await vscode.commands.executeCommand(
+            CommandProvider.getCommandName(RefreshTreeCommand.commandName),
+            false,
+          );
+        }
 
         return output;
       },
