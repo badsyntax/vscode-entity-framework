@@ -19,7 +19,10 @@ src/**
 .github/**
 images/**
 sample_dotnet/**
+**/wdio.conf.ts
 .wdio-vscode-service/**
+**/.ncurc.json
+**/.nvmrc
 
 webview-ui/src/**
 webview-ui/build/index.html
