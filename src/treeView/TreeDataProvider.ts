@@ -2,7 +2,6 @@ import * as vscode from 'vscode';
 import { type TreeItem } from './TreeItem';
 import { Disposable } from '../util/Disposable';
 import { EXTENSION_NAMESPACE } from '../constants/constants';
-import type { ProjectFile } from '../types/ProjectFile';
 import { ProjectTreeItem } from './ProjectTreeItem';
 import type { CLI } from '../cli/CLI';
 import { MigrationTreeItem } from './MigrationTreeItem';
@@ -10,6 +9,7 @@ import { CommandProvider } from '../commands/CommandProvider';
 import { OpenMigrationFileCommand } from '../commands/OpenMigrationFileCommand';
 import type { Logger } from '../util/Logger';
 import { getProjectsConfig } from '../config/config';
+import { ProjectFilesProvider } from '../solution/ProjectFilesProvider';
 
 export class TreeDataProvider
   extends Disposable
@@ -25,7 +25,6 @@ export class TreeDataProvider
 
   constructor(
     private readonly logger: Logger,
-    private readonly projectFiles: ProjectFile[],
     private readonly cli: CLI,
   ) {
     super();
@@ -68,8 +67,9 @@ export class TreeDataProvider
       return element.getChildren();
     } else {
       const { project } = getProjectsConfig();
+      const { projectFiles } = await ProjectFilesProvider.getProjectFiles();
 
-      return this.projectFiles
+      return projectFiles
         .filter(projectFile => !project || projectFile.name === project)
         .map(
           projectFile =>

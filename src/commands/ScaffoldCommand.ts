@@ -1,8 +1,8 @@
-import type { Project } from 'nuget-deps-tree';
 import { ScaffoldAction } from '../actions/ScaffoldAction';
 import type { TerminalProvider } from '../terminal/TerminalProvider';
 import { type DbContextTreeItem } from '../treeView/DbContextTreeItem';
 import { Command } from './Command';
+import { ProjectFilesProvider } from '../solution/ProjectFilesProvider';
 
 export class ScaffoldCommand extends Command {
   public static commandName = 'scaffold';
@@ -10,7 +10,6 @@ export class ScaffoldCommand extends Command {
   constructor(
     private readonly terminalProvider: TerminalProvider,
     private readonly item?: DbContextTreeItem,
-    private readonly solutionProjects?: Project[],
   ) {
     super();
   }
@@ -19,10 +18,11 @@ export class ScaffoldCommand extends Command {
     if (!this.item) {
       return;
     }
+    const { solutionProjects } = await ProjectFilesProvider.getProjectFiles();
     return new ScaffoldAction(
       this.terminalProvider,
       this.item.projectFile,
-      this.solutionProjects,
+      solutionProjects,
     ).run();
   }
 }
