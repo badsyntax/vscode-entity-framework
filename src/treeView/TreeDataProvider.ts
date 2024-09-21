@@ -9,6 +9,7 @@ import { MigrationTreeItem } from './MigrationTreeItem';
 import { CommandProvider } from '../commands/CommandProvider';
 import { OpenMigrationFileCommand } from '../commands/OpenMigrationFileCommand';
 import type { Logger } from '../util/Logger';
+import { getProjectsConfig } from '../config/config';
 
 export class TreeDataProvider
   extends Disposable
@@ -33,6 +34,11 @@ export class TreeDataProvider
     });
     view.onDidChangeSelection(this.handleTreeItemSelection.bind(this));
     this.subscriptions.push(view);
+
+    var onDidChangeConfiguration = vscode.workspace.onDidChangeConfiguration(
+      () => this.refresh(),
+    );
+    this.subscriptions.push(onDidChangeConfiguration);
   }
 
   private async handleTreeItemSelection(
@@ -61,9 +67,14 @@ export class TreeDataProvider
     if (element) {
       return element.getChildren();
     } else {
-      return this.projectFiles.map(
-        projectFile => new ProjectTreeItem(this.logger, projectFile, this.cli),
-      );
+      const { project } = getProjectsConfig();
+
+      return this.projectFiles
+        .filter(projectFile => !project || projectFile.name === project)
+        .map(
+          projectFile =>
+            new ProjectTreeItem(this.logger, projectFile, this.cli),
+        );
     }
   }
 }

@@ -23,15 +23,27 @@ A VS Code extension to manage Entity Framework migrations.
 - [Scaffold](https://learn.microsoft.com/en-us/ef/core/cli/dotnet#dotnet-ef-dbcontext-scaffold) `DbContext` & entity types
 - Generate ER Diagram (Requires EF Core 7+)
 
-### ER Diagram
-
-A [`Mermaid`](https://mermaid.js.org/syntax/entityRelationshipDiagram.html) [`.t4`](https://learn.microsoft.com/en-us/ef/core/managing-schemas/scaffolding/templates) template will be installed into the project. You can ignore this file (by adding it to `.gitignore`), or add it to source control. The template file is used to generate the ER Diagram, feel free to customise it. If you delete it, it will be regenerated next time you generate an ER Diagram.
-
-<img src="./images/er-diagram.png" alt="Entity Framework ER Diagram" />
-
 ## Extension Settings
 
 This extension contributes the following settings:
+
+- `entityframework.project`: [Target Project](https://learn.microsoft.com/en-us/ef/core/cli/dotnet#target-project-and-startup-project)
+  <details><summary>Example</summary>
+
+  ```json
+  {
+    "entityframework.project": "src/Infrastructure"
+  }
+  ```
+
+- `entityframework.startupProject`: [Startup Project](https://learn.microsoft.com/en-us/ef/core/cli/dotnet#target-project-and-startup-project)
+  <details><summary>Example</summary>
+
+  ```json
+  {
+    "entityframework.startupProject": "ExampleAPI"
+  }
+  ```
 
 - `entityframework.commands`: Custom commands
   <details><summary>Example</summary>
@@ -186,6 +198,12 @@ This extension contributes the following settings:
   ```
 
   </details>
+
+### ER Diagram
+
+A [`Mermaid`](https://mermaid.js.org/syntax/entityRelationshipDiagram.html) [`.t4`](https://learn.microsoft.com/en-us/ef/core/managing-schemas/scaffolding/templates) template will be installed into the project. You can ignore this file (by adding it to `.gitignore`), or add it to source control. The template file is used to generate the ER Diagram, feel free to customise it. If you delete it, it will be regenerated next time you generate an ER Diagram.
+
+<img src="./images/er-diagram.png" alt="Entity Framework ER Diagram" />
 
 ## Performance
 
