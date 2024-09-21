@@ -20,7 +20,7 @@ export function Mermaid({
 }: {
   chart: string;
   mermaidRef?: React.MutableRefObject<MermaidAPI | undefined>;
-  theme: string;
+  theme: 'default' | 'base' | 'dark' | 'forest' | 'neutral' | 'null';
 }) {
   const zoomRef = useRef<d3.ZoomBehavior<Element, unknown>>();
   const svgRef = useRef<d3.Selection<d3.BaseType, unknown, HTMLElement, any>>();
