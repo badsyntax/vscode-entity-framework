@@ -1,7 +1,7 @@
 import type { ChildProcess } from 'child_process';
 import { spawn } from 'child_process';
 
-import { getEnvConfig } from '../config/config';
+import { getEnvConfig, getProjectsConfig } from '../config/config';
 import type { Logger } from '../util/Logger';
 import { EFOutputParser } from './EFOutputParser';
 
@@ -10,7 +10,7 @@ export type ExecOpts = {
   cwd: string;
   removeDataFromOutput?: boolean;
   asJson?: boolean;
-  params?: { [key: string]: string };
+  params?: { [key: string]: string | undefined };
   handlers?: {
     onStdOut?: (buffer: string) => void;
     onStdErr?: (buffer: string) => void;
@@ -28,7 +28,7 @@ export class CLI {
 
   private getInterpolatedArgs(
     args: string[],
-    params: { [key: string]: string },
+    params: { [key: string]: string | undefined },
   ) {
     return args.map(arg =>
       arg.replace(/\$[\w]+/, a => params[a.slice(1)] || ''),
@@ -42,7 +42,23 @@ export class CLI {
     asJson,
     params = {},
   }: ExecOpts): ExecProcess {
-    const interpolatedArgs = this.getInterpolatedArgs(cmdArgs, params);
+    const paramsWithStartupProject = {
+      ...params,
+      startupProject: params.startupProject || params.project,
+    };
+
+    const { project, startupProject } = getProjectsConfig();
+
+    const paramsWithDefaults = {
+      ...paramsWithStartupProject,
+      project,
+      startupProject,
+    };
+
+    const interpolatedArgs = this.getInterpolatedArgs(
+      cmdArgs,
+      paramsWithDefaults,
+    );
 
     this.logger.info(interpolatedArgs.join(' '));
 

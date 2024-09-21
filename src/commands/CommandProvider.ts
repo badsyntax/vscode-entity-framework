@@ -22,6 +22,7 @@ import { ResetMigrationsCommand } from './ResetMigrationsCommand';
 import { RunMigrationCommand } from './RunMigrationCommand';
 import { ScaffoldCommand } from './ScaffoldCommand';
 import { UndoMigrationCommand } from './UndoMigrationCommand';
+import { ConfigureCommand } from './ConfigureCommand';
 
 export class CommandProvider extends Disposable {
   constructor(
@@ -101,6 +102,10 @@ export class CommandProvider extends Disposable {
       ScaffoldCommand.commandName,
       (item?: DbContextTreeItem) =>
         new ScaffoldCommand(terminalProvider, item, solutionProjects),
+    );
+    this.registerCommand(
+      ConfigureCommand.commandName,
+      () => new ConfigureCommand(),
     );
   }
 

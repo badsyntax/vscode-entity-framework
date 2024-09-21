@@ -9,13 +9,6 @@
     "allowJs": true,
     "esModuleInterop": true,
     "strict": true,
-    "skipLibCheck": true,
-    "types": [
-      "node",
-      "@wdio/globals/types",
-      "expect-webdriverio",
-      "@wdio/mocha-framework",
-      "wdio-vscode-service"
-    ]
+    "skipLibCheck": true
   }
 }

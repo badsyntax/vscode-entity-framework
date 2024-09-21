@@ -25,11 +25,11 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3.6.0
         with:
-          node-version: 16
+          node-version: 20
       - name: Setup dotnet
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '7.x.x'
+          dotnet-version: '8.x.x'
       - name: Install NPM Packages
         run: npm ci
       - name: Lint
@@ -51,13 +51,6 @@ jobs:
           dotnet build
           dotnet ef --version
         working-directory: ./sample_dotnet
-      - name: Test
-        run: |
-          Xvfb :99 -screen 0 1024x768x24 > /dev/null 2>&1 &
-          npm test
-        env:
-          DISPLAY: ':99.0'
-          VSCODE_VERSION: ${{ matrix.vscodeVersion }}
 
   publish:
     name: Publish

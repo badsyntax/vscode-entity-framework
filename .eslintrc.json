@@ -22,5 +22,12 @@
     "no-throw-literal": "warn",
     "semi": "off"
   },
-  "ignorePatterns": ["out", "dist", "**/*.d.ts", "*.js", "webview-ui"]
+  "ignorePatterns": [
+    "out",
+    "dist",
+    "**/*.d.ts",
+    "*.js",
+    "webview-ui",
+    "node_modules"
+  ]
 }

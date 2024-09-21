@@ -39,6 +39,13 @@ export function getCommandsConfig() {
     });
 }
 
+export function getProjectsConfig() {
+  const config = vscode.workspace.getConfiguration(EXTENSION_NAMESPACE);
+  const project = config.get<string>('project');
+  const startupProject = config.get<string>('startupProject');
+  return { project, startupProject };
+}
+
 type ERDiagramConfig = {
   ignoreTables: string[];
 };

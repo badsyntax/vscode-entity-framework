@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import path from 'path';
+import path from 'node:path';
 import type { ProjectFile } from '../types/ProjectFile';
 import type { DependencyTree, Project } from 'nuget-deps-tree';
 import { NugetDepsTree } from 'nuget-deps-tree';
@@ -27,7 +27,12 @@ export class ProjectFilesProvider {
       const csProjFiles = await vscode.workspace.findFiles(
         new vscode.RelativePattern(workspaceRoot, '**/*.csproj'),
       );
+
       for (const projectFile of csProjFiles) {
+        const projectName = path.relative(
+          workspaceRoot.uri.fsPath,
+          path.dirname(projectFile.fsPath),
+        );
         const { projects } = NugetDepsTree.generate(projectFile.fsPath);
         const [project] = projects;
         const hasEFDesignPackage =
@@ -36,8 +41,6 @@ export class ProjectFilesProvider {
             id => id === 'Microsoft.EntityFrameworkCore.Design',
           ) !== undefined;
         if (hasEFDesignPackage) {
-          const projectName = path.basename(path.dirname(projectFile.fsPath));
-
           projectFiles.push({
             name: projectName,
             project,

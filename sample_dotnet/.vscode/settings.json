@@ -2,5 +2,7 @@
     "entityframework.erDiagram": {
         "ignoreTables": [
         ]
-    }
+    },
+    "entityframework.project": "src/Infrastructure",
+    "entityframework.startupProject": "ExampleAPI"
 }
