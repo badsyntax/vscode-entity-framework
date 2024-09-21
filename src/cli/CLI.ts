@@ -51,8 +51,11 @@ export class CLI {
 
     const paramsWithDefaults = {
       ...paramsWithStartupProject,
-      project,
-      startupProject,
+      ...(project &&
+        startupProject && {
+          project,
+          startupProject,
+        }),
     };
 
     const interpolatedArgs = this.getInterpolatedArgs(
