@@ -60,7 +60,7 @@ This extension contributes the following settings:
         "--project",
         "\"$project\"",
         "--startup-project",
-        "\"$project\"",
+        "\"$startupProject\"",
         "--context",
         "\"$dbContext\""
       ],
@@ -72,7 +72,7 @@ This extension contributes the following settings:
         "--project",
         "\"$project\"",
         "--startup-project",
-        "\"$project\"",
+        "\"$startupProject\"",
         "--context",
         "\"$dbContext\""
       ],
@@ -84,7 +84,7 @@ This extension contributes the following settings:
         "--project",
         "\"$project\"",
         "--startup-project",
-        "\"$project\"",
+        "\"$startupProject\"",
         "--context",
         "\"$dbContext\"",
         "\"$migrationId\""
@@ -97,7 +97,7 @@ This extension contributes the following settings:
         "--project",
         "\"$project\"",
         "--startup-project",
-        "\"$project\"",
+        "\"$startupProject\"",
         "--context",
         "\"$dbContext\""
       ],
@@ -109,7 +109,7 @@ This extension contributes the following settings:
         "--project",
         "\"$project\"",
         "--startup-project",
-        "\"$project\""
+        "\"$startupProject\""
       ],
       "listMigrations": [
         "dotnet",
@@ -121,7 +121,7 @@ This extension contributes the following settings:
         "--project",
         "\"$project\"",
         "--startup-project",
-        "\"$project\""
+        "\"$startupProject\""
       ],
       "dbContextInfo": [
         "dotnet",
@@ -133,7 +133,7 @@ This extension contributes the following settings:
         "--project",
         "\"$project\"",
         "--startup-project",
-        "\"$project\""
+        "\"$startupProject\""
       ],
       "scaffold": [
         "dotnet",
