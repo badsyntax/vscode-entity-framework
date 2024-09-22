@@ -4,5 +4,5 @@ export interface IAction {
   run(
     params?: { [key: string]: string },
     execArgs?: Partial<ExecOpts>,
-  ): Promise<string | void>;
+  ): Promise<string | number | void>;
 }

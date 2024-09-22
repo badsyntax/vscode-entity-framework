@@ -1,6 +1,6 @@
 {
   "exclude": ["dist", "out", "*.js"],
-  "include": ["wdio.conf.ts", "src"],
+  "include": ["src"],
   "compilerOptions": {
     "module": "commonjs",
     "target": "ES2020",

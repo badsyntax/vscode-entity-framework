@@ -1,22 +1,15 @@
 import * as vscode from 'vscode';
-import { CommandProvider } from '../commands/CommandProvider';
-import { RefreshTreeCommand } from '../commands/RefreshTreeCommand';
 import { getCommandsConfig } from '../config/config';
 import { TREE_VIEW_ID } from '../constants/constants';
 import type { TerminalProvider } from '../terminal/TerminalProvider';
-import {
-  dbContextsCache,
-  DbContextTreeItem,
-} from '../treeView/DbContextTreeItem';
 import { TerminalAction } from './TerminalAction';
 
 export class RemoveMigrationAction extends TerminalAction {
   constructor(
     terminalProvider: TerminalProvider,
-    private readonly workspaceRoot: string,
-    private readonly dbContext: string,
-    private readonly project: string,
-    private readonly refresh?: boolean,
+    readonly workspaceRoot: string,
+    readonly dbContext: string,
+    readonly project: string,
   ) {
     super(
       terminalProvider,
@@ -41,21 +34,7 @@ export class RemoveMigrationAction extends TerminalAction {
           this.cancel();
         });
         await this.start();
-        const output = await this.getOutput();
-        const cacheId = DbContextTreeItem.getCacheId(
-          this.workspaceRoot,
-          this.project,
-          this.dbContext,
-        );
-        dbContextsCache.clear(cacheId);
-        const refresh = this.refresh || this.refresh === undefined;
-        if (refresh) {
-          await vscode.commands.executeCommand(
-            CommandProvider.getCommandName(RefreshTreeCommand.commandName),
-            false,
-          );
-        }
-        return output;
+        return await this.getOutput();
       },
     );
   }

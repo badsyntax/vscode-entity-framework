@@ -58,18 +58,24 @@ class QuickPick extends Disposable {
 }
 
 export class InputWizard {
-  private static async getInputVal(step: Step): Promise<string> {
+  private static async getInputVal(step: Step, steps: Step[]): Promise<string> {
     let inputVal: string | undefined;
+    var index = steps.indexOf(step);
+    var title = `${step.options.title} (${index + 1}/${steps.length})`;
     if (step.type === 'input') {
       inputVal = await vscode.window.showInputBox({
         ...step.options,
         ignoreFocusOut: true,
-        title: step.required
-          ? step.options.title
-          : `${step.options.title} (Optional)`,
+        title: step.required ? title : `${title} (Optional)`,
       });
     } else if (step.type === 'quickpick') {
-      inputVal = await new QuickPick(step).show();
+      inputVal = await new QuickPick({
+        ...step,
+        options: {
+          ...step.options,
+          title,
+        },
+      }).show();
     }
     const isCancelled = inputVal === undefined;
     if (step.required && !isCancelled && !inputVal) {
@@ -79,16 +85,16 @@ export class InputWizard {
   }
 
   public static async getInputs(steps: Step[]): Promise<string[]> {
-    const inputValues: string[] = [];
     try {
+      const inputValues: string[] = [];
       for (const step of steps) {
-        const inputVal = await this.getInputVal(step);
+        const inputVal = await this.getInputVal(step, steps);
         inputValues.push(inputVal);
       }
+      return inputValues;
     } catch (e) {
       void vscode.window.showErrorMessage('Invalid input');
       return [];
     }
-    return inputValues;
   }
 }

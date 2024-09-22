@@ -1,4 +1,4 @@
-import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useRef } from 'react';
 import mermaid from 'mermaid';
 import * as d3 from 'd3';
 import { VscWarning } from 'react-icons/vsc';
@@ -26,38 +26,40 @@ export function Mermaid({
   const svgRef = useRef<d3.Selection<d3.BaseType, unknown, HTMLElement, any>>();
 
   useEffect(() => {
-    mermaid.initialize({
-      startOnLoad: true,
-      theme,
-    });
-    mermaid.contentLoaded();
+    void (async () => {
+      mermaid.initialize({
+        startOnLoad: true,
+        theme,
+      });
+      await mermaid.run();
 
-    const svg = d3.select('.mermaid svg');
-    if (!svg.node()) {
-      return;
-    }
+      const svg = d3.select('.mermaid svg');
+      if (!svg.node()) {
+        return;
+      }
 
-    const hasEntities = !!document.querySelector(
-      '.mermaid svg g[id^="entity"]',
-    );
+      const hasEntities = !!document.querySelector(
+        '.mermaid svg g[id^="entity"]',
+      );
 
-    if (hasEntities) {
-      document.body.classList.add('mermaid-has-entities');
-    } else {
-      document.body.classList.add('mermaid-has-no-entities');
-    }
+      if (hasEntities) {
+        document.body.classList.add('mermaid-has-entities');
 
-    svg.html('<g>' + svg.html() + '</g>');
+        svg.html('<g>' + svg.html() + '</g>');
 
-    const inner = svg.select('g');
-    const zoom = d3.zoom().on('zoom', function (event) {
-      inner.attr('transform', event.transform);
-    });
-    // @ts-ignore
-    svg.call(zoom);
+        const inner = svg.select('g');
+        const zoom = d3.zoom().on('zoom', function (event) {
+          inner.attr('transform', event.transform);
+        });
+        // @ts-ignore
+        svg.call(zoom);
 
-    svgRef.current = svg;
-    zoomRef.current = zoom;
+        svgRef.current = svg;
+        zoomRef.current = zoom;
+      } else {
+        document.body.classList.add('mermaid-has-no-entities');
+      }
+    })();
   }, []);
 
   useImperativeHandle(mermaidRef, () => ({

@@ -44,25 +44,20 @@ export class ResetMigrationsAction implements IAction {
       return;
     }
     const migrationName = await vscode.window.showInputBox({
-      title: 'Enter Migration Name',
+      title: 'Enter New Migration Name',
       prompt: 'EG: MigrationName',
       ignoreFocusOut: true,
     });
     if (!migrationName) {
       return '';
     }
-    await new UndoMigrationCommand(
-      this.terminalProvider,
-      this.item,
-      false,
-    ).run();
+    await new UndoMigrationCommand(this.terminalProvider, this.item).run();
     for (let i = 0; i < migrationsToReset.length; i++) {
       await new RemoveMigrationAction(
         this.terminalProvider,
         this.workspaceRoot,
         this.dbContext,
         this.project,
-        false,
       ).run();
     }
     await new AddMigrationAction(

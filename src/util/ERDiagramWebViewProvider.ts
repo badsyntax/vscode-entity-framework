@@ -44,14 +44,15 @@ export class ERDiagramWebViewProvider extends Disposable {
     const mermaidTheme =
       activeTheme.kind === vscode.ColorThemeKind.Dark ? 'dark' : 'default';
 
-    ERDiagramWebViewProvider.currentProvider.panel.webview.html =
-      getWebviewContent(
-        dbContext,
-        ERDiagramWebViewProvider.currentProvider.panel.webview,
-        extensionUri,
-        mermaidContent,
-        mermaidTheme,
-      );
+    var html = getWebviewContent(
+      dbContext,
+      ERDiagramWebViewProvider.currentProvider.panel.webview,
+      extensionUri,
+      mermaidContent,
+      mermaidTheme,
+    );
+
+    ERDiagramWebViewProvider.currentProvider.panel.webview.html = html;
 
     ERDiagramWebViewProvider.currentProvider.panel.reveal(
       vscode.ViewColumn.One,

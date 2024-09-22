@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import './App.css';
 
 import { VSCodeButton } from '@vscode/webview-ui-toolkit/react';

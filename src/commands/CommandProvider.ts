@@ -73,6 +73,10 @@ export class CommandProvider extends Disposable {
       () => new RefreshTreeCommand(treeDataProvider),
     );
     this.registerCommand(
+      RefreshTreeCommand.commandNameNoCache,
+      () => new RefreshTreeCommand(treeDataProvider, true),
+    );
+    this.registerCommand(
       RefreshDbContextTreeCommand.commandName,
       (item?: DbContextTreeItem) => new RefreshDbContextTreeCommand(item),
     );

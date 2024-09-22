@@ -1,6 +1,3 @@
-import * as vscode from 'vscode';
-import { CommandProvider } from '../commands/CommandProvider';
-import { RefreshTreeCommand } from '../commands/RefreshTreeCommand';
 import type { TerminalProvider } from '../terminal/TerminalProvider';
 import {
   dbContextsCache,
@@ -38,14 +35,8 @@ export class RemoveMigrationsAction implements IAction {
         this.workspaceRoot,
         this.dbContext,
         this.project,
-        false,
       ).run();
     }
-    if (migrationsToRemove.length > 0) {
-      await vscode.commands.executeCommand(
-        CommandProvider.getCommandName(RefreshTreeCommand.commandName),
-        false,
-      );
-    }
+    return migrationsToRemove.length;
   }
 }

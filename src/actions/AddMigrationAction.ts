@@ -1,7 +1,5 @@
 import * as vscode from 'vscode';
 import { EFOutputParser } from '../cli/EFOutputParser';
-import { CommandProvider } from '../commands/CommandProvider';
-import { RefreshTreeCommand } from '../commands/RefreshTreeCommand';
 import { getCommandsConfig } from '../config/config';
 import { TREE_VIEW_ID } from '../constants/constants';
 
@@ -74,10 +72,7 @@ export class AddMigrationAction extends TerminalAction {
           'vscode.open',
           vscode.Uri.file(parsedData.migrationFile),
         );
-        await vscode.commands.executeCommand(
-          CommandProvider.getCommandName(RefreshTreeCommand.commandName),
-          false,
-        );
+
         return output;
       },
     );

@@ -3,7 +3,6 @@ import * as vscode from 'vscode';
 import { EFOutputParser } from '../cli/EFOutputParser';
 import { getCommandsConfig } from '../config/config';
 import { TREE_VIEW_ID } from '../constants/constants';
-
 import type { TerminalProvider } from '../terminal/TerminalProvider';
 import { TextDocumentProvider } from '../util/TextDocumentProvider';
 import { TerminalAction } from './TerminalAction';

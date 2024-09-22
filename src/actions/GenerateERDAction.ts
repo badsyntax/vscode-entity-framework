@@ -107,6 +107,7 @@ export class GenerateERDAction extends TerminalAction {
         options: {
           title: 'Connection String',
           value: '',
+          prompt: 'EG: Data Source=blogging.db',
         },
         required: true,
       },

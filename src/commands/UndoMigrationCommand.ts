@@ -1,3 +1,4 @@
+import * as vscode from 'vscode';
 import { RunMigrationAction } from '../actions/RunMigrationAction';
 import type { TerminalProvider } from '../terminal/TerminalProvider';
 import {
@@ -6,6 +7,8 @@ import {
 } from '../treeView/DbContextTreeItem';
 import type { MigrationTreeItem } from '../treeView/MigrationTreeItem';
 import { Command } from './Command';
+import { CommandProvider } from './CommandProvider';
+import { RefreshTreeCommand } from './RefreshTreeCommand';
 
 export class UndoMigrationCommand extends Command {
   public static commandName = 'undoMigration';
@@ -13,7 +16,6 @@ export class UndoMigrationCommand extends Command {
   constructor(
     private readonly terminalProvider: TerminalProvider,
     private readonly item?: MigrationTreeItem,
-    private readonly refresh?: boolean,
   ) {
     super();
   }
@@ -32,14 +34,22 @@ export class UndoMigrationCommand extends Command {
       const index = migrations.indexOf(this.item);
       const migrationId =
         index === 0 ? '0' : migrations[index - 1].migration.id;
-      return await new RunMigrationAction(
+      await new RunMigrationAction(
         this.terminalProvider,
         this.item.workspaceRoot,
         this.item.dbContext,
         this.item.projectFile.name,
         migrationId,
-        this.refresh,
       ).run();
+      const cacheId = DbContextTreeItem.getCacheId(
+        this.item.workspaceRoot,
+        this.item.projectFile.name,
+        this.item.dbContext,
+      );
+      dbContextsCache.clear(cacheId);
+      await vscode.commands.executeCommand(
+        CommandProvider.getCommandName(RefreshTreeCommand.commandName),
+      );
     }
   }
 }
