@@ -14,7 +14,7 @@ jobs:
         os:
           - ubuntu-latest
         vscodeVersion:
-          - 1.64.2
+          # - 1.64.2
           - stable
     runs-on: ${{ matrix.os }}
     name: Build
