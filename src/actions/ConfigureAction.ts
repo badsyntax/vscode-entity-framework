@@ -33,6 +33,7 @@ export class ConfigureAction implements IAction {
         value: configProject,
         options: {
           title: 'Select Project (1/2)',
+          ignoreFocusOut: true,
         },
         required: true,
       },
@@ -42,6 +43,7 @@ export class ConfigureAction implements IAction {
         value: configStartupProject,
         options: {
           title: 'Select Startup Project (2/2)',
+          ignoreFocusOut: true,
         },
         required: true,
       },
