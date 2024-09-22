@@ -6,7 +6,6 @@ import {
   DbContextTreeItem,
 } from '../treeView/DbContextTreeItem';
 import type { MigrationTreeItem } from '../treeView/MigrationTreeItem';
-import { ProjectTreeItem, projectsCache } from '../treeView/ProjectTreeItem';
 import { Command } from './Command';
 import { CommandProvider } from './CommandProvider';
 import { RefreshTreeCommand } from './RefreshTreeCommand';

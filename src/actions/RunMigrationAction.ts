@@ -1,13 +1,7 @@
 import * as vscode from 'vscode';
-import { CommandProvider } from '../commands/CommandProvider';
-import { RefreshTreeCommand } from '../commands/RefreshTreeCommand';
 import { getCommandsConfig } from '../config/config';
 import { TREE_VIEW_ID } from '../constants/constants';
 import type { TerminalProvider } from '../terminal/TerminalProvider';
-import {
-  dbContextsCache,
-  DbContextTreeItem,
-} from '../treeView/DbContextTreeItem';
 import { TerminalAction } from './TerminalAction';
 
 export class RunMigrationAction extends TerminalAction {

@@ -7,8 +7,8 @@ export default defineConfig({
     outDir: "build",
     rollupOptions: {
       output: {
-       manualChunks: () => '_',
-            entryFileNames: `assets/[name].js`,
+        manualChunks: () => '_',
+        entryFileNames: `assets/[name].js`,
         chunkFileNames: `assets/[name].js`,
         assetFileNames: `assets/[name].[ext]`,
       },

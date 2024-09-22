@@ -86,8 +86,6 @@ export function Mermaid({
     },
   }));
 
-  console.log('chart');
-
   return (
     <>
       <div className="no-entities">

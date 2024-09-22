@@ -1,14 +1,11 @@
 import type { Project } from 'nuget-deps-tree';
 import * as vscode from 'vscode';
 import { EFOutputParser } from '../cli/EFOutputParser';
-import { CommandProvider } from '../commands/CommandProvider';
-import { RefreshTreeCommand } from '../commands/RefreshTreeCommand';
 import { getCommandsConfig } from '../config/config';
 import { DEFAULT_EFCORE_PROVIDERS, TREE_VIEW_ID } from '../constants/constants';
 import { ProjectFilesProvider } from '../solution/ProjectFilesProvider';
 
 import type { TerminalProvider } from '../terminal/TerminalProvider';
-import { projectsCache, ProjectTreeItem } from '../treeView/ProjectTreeItem';
 import type { ProjectFile } from '../types/ProjectFile';
 import { InputWizard } from '../util/InputWizard';
 

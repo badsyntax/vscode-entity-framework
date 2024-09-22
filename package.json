@@ -265,9 +265,14 @@
           "group": "context@1"
         },
         {
+          "command": "entityframework.refreshDbContextTree",
+          "when": "viewItem == dbContext",
+          "group": "inline@1"
+        },
+        {
           "command": "entityframework.addMigration",
           "when": "viewItem == dbContext",
-          "group": "inline@4"
+          "group": "inline@2"
         },
         {
           "command": "entityframework.addMigration",
@@ -292,6 +297,11 @@
         },
         {
           "command": "entityframework.scaffold",
+          "when": "viewItem == project",
+          "group": "inline@2"
+        },
+        {
+          "command": "entityframework.refreshProjectTree",
           "when": "viewItem == project",
           "group": "inline@1"
         },

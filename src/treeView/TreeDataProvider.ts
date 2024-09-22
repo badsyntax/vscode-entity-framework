@@ -37,6 +37,7 @@ export class TreeDataProvider
     this.cacheId = 'TreeDataProvider';
     const view = vscode.window.createTreeView(`${EXTENSION_NAMESPACE}Tree`, {
       treeDataProvider: this,
+      showCollapseAll: true,
     });
     view.onDidChangeSelection(this.handleTreeItemSelection.bind(this));
     this.subscriptions.push(view);
