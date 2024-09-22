@@ -2,19 +2,10 @@ import * as vscode from 'vscode';
 import { getProjectsConfig } from '../config/config';
 import { EXTENSION_NAMESPACE } from '../constants/constants';
 import { ProjectFilesProvider } from '../solution/ProjectFilesProvider';
-
 import { InputWizard } from '../util/InputWizard';
-
 import type { IAction } from './IAction';
 
-export type ScaffoldResult = {
-  contextFile: string;
-  entityTypeFiles: string[];
-};
-
 export class ConfigureAction implements IAction {
-  constructor() {}
-
   public async run() {
     const { projectFiles } = await ProjectFilesProvider.getProjectFiles();
 
@@ -32,7 +23,7 @@ export class ConfigureAction implements IAction {
         items: projects,
         value: configProject,
         options: {
-          title: 'Select Project (1/2)',
+          title: 'Select Project',
           ignoreFocusOut: true,
         },
         required: true,
@@ -42,7 +33,7 @@ export class ConfigureAction implements IAction {
         items: projects,
         value: configStartupProject,
         options: {
-          title: 'Select Startup Project (2/2)',
+          title: 'Select Startup Project',
           ignoreFocusOut: true,
         },
         required: true,

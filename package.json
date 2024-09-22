@@ -73,22 +73,6 @@
         }
       },
       {
-        "command": "entityframework.setStartupProject",
-        "title": "Set as Startup Project",
-        "icon": {
-          "light": "icons/files_light.svg",
-          "dark": "icons/files_dark.svg"
-        }
-      },
-      {
-        "command": "entityframework.setProject",
-        "title": "Set as Project",
-        "icon": {
-          "light": "icons/files_light.svg",
-          "dark": "icons/files_dark.svg"
-        }
-      },
-      {
         "command": "entityframework.generateERD",
         "title": "Generate ER Diagram",
         "icon": {
@@ -106,6 +90,14 @@
       },
       {
         "command": "entityframework.refreshTree",
+        "title": "Refresh",
+        "icon": {
+          "light": "icons/refresh_light.svg",
+          "dark": "icons/refresh_dark.svg"
+        }
+      },
+      {
+        "command": "entityframework.refreshTreeNoCache",
         "title": "Refresh",
         "icon": {
           "light": "icons/refresh_light.svg",
@@ -176,6 +168,10 @@
           "when": "false"
         },
         {
+          "command": "entityframework.refreshTreeNoCache",
+          "when": "false"
+        },
+        {
           "command": "entityframework.refreshProjectTree",
           "when": "false"
         },
@@ -227,7 +223,7 @@
           "group": "navigation"
         },
         {
-          "command": "entityframework.refreshTree",
+          "command": "entityframework.refreshTreeNoCache",
           "when": "view == entityframeworkTree",
           "group": "navigation"
         }
@@ -308,16 +304,6 @@
           "command": "entityframework.refreshProjectTree",
           "when": "viewItem == project",
           "group": "context@2"
-        },
-        {
-          "command": "entityframework.setProject",
-          "when": "viewItem == project",
-          "group": "context@3"
-        },
-        {
-          "command": "entityframework.setStartupProject",
-          "when": "viewItem == project",
-          "group": "context@4"
         }
       ]
     },

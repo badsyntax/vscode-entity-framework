@@ -142,16 +142,6 @@ export class ScaffoldAction extends TerminalAction {
         const uri = vscode.Uri.file(output.contextFile);
         const doc = await vscode.workspace.openTextDocument(uri);
         await vscode.window.showTextDocument(doc);
-
-        const cacheId = ProjectTreeItem.getCacheId(
-          this.projectFile.workspaceRoot,
-          this.projectFile.name,
-        );
-        projectsCache.clear(cacheId);
-        await vscode.commands.executeCommand(
-          CommandProvider.getCommandName(RefreshTreeCommand.commandName),
-          false,
-        );
         return '';
       },
     );

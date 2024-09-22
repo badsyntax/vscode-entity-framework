@@ -17,7 +17,6 @@ export class RunMigrationAction extends TerminalAction {
     private readonly dbContext: string,
     private readonly project: string,
     migrationId: string,
-    private readonly refresh?: boolean,
   ) {
     super(
       terminalProvider,
@@ -44,21 +43,6 @@ export class RunMigrationAction extends TerminalAction {
         });
         await this.start();
         const output = await this.getOutput();
-
-        const cacheId = DbContextTreeItem.getCacheId(
-          this.workspaceRoot,
-          this.project,
-          this.dbContext,
-        );
-        dbContextsCache.clear(cacheId);
-
-        if (this.refresh) {
-          await vscode.commands.executeCommand(
-            CommandProvider.getCommandName(RefreshTreeCommand.commandName),
-            false,
-          );
-        }
-
         return output;
       },
     );

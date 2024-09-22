@@ -65,8 +65,10 @@ export class TreeDataProvider
     }
   }
 
-  public refresh(): void {
-    clearTreeCache();
+  public refresh(clearCache = false): void {
+    if (clearCache) {
+      clearTreeCache();
+    }
     this._onDidChangeTreeData.fire();
   }
 

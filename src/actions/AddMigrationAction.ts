@@ -74,10 +74,7 @@ export class AddMigrationAction extends TerminalAction {
           'vscode.open',
           vscode.Uri.file(parsedData.migrationFile),
         );
-        await vscode.commands.executeCommand(
-          CommandProvider.getCommandName(RefreshTreeCommand.commandName),
-          false,
-        );
+
         return output;
       },
     );
