@@ -5,14 +5,11 @@ import { Command } from './Command';
 export class RefreshTreeCommand extends Command {
   public static commandName = 'refreshTree';
 
-  constructor(
-    private readonly treeDataProvider: TreeDataProvider,
-    private readonly clearCache = true,
-  ) {
+  constructor(private readonly treeDataProvider: TreeDataProvider) {
     super();
   }
 
   public async run() {
-    await new RefreshTreeAction(this.treeDataProvider, this.clearCache).run();
+    await new RefreshTreeAction(this.treeDataProvider).run();
   }
 }

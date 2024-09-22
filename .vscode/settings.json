@@ -59,5 +59,7 @@
     "waitfor",
     "wdio",
     "Xvfb"
-  ]
+  ],
+  "entityframework.project": "sample_dotnet/src/Infrastructure",
+  "entityframework.startupProject": "sample_dotnet/ExampleAPI"
 }

@@ -10,11 +10,17 @@ import { OpenMigrationFileCommand } from '../commands/OpenMigrationFileCommand';
 import type { Logger } from '../util/Logger';
 import { getProjectsConfig } from '../config/config';
 import { ProjectFilesProvider } from '../solution/ProjectFilesProvider';
+import { TreeItemCache } from './TreeItemCache';
+import { clearTreeCache } from './treeCache';
+
+export const treeDataProviderCache = new TreeItemCache<ProjectTreeItem[]>();
 
 export class TreeDataProvider
   extends Disposable
   implements vscode.TreeDataProvider<vscode.TreeItem>
 {
+  private readonly cacheId: string;
+
   private _onDidChangeTreeData: vscode.EventEmitter<
     TreeItem | undefined | null | void
   > = new vscode.EventEmitter<TreeItem | undefined | null | void>();
@@ -28,6 +34,7 @@ export class TreeDataProvider
     private readonly cli: CLI,
   ) {
     super();
+    this.cacheId = 'TreeDataProvider';
     const view = vscode.window.createTreeView(`${EXTENSION_NAMESPACE}Tree`, {
       treeDataProvider: this,
     });
@@ -35,7 +42,11 @@ export class TreeDataProvider
     this.subscriptions.push(view);
 
     var onDidChangeConfiguration = vscode.workspace.onDidChangeConfiguration(
-      () => this.refresh(),
+      e => {
+        if (e.affectsConfiguration(EXTENSION_NAMESPACE)) {
+          this.refresh();
+        }
+      },
     );
     this.subscriptions.push(onDidChangeConfiguration);
   }
@@ -55,6 +66,7 @@ export class TreeDataProvider
   }
 
   public refresh(): void {
+    clearTreeCache();
     this._onDidChangeTreeData.fire();
   }
 
@@ -66,15 +78,24 @@ export class TreeDataProvider
     if (element) {
       return element.getChildren();
     } else {
+      const cachedChildren = treeDataProviderCache.get(this.cacheId);
+
+      if (cachedChildren) {
+        return cachedChildren;
+      }
+
       const { project } = getProjectsConfig();
       const { projectFiles } = await ProjectFilesProvider.getProjectFiles();
 
-      return projectFiles
+      const projectItems = projectFiles
         .filter(projectFile => !project || projectFile.name === project)
         .map(
           projectFile =>
             new ProjectTreeItem(this.logger, projectFile, this.cli),
         );
+
+      treeDataProviderCache.set(this.cacheId, projectItems);
+      return projectItems;
     }
   }
 }
