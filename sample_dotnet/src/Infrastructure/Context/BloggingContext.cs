@@ -59,9 +59,9 @@ public class PostEntityTypeConfiguration : IEntityTypeConfiguration<Post>
 public class Blog
 {
     public int BlogId { get; set; }
-    public string Url { get; set; }
+    public required string Url { get; set; }
 
-    public List<Post> Posts { get; } = new();
+    public List<Post> Posts { get; } = [];
 }
 
 [Table("Users")]
@@ -71,7 +71,7 @@ public class User
     public long Id { get; set; }
 
     [Required]
-    public string Name { get; set; }
+    public required string Name { get; set; }
 }
 
 [Table("Posts")]
@@ -81,14 +81,14 @@ public class Post
     public long Id { get; set; }
 
     [Required]
-    public string Title { get; set; }
+    public required string Title { get; set; }
 
     [Required]
-    public User User { get; set; }
+    public required User User { get; set; }
 
-    public List<Tag> Tags { get; } = new List<Tag>();
+    public List<Tag> Tags { get; } = [];
 
-    public List<PostTag> PostTags { get; } = new List<PostTag>();
+    public List<PostTag> PostTags { get; } = [];
 
     public int? Ranking { get; set; }
 }
@@ -101,11 +101,11 @@ public class Tag
 
     [Required]
     [MaxLength(64)]
-    public string Name { get; set; }
+    public required string Name { get; set; }
 
-    public List<Post> Posts { get; } = new List<Post>();
+    public List<Post> Posts { get; } = [];
 
-    public List<PostTag> PostTags { get; } = new List<PostTag>();
+    public List<PostTag> PostTags { get; } = [];
 }
 
 [Table("PostTags")]
@@ -115,11 +115,11 @@ public class PostTag
     public long PostId { get; set; }
 
     [Required]
-    public Post Post { get; set; }
+    public required Post Post { get; set; }
 
     [Required]
-    public long TagId { get; set; }
+    public required long TagId { get; set; }
 
     [Required]
-    public Tag Tag { get; set; }
+    public required Tag Tag { get; set; }
 }
