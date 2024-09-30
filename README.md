@@ -201,7 +201,7 @@ This extension contributes the following settings:
 
 ### ER Diagram
 
-A [`Mermaid`](https://mermaid.js.org/syntax/entityRelationshipDiagram.html) [`.t4`](https://learn.microsoft.com/en-us/ef/core/managing-schemas/scaffolding/templates) template will be installed into the project. You can ignore this file (by adding it to `.gitignore`), or add it to source control. The template file is used to generate the ER Diagram, feel free to customise it. If you delete it, it will be regenerated next time you generate an ER Diagram.
+When generating an ER diagram, a [`Mermaid`](https://mermaid.js.org/syntax/entityRelationshipDiagram.html) [`.t4`](https://learn.microsoft.com/en-us/ef/core/managing-schemas/scaffolding/templates) template will be installed into the project. You can ignore this file (by adding it to `.gitignore`), or add it to source control. The template file is used to generate the ER Diagram, feel free to customise it. If you delete it, it will be regenerated next time you generate an ER Diagram.
 
 <img src="./images/er-diagram.png" alt="Entity Framework ER Diagram" />
 
