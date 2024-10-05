@@ -23,6 +23,12 @@ A VS Code extension to manage Entity Framework migrations.
 - [Scaffold](https://learn.microsoft.com/en-us/ef/core/cli/dotnet#dotnet-ef-dbcontext-scaffold) `DbContext` & entity types
 - Generate ER Diagram (Requires EF Core 7+)
 
+## Getting Started
+
+Set the `project` and `startupProject` configuration for the workspace by clicking on the `Configure` icon in the tree view:
+
+<img src="./images/configure.png" width="460" alt="Entity Framework Extension Configure" />
+
 ## Extension Settings
 
 This extension contributes the following settings:
