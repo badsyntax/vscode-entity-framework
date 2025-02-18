@@ -33,13 +33,12 @@ export class ProjectFilesProvider {
           workspaceRoot.uri.fsPath,
           path.dirname(projectFile.fsPath),
         );
-        const { projects } = NugetDepsTree.generate(projectFile.fsPath);
 
         const { projects } = NugetDepsTree.generate(projectFile.fsPath);
         if (projects.length === 0) {
           continue;
         }
-        
+
         const [project] = projects;
         const hasEFDesignPackage =
           ProjectFilesProvider.getProjectPackage(
