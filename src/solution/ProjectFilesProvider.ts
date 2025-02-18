@@ -34,6 +34,12 @@ export class ProjectFilesProvider {
           path.dirname(projectFile.fsPath),
         );
         const { projects } = NugetDepsTree.generate(projectFile.fsPath);
+
+        const { projects } = NugetDepsTree.generate(projectFile.fsPath);
+        if (projects.length === 0) {
+          continue;
+        }
+        
         const [project] = projects;
         const hasEFDesignPackage =
           ProjectFilesProvider.getProjectPackage(
