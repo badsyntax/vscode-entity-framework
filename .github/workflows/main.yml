@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node.js
-        uses: actions/setup-node@v4.1.0
+        uses: actions/setup-node@v4.2.0
         with:
           node-version: 20
       - name: Setup dotnet
@@ -57,7 +57,7 @@ jobs:
     if: github.event_name == 'release' && github.event.action == 'published'
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4.1.0
+      - uses: actions/setup-node@v4.2.0
         with:
           node-version: 20
       - name: Install packages
